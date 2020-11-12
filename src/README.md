@@ -7,3 +7,6 @@ Khoa:
 
 Phi
 - Created Player, Item, Unit, Stat class
+
+Taige
+- Added .gitignore, added Makefile config (will be ready later this week)
