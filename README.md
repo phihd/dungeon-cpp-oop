@@ -1,4 +1,4 @@
-# Sample README file for C++ programming project
+# C++ programming project
 
 This is an initial git repository for your programming project.
 It contains an initial directory structure that we wish you could
@@ -19,3 +19,7 @@ use as follows:
 
 You may also add other new directories as needed, for example
 for testing tools.
+
+
+### Dependencies
+- SFML 2.5.1

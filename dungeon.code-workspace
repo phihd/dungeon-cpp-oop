@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+		"cmake.sourceDirectory": "${workspaceFolder}/src",
+		"cmake.buildDirectory": "${workspaceFolder}/src/build",
+		"files.exclude": {
+			".vscode": true,
+			"**/.vs": true,
+			".gitignore": true
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-vscode.cmake-tools",
+			"ms-vscode-remote.remote-wsl"
+		]
+	}
+}
