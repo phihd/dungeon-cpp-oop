@@ -1,7 +1,12 @@
 Source code, makefiles, etc. here.  
 Please update the progress log, any notes, etc.
 
-11/9/2020  
+### 16 Nov 2020 
+Taige: 
+- Updated CMakeLists file, VSCode configuration file, made SFML library to work
+
+
+### 9 Nov 2020  
 Khoa: 
 - Created Square.hpp, Grid.hpp, Room.hpp, World.hpp 
 
