@@ -1,3 +1,5 @@
+#include "Stat.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -7,8 +9,19 @@ class Item {
 
 private:
     string name_;
+    string description_;
+    Stat stat_;
+    int price_;
 
 public:
-    Item(const string &name_);
+    Item(const string &name, string description, Stat stat, int price);
+
+    string GetName();
+
+    string GetDescription();
+
+    Stat GetStats();
+
+    int GetPrice();
 
 };
