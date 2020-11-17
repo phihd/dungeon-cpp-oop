@@ -8,6 +8,11 @@ Khoa:
 - Implement FromString and ToString in Battlefield for saving and create rooms from strings/files
 - Implement Buy, Sell and Rest in class Rest
 
+Mai:
+- Create MVS project
+- Add SFML files
+- Add and link SFML libraries to the dungeon folder
+- Create the grid map and change color of the square if it is clicked
 
 ### 16 Nov 2020 
 Taige: 
