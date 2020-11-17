@@ -1,10 +1,47 @@
 #pragma once
 #include "Grid.hpp"
 #include "Item.hpp"
-class Room : public Grid {
+#include "Player.hpp"
+class Room {
+};
+
+class Rest : public Room {
 public:
-	Room(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies, 
-		std::vector<Item> treasures, std::vector<Coord> spawn) : Grid(nrows+2, ncols +2){
+	Rest(std::vector<Item> stock) : Room() {};
+
+	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded	
+	void Buy(Player player, Item item, int quantity) { 
+		if (player.GetGold() >= item.GetPrice() * quantity) {
+			player.Buy(item, quantity);
+			return true;
+		}
+		else
+			return false;	 
+	};
+	//The player can buy items at the shop if there are enough items to sell. Returns true if the action succeeded
+	void Sell(Player player, Item item, int quantity) { 
+		std::map<Item, int> inventory = player.GetInventory();
+		if (inventory.find(item) == inventory.end())
+			return false;
+		else {
+			if (inventory[item] >= quantity) {
+				player.Sell(item, quantity);
+				return true;
+			}
+			else
+				return false;
+		}
+		 
+	};
+	void Heal(Player player) { player.Rest(); };
+private:
+	std::vector<Item> stock_ = stock;
+};
+
+class Battlefield : public Grid, public Room {
+public:
+	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
+		std::vector<Item> treasures, std::vector<Coord> spawn) : Grid(nrows + 2, ncols + 2), Room() {
 		for (int x = 0; x <= nrows + 2; i++) {
 			for (int y = 0; y <= ncols + 2; j++) {
 				if (x > 0 && x < (nrows + 1) && y > 0 && y < (ncols + 1))
@@ -13,7 +50,7 @@ public:
 					this->Update(new Coord(x, y), new Wall);
 			}
 		}
-	}
+	};
 
 	//Add wall to a specific coordinate. This function helps design each room. Some sort of random algorithm 
 	//can be implemented along with this function to randomize the rooms.
