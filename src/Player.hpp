@@ -1,8 +1,12 @@
 #include "Item.hpp"
 #include "Unit.hpp"
+#include "Ally.hpp"
+#include "Item.hpp"
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -10,6 +14,10 @@ class Player {
 
 private:
     string name_;
+    bool hasQuit_;
+    vector<Ally> army_;
+    map<Item, int> inventory_;
+    int gold_;
 
 public:
     Player(const string &name);
@@ -19,6 +27,8 @@ public:
 
     /*Change the name of the player.*/
     string ChangeName(string newName);
+
+    int GetGold() const;
 
     /*Determines if the player has indicated a desire to quit the game.*/
     bool HasQuit();
@@ -45,14 +55,19 @@ public:
     /*Describe items with coresponding quantities in the inventory*/
     string Inventory();
 
+    /*Equip a unit with a item*/
     string Equip(string itemName, Unit unit);
 
+    /*Use a consumable item, e.g., potions*/
     string Consume(string itemName, Unit unit);
 
+    /*Buy an item with a certain quantity*/
     string Buy(string itemName, int quantity);
 
+    /*Sell an item with a certain quantity*/
     string Sell(string itemName, int quantity);
 
+    /*Loot an item, i.e., add the item to the inventory*/
     string Loot(string itemName);
 
 
