@@ -5,6 +5,13 @@ Please update the progress log, any notes, etc.
 Khoa:
 - Add one more type of Square: Treasure
 - Implement FromString and ToString in Room for saving and create rooms from strings/files
+
+Mai:
+- Create MVS project
+- Add SFML files
+- Add and link SFML libraries to the dungeon folder
+- Create the grid map and change color of the square if it is clicked
+
 ### 16 Nov 2020 
 Taige: 
 - Updated CMakeLists file, VSCode configuration file, made SFML library to work
