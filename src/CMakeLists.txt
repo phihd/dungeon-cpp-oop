@@ -4,11 +4,6 @@ project(dungeon VERSION 0.1.0)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
-# Add SFML library
-# Windows: Add path to SFML/bin as Environment variables 
-find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
-include_directories(${SFML_INCLUDE_DIR})
-
 # Set C++ standard, change this if you wish
 set (CMAKE_CXX_STANDARD 14)
 
@@ -22,10 +17,9 @@ add_executable(${PROJECT_NAME} main.cpp)
 #          path to /bin to Environment Variable (PATH) 
 # MacOS  : Install brew, use brew to install cmake and sfml 
 # Linux  : Use apt to install cmake and sfml 
-if(SFML_FOUND)
-  find_package(SFML 2.5.1 COMPONENTS graphics audio REQUIRED)
-  target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
-endif()
+find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
+include_directories(${SFML_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
 # Add tests
 include(CTest)
