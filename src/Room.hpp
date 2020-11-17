@@ -42,8 +42,8 @@ class Battlefield : public Grid, public Room {
 public:
 	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
 		std::vector<Item> treasures, std::vector<Coord> spawn) : Grid(nrows + 2, ncols + 2), Room() {
-		for (int x = 0; x <= nrows + 2; i++) {
-			for (int y = 0; y <= ncols + 2; j++) {
+		for (int x = 0; x <= nrows + 2; x++) {
+			for (int y = 0; y <= ncols + 2; y++) {
 				if (x > 0 && x < (nrows + 1) && y > 0 && y < (ncols + 1))
 					this->Update(new Coord(x, y), new Floor);
 				else
