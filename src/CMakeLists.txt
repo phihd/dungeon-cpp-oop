@@ -24,4 +24,6 @@ target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 # Add tests
 include(CTest)
 enable_testing()
+add_executable(Test test.cpp)
+add_test(Test Test)
 include(CPack)

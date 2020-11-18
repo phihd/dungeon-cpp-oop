@@ -14,10 +14,9 @@ Mai:
 - Add and link SFML libraries to the dungeon folder
 - Create the grid map and change color of the square if it is clicked
 
-
-### 16 Nov 2020 
 Taige: 
 - Updated CMakeLists file, VSCode configuration file, made SFML library to work
+- Tried CTest testing framework
 
 
 ### 9 Nov 2020  
