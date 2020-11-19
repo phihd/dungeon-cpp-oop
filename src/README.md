@@ -2,6 +2,11 @@ Source code, makefiles, etc. here.
 Please update the progress log, any notes, etc.
 
 ### 17 Nov 2020
+Phi:
+- Add Enemy, Ally classes
+- Item now has price, description, and stat (which increase a flat amount of stat for a unit). 
+- Stat now has operator +, allow easier adjusting stat for units
+- Implement methods of class Player, allow a player to interact with items and units.  
 Khoa:
 - Add one more type of Square: Treasure
 - Create abstract class Room, class Rest inherited from Room and rename class Room to Battlefield. Class Battlefield inherit from both Room and Grid
