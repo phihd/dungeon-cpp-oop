@@ -57,7 +57,7 @@ public:
 	Unit* Get() { return unit_; };
 	//put
 	bool Put(Unit* unit) {
-		if (!IsOccupied) {
+		if (!IsOccupied()) {
 			unit_ = unit;
 			return true;
 		}

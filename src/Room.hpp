@@ -5,10 +5,10 @@
 #include <typeinfo>
 class Room {
 };
-
+/*
 class Rest : public Room {
 public:
-	Rest(std::vector<Item> stock) : Room() {};
+	Rest(std::vector<Item> stock) : Room(), stock_(stock) {};
 
 	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded	
 	bool Buy(Player player, Item item, int quantity) { 
@@ -20,7 +20,7 @@ public:
 			return false;	 
 	};
 	//The player can buy items at the shop if there are enough items to sell. Returns true if the action succeeded
-	void Sell(Player player, Item item, int quantity) { 
+	bool Sell(Player player, Item item, int quantity) { 
 		std::map<Item, int> inventory = player.GetInventory();
 		if (inventory.find(item) == inventory.end())
 			return false;
@@ -36,9 +36,9 @@ public:
 	};
 	void Heal(Player player) { player.Rest(); };
 private:
-	std::vector<Item> stock_ = stock;
+	std::vector<Item> stock_;
 };
-
+*/
 class Battlefield : public Grid, public Room {
 public:
 	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
@@ -56,7 +56,7 @@ public:
 
 	//Add wall to a specific coordinate. This function helps design each room. Some sort of random algorithm 
 	//can be implemented along with this function to randomize the rooms.
-	void AddWall(Coord coord) {this->Update(coord, new Wall)};
+	void AddWall(Coord coord) { this->Update(coord, new Wall); };
 	//Add Treasure square to a specific coordinate.
 	void AddTreasure(Coord coord) {this->Update(coord, new Treasure); };
 	//Put Treasure put the treasures from the room's attribute to the Treasure square on the map. Return true if the action is successful.
@@ -80,9 +80,9 @@ public:
 
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	bool FromString(std::vector<string> room) {
-		for (int y = 0; y <= room.size(); y++) {
+		for (unsigned int y = 0; y <= room.size(); y++) {
 			string row = room[y];
-			for (int x = 0; x <= row.length(); x++) {
+			for (unsigned int x = 0; x <= row.length(); x++) {
 				Coord coord = Coord(x, y);
 				char c = row[x];
 				if (c == '#') {
