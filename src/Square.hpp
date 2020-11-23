@@ -2,6 +2,7 @@
 #include "Unit.hpp"
 #include "Item.hpp"
 #include <vector>
+#include <optional>
 class Square {
 public:
 	//Constructor:
@@ -13,7 +14,7 @@ public:
 	//clear(): clear any unit occupying the square
 	virtual void Clear();
 	//get(): get the unit occupying the square. If there is no unit currently occupying, return NULL
-	virtual Unit Get();
+	virtual Unit* Get();
 	//put: takes a Unit as a parameter, place a unit into the square, return true if the def sucessfully put a unit inside
 	virtual bool Put(Unit unit);
 	//Place: takes a vector of item as parameter. Place treasure to Treasure square, return true if place sucessfully
@@ -32,13 +33,15 @@ public:
 	//clear() does nothing
 	void Clear() {};
 	//get() returns NULL by default
-	Unit Get() { return NULL; };
+	Unit* Get() { return unit_; };
 	//put returns false by default
-	bool Put(Unit unit) { (void)unit;  return false; };
+	bool Put(Unit* unit) { (void)unit;  return false; };
 	//Place: returns false by default
 	bool Place(std::vector<Item> treasure) { return false; };
 	//IsOpened: return false by default
 	bool IsOpened() { return false; };
+private:
+	Unit* unit_ = NULL;
 };
 //Floor square makes playable area, unit can be placed on these square
 class Floor : public Square {
@@ -47,13 +50,13 @@ public:
 	//IsObstacle returns false by default
 	const bool IsObstacle() { return false; };
 	//IsOccupied
-	const IsOccupied() { return unit_ != NULL };
+	const bool IsOccupied() { return unit_ != NULL; };
 	//clear()
 	void Clear() { unit_ = NULL; };
 	//get() 
-	Unit Get() { return unit_; };
+	Unit* Get() { return unit_; };
 	//put
-	bool Put(Unit unit) {
+	bool Put(Unit* unit) {
 		if (!IsOccupied) {
 			unit_ = unit;
 			return true;
@@ -67,7 +70,7 @@ public:
 	//IsOpened: return false by default
 	bool IsOpened() { return false; };
 private:
-	Unit unit_ = NULL;
+	Unit* unit_ = NULL;
 };
 //Treasure square is a square that contains item as treasure. This Square is also counted as an obstacle.
 class Treasure : public Square {
@@ -80,13 +83,14 @@ public:
 	//clear() does nothing
 	void Clear() {};
 	//get() returns NULL by default
-	Unit Get() { return NULL; };
+	Unit* Get() { return unit_; };
 	//put returns false by default
-	bool Put(Unit unit) { (void)unit;  return false; };
-	//Place: returns false by default
-	bool Place(std::vector<Item> treasure) { treasure_ = treasure; return true; };
+	bool Put(Unit* unit) { (void)unit;  return false; };
+	//Place: returns true by default
+	bool Place(std::vector<Item*>* treasure) { treasure_ = treasure; return true; };
 	//IsOpened: return true if the treasure has already been taken
 	bool IsOpened() { return treasure_ == NULL; };
 private:
-	std::vector<Item> treasure_ = NULL;
+	std::vector<Item*>* treasure_ = NULL;
+	Unit* unit_ = NULL;
 };

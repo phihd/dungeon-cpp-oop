@@ -2,6 +2,7 @@
 #include "Grid.hpp"
 #include "Item.hpp"
 #include "Player.hpp"
+#include <typeinfo>
 class Room {
 };
 
@@ -10,7 +11,7 @@ public:
 	Rest(std::vector<Item> stock) : Room() {};
 
 	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded	
-	void Buy(Player player, Item item, int quantity) { 
+	bool Buy(Player player, Item item, int quantity) { 
 		if (player.GetGold() >= item.GetPrice() * quantity) {
 			player.Buy(item, quantity);
 			return true;
@@ -41,13 +42,14 @@ private:
 class Battlefield : public Grid, public Room {
 public:
 	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
-		std::vector<Item> treasures, std::vector<Coord> spawn) : Grid(nrows + 2, ncols + 2), Room() {
+		std::vector<Item> treasures, std::vector<Coord> spawn) : 
+		Grid(nrows + 2, ncols + 2), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
 		for (int x = 0; x <= nrows + 2; x++) {
 			for (int y = 0; y <= ncols + 2; y++) {
 				if (x > 0 && x < (nrows + 1) && y > 0 && y < (ncols + 1))
-					this->Update(new Coord(x, y), new Floor);
+					this->Update(Coord(x, y), new Floor);
 				else
-					this->Update(new Coord(x, y), new Wall);
+					this->Update(Coord(x, y), new Wall);
 			}
 		}
 	};
@@ -59,39 +61,39 @@ public:
 	void AddTreasure(Coord coord) {this->Update(coord, new Treasure); };
 	//Put Treasure put the treasures from the room's attribute to the Treasure square on the map. Return true if the action is successful.
 	bool PutTreasure(Coord coord) {
-		Square current = this->Apply(coord);
-		if (current != new Treasure) {
+		Square* current = this->Apply(coord);
+		if (typeid(current).name() != "class Treasure") {
 			return false;
 		}
 		else {
-			current.Place(treasures_);
+			current->Place(treasures_);
 			return true;
 		}
 	};
 	//Add unit to a specific coordinate. This function helps arrange the units on the grid for the first turn
 	//and used to move the units around. Returns true if the action succeed
 	bool AddUnit(Coord coord, Unit unit) {
-		Square current = this->Apply(coord);
-		bool result = current.Put(unit);
+		Square* current = this->Apply(coord);
+		bool result = current->Put(unit);
 		return result;
 	};
 
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	bool FromString(std::vector<string> room) {
-		for (int y = 0; y <= room.size; y++) {
+		for (int y = 0; y <= room.size(); y++) {
 			string row = room[y];
 			for (int x = 0; x <= row.length(); x++) {
-				Coord coord = new Coord(x, y);
+				Coord coord = Coord(x, y);
 				char c = row[x];
-				if (c == "#") {
+				if (c == '#') {
 					this->AddWall(coord);
 				}
-				else if (c == ".") {
+				else if (c == '.') {
 					continue;
 				}
-				else if (c == "0" || c == "1") {
+				else if (c == '0' || c == '1') {
 					this->AddTreasure(coord);
-					if (c == "1") {
+					if (c == '1') {
 						bool result = this->PutTreasure(coord);
 						if (!result) {
 							return false;
@@ -112,14 +114,14 @@ public:
 		for (int y = 0; y <= ncols_; y++) {
 			string row;
 			for (int x = 0; x <= nrows_; x++) {
-				Coord coord = new Coord(x, y);
-				Square square = this->Apply(coord);
-				if (square == new Wall)
+				Coord coord = Coord(x, y);
+				Square* square = this->Apply(coord);
+				if (typeid(square).name() == "class Wall")
 					row += "#";
-				else if (square == new Floor)
+				else if (typeid(square).name() == "class Floor")
 					row += ".";
-				else if (square == new Treasure) {
-					if (square.IsOpened)
+				else if (typeid(square).name() == "class Treasure") {
+					if (square->IsOpened())
 						row += "0";
 					else
 						row += "1";
@@ -133,12 +135,12 @@ public:
 	}
 
 private:
-	int ncols_ = ncols;
-	int nrows_ = nrows;
-	std::vector<Coord> spawn_ = spawn;
-	std::vector<Unit> enemies_ = enemies;
-	std::vector<Unit> allies_ = allies;
-	std::vector<Item> treasures_ = treasures;
+	int ncols_;
+	int nrows_;
+	std::vector<Coord> spawn_;
+	std::vector<Unit> enemies_;
+	std::vector<Unit> allies_;
+	std::vector<Item> treasures_;
 };
 
 
