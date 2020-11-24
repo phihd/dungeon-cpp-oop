@@ -8,6 +8,8 @@ public:
 	int x() { return x_; };
 
 	int y() { return y_; };
+
+	std::string ToString() { return "(" + std::to_string(x_) + ", " + std::to_string(y_) + ")"; };
 private:
 	int x_ = this->first;
 	int y_ = this->second;

@@ -4,6 +4,8 @@
 #include "Player.hpp"
 #include <typeinfo>
 class Room {
+public:
+	explicit Room() {};
 };
 /*
 class Rest : public Room {
@@ -43,10 +45,10 @@ class Battlefield : public Grid, public Room {
 public:
 	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
 		std::vector<Item> treasures, std::vector<Coord> spawn) : 
-		Grid(nrows + 2, ncols + 2), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
-		for (int x = 0; x <= this->Rows(); x++) {
-			for (int y = 0; y <= this->Cols(); y++) {
-				if (x > 0 && x < nrows && y > 0 && y < ncols + 1)
+		Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
+		for (int x = 0; x < this->Rows(); x++) {
+			for (int y = 0; y < this->Cols(); y++) {
+				if (x > 0 && x < nrows - 1 && y > 0 && y < ncols - 1)
 					this->Update(Coord(x, y), new Floor);
 				else
 					this->Update(Coord(x, y), new Wall);
@@ -62,12 +64,12 @@ public:
 	//Put Treasure put the treasures from the room's attribute to the Treasure square on the map. Return true if the action is successful.
 	bool PutTreasure(Coord coord) {
 		Square* current = this->Apply(coord);
-		if (typeid(current).name() != "class Treasure") {
+		if (current->ToString() != "Treasure") {
 			return false;
 		}
 		else {
-			current->Place(treasures_);
-			return true;
+			bool result = current->Place(treasures_);
+			return result;
 		}
 	};
 	//Add unit to a specific coordinate. This function helps arrange the units on the grid for the first turn
@@ -80,12 +82,11 @@ public:
 
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	bool FromString(std::vector<string> room) {
-		if (room.size() == (this->Rows()-2) && room[0].length() == this->Cols()-2)
-		for (unsigned int x = 0; x <= room.size(); x++) {
-			string row = room[x];
-			for (unsigned int y = 0; y <= row.length(); y++) {
-				Coord coord = Coord(x, y);
-				char c = row[y];
+		for (unsigned int y = 0; y < room.size(); y++) {
+			string row = room[y];
+			for (unsigned int x = 0; x < row.length(); x++) {
+				Coord coord = Coord(x+1, y+1);
+				char c = row[x];
 				if (c == '#') {
 					this->AddWall(coord);
 				}
