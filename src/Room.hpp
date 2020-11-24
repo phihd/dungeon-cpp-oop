@@ -44,9 +44,9 @@ public:
 	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
 		std::vector<Item> treasures, std::vector<Coord> spawn) : 
 		Grid(nrows + 2, ncols + 2), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
-		for (int x = 0; x <= nrows + 2; x++) {
-			for (int y = 0; y <= ncols + 2; y++) {
-				if (x > 0 && x < (nrows + 1) && y > 0 && y < (ncols + 1))
+		for (int x = 0; x <= this->Rows(); x++) {
+			for (int y = 0; y <= this->Cols(); y++) {
+				if (x > 0 && x < nrows && y > 0 && y < ncols + 1)
 					this->Update(Coord(x, y), new Floor);
 				else
 					this->Update(Coord(x, y), new Wall);
@@ -80,11 +80,12 @@ public:
 
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	bool FromString(std::vector<string> room) {
-		for (unsigned int y = 0; y <= room.size(); y++) {
-			string row = room[y];
-			for (unsigned int x = 0; x <= row.length(); x++) {
+		if (room.size() == (this->Rows()-2) && room[0].length() == this->Cols()-2)
+		for (unsigned int x = 0; x <= room.size(); x++) {
+			string row = room[x];
+			for (unsigned int y = 0; y <= row.length(); y++) {
 				Coord coord = Coord(x, y);
-				char c = row[x];
+				char c = row[y];
 				if (c == '#') {
 					this->AddWall(coord);
 				}
@@ -111,16 +112,16 @@ public:
 	//ToString saves the room as a vector of string.
 	std::vector<string> ToString() {
 		std::vector<string> result;
-		for (int y = 0; y <= ncols_; y++) {
+		for (int y = 0; y < this->Cols(); y++) {
 			string row;
-			for (int x = 0; x <= nrows_; x++) {
+			for (int x = 0; x < this->Rows(); x++) {
 				Coord coord = Coord(x, y);
 				Square* square = this->Apply(coord);
-				if (typeid(square).name() == "class Wall")
+				if (square->ToString() == "Wall")
 					row += "#";
-				else if (typeid(square).name() == "class Floor")
+				else if (square->ToString() == "Floor")
 					row += ".";
-				else if (typeid(square).name() == "class Treasure") {
+				else if (square->ToString() == "Treasure") {
 					if (square->IsOpened())
 						row += "0";
 					else
@@ -135,8 +136,6 @@ public:
 	}
 
 private:
-	int ncols_;
-	int nrows_;
 	std::vector<Coord> spawn_;
 	std::vector<Unit> enemies_;
 	std::vector<Unit> allies_;
