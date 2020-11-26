@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 
@@ -13,7 +15,17 @@ private:
     int crit_;
 
 public:
-    Stat(int maxHP, int HP, int atk, int def, int crit);
+    Stat(int maxHP, int HP, int atk, int def, int crit): maxHP_(maxHP), HP_(HP), atk_(atk), def_(def), crit_(crit) {}
+
+    int GetMaxHP() const;
+
+    int GetHP() const;
+
+    int GetAtk() const;
+
+    int GetDef() const;
+
+    int GetCrit() const;
 
     Stat& operator+=(const Stat& b);
 };

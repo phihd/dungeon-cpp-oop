@@ -7,15 +7,15 @@ using namespace std;
 
 Unit::Unit(const string &name, Stat stats): name_(name), stats_(stats) {}
 
-string Unit::GetName() {
+string Unit::GetName() const {
     return name_;
 }
 
-Stat Unit::GetStats() {
+Stat Unit::GetStats() const {
     return stats_;
 }
 
-vector<Item> Unit::GetInventory() {
+vector<Item> Unit::GetInventory() const {
     return inventory_;
 }
 
