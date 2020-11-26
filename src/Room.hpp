@@ -49,8 +49,7 @@ private:
 /*Playable Area*/
 class Battlefield : public Grid, public Room {
 public:
-	Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,
-		std::vector<Item>* treasures, std::vector<Coord> spawn);
+	Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies, std::vector<Item>* treasures, std::vector<Coord> spawn);
 
 	//Add wall to a specific coordinate. This function helps design each room. Some sort of random algorithm 
 	//can be implemented along with this function to randomize the rooms.
@@ -61,18 +60,16 @@ public:
 	std::string PutTreasure(Coord coord);
 	//Add unit to a specific coordinate. This function helps arrange the units on the grid for the first turn
 	//and used to move the units around. Returns true if the action succeed
-	bool AddUnit(Coord coord, Unit unit);
-
+	bool AddUnit(Coord coord, Unit* unit);
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	std::string FromString(std::vector<string> room);
-
 	//ToString saves the room as a vector of string.
 	std::vector<string> ToString();
 
 private:
 	std::vector<Coord> spawn_;
-	std::vector<Unit*> enemies_;
-	std::vector<Unit*> allies_;
+	std::vector<Enemy*> enemies_;
+	std::vector<Ally*> allies_;
 	std::vector<Item>* treasures_;
 };
 #endif

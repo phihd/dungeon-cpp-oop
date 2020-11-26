@@ -2,9 +2,9 @@
 
 Room::Room() {}
 
-Battlefield::Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,
-	std::vector<Item>* treasures, std::vector<Coord> spawn) :
-	Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
+Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies,
+	std::vector<Item>* treasures, std::vector<Coord> spawn) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) 
+{
 	for (int x = 0; x < this->Rows(); x++) {
 		for (int y = 0; y < this->Cols(); y++) {
 			if (x > 0 && x < nrows - 1 && y > 0 && y < ncols - 1)
@@ -33,7 +33,7 @@ std::string Battlefield::PutTreasure(Coord coord) {
 	}
 }
 
-bool Battlefield::AddUnit(Coord coord, Unit unit) {
+bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 	Square* current = this->Apply(coord);
 	bool result = current->Put(unit);
 	return result;

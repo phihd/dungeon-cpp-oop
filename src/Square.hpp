@@ -18,7 +18,7 @@ public:
 	//get(): get the unit occupying the square. If there is no unit currently occupying, return NULL
 	virtual Unit* Get();
 	//put: takes a Unit as a parameter, place a unit into the square, return true if the def sucessfully put a unit inside
-	virtual bool Put(Unit unit);
+	virtual bool Put(Unit* unit);
 	//Place: takes a vector of item as parameter. Place treasure to Treasure square, return true if place sucessfully
 	virtual bool Place(std::vector<Item>* treasure);
 	//IsOpened: return true if the treasure in the treasure square is opened

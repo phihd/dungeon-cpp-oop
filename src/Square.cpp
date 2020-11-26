@@ -9,7 +9,7 @@ void Square::Clear() {}
 
 Unit* Square::Get() { return NULL; }
 
-bool Square::Put(Unit unit) { return false; }
+bool Square::Put(Unit* unit) { return false; }
 
 bool Square::Place(std::vector<Item>* treasure) { return false; }
 
