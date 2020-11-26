@@ -1,61 +1,63 @@
 #pragma once
+#ifndef SQUARE_HEADER
+#define SQUARE_HEADER
+
 #include "Unit.hpp"
 #include "Item.hpp"
 #include <vector>
-#include <optional>
 class Square {
 public:
 	//Constructor:
-	explicit Square(){};
+	explicit Square();
 	//IsObstacle(): Return true if a square is an obstacle: wall/river/mountain
-	virtual const bool IsObstacle() { return false; };
+	virtual const bool IsObstacle();
 	//IsOccupied(): Return true if a square is occupied by either an enemy or ally unit
-	virtual const bool IsOccupied() { return false; };
+	virtual const bool IsOccupied();
 	//clear(): clear any unit occupying the square
-	virtual void Clear() {};
+	virtual void Clear();
 	//get(): get the unit occupying the square. If there is no unit currently occupying, return NULL
-	virtual Unit* Get() { return NULL; };
+	virtual Unit* Get();
 	//put: takes a Unit as a parameter, place a unit into the square, return true if the def sucessfully put a unit inside
-	virtual bool Put(Unit unit) { return false; };
+	virtual bool Put(Unit unit);
 	//Place: takes a vector of item as parameter. Place treasure to Treasure square, return true if place sucessfully
-	virtual bool Place(std::vector<Item>* treasure) { return false; };
+	virtual bool Place(std::vector<Item>* treasure);
 	//IsOpened: return true if the treasure in the treasure square is opened
-	virtual bool IsOpened() { return false; };
+	virtual bool IsOpened();
 	//Open: return true if successfully take the treasure:
-	bool Open() { return false; };
+	virtual bool Open();
 	//Print the treasure list, Treasure square returns "empty treasure" if empty and other returns "Not Treasure" by defaults
-	virtual std::string PrintTreasure() { return ""; };
+	virtual std::string PrintTreasure();
 	//Print the unit occupying the square, Treasure square returns "empty square" if empty and other returns "Not Floor" by defaults
-	virtual std::string PrintUnit() { return ""; };
+	virtual std::string PrintUnit();
 	//Print the type of square
-	virtual std::string ToString() { return ""; };
+	virtual std::string ToString();
 };
 //Wall are obstacles on the map as well as the outer edges of the map.
 class Wall : public Square {
 public:
-	Wall() : Square(){};
+	Wall();
 	//IsObstacle returns true by default
-	const bool IsObstacle() { return true; };
+	const bool IsObstacle();
 	//IsOccupied returns false by default
-	const bool IsOccupied() { return false; };
+	const bool IsOccupied();
 	//clear() does nothing
-	void Clear() {};
+	void Clear();
 	//get() returns NULL by default
-	Unit* Get() { return unit_; };
+	Unit* Get();
 	//put returns false by default
-	bool Put(Unit* unit) { (void)unit;  return false; };
+	bool Put(Unit* unit);
 	//Place: returns false by default
-	bool Place(std::vector<Item>* treasure) { return false; };
+	bool Place(std::vector<Item>* treasure);
 	//IsOpened: return false by default
-	bool IsOpened() { return false; };
+	bool IsOpened();
 	//Open: return false by default
-	bool Open() { return false; };
+	bool Open();
 	//returns"Not Treasure" by defaults
-	std::string PrintTreasure() { return "Not Treasure Square"; };
+	std::string PrintTreasure();
 	//returns "Not Floor" by defaults
-	std::string PrintUnit() { return "Not Floor"; };
+	std::string PrintUnit();
 	//return Wall
-	std::string ToString() { return "Wall"; };
+	std::string ToString();
 private:
 	Unit* unit_ = NULL;
 	std::vector<Item>* treasure_ = NULL;
@@ -63,44 +65,29 @@ private:
 //Floor square makes playable area, unit can be placed on these square
 class Floor : public Square {
 public:
-	Floor() : Square() {};
+	Floor();
 	//IsObstacle returns false by default
-	const bool IsObstacle() { return false; };
+	const bool IsObstacle();
 	//IsOccupied
-	const bool IsOccupied() { return unit_ != NULL; };
+	const bool IsOccupied();
 	//clear()
-	void Clear() { unit_ = NULL; };
+	void Clear();
 	//get() 
-	Unit* Get() { return unit_; };
+	Unit* Get();
 	//put
-	bool Put(Unit* unit) {
-		if (!IsOccupied()) {
-			unit_ = unit;
-			return true;
-		}
-		else {
-			return false;
-		}
-	};
+	bool Put(Unit* unit);
 	//Place: returns false by default
-	bool Place(std::vector<Item>* treasure) { return false; };
+	bool Place(std::vector<Item>* treasure);
 	//IsOpened: return false by default
-	bool IsOpened() { return false; };
+	bool IsOpened();
 	//Open: return false by default
-	bool Open() { return false; };
+	bool Open();
 	//returns"Not Treasure" by defaults
-	std::string PrintTreasure() { return "Not Treasure Square"; };
+	std::string PrintTreasure();
 	//Print the unit occupying the square, Treasure square returns "empty square" if empty
-	std::string PrintUnit() { 
-		if (unit_ != NULL) {
-			return unit_->GetName();
-		}
-		else {
-			return "Empty Square";
-		}
-	};
+	std::string PrintUnit();
 	//return Floor
-	std::string ToString() { return "Floor"; };
+	std::string ToString();
 private:
 	Unit* unit_ = NULL;
 	std::vector<Item>* treasure_ = NULL;
@@ -108,51 +95,31 @@ private:
 //Treasure square is a square that contains item as treasure. This Square is also counted as an obstacle.
 class Treasure : public Square {
 public:
-	Treasure() : Square() {};
+	Treasure();
 	//IsObstacle returns true by default
-	const bool IsObstacle() { return true; };
+	const bool IsObstacle();
 	//IsOccupied returns false by default
-	const bool IsOccupied() { return false; };
+	const bool IsOccupied();
 	//clear() does nothing
-	void Clear() {};
+	void Clear();
 	//get() returns NULL by default
-	Unit* Get() { return unit_; };
+	Unit* Get();
 	//put returns false by default
-	bool Put(Unit* unit) { (void)unit;  return false; };
+	bool Put(Unit* unit);
 	//Place: returns true by default
-	bool Place(std::vector<Item>* treasure) { treasure_ = treasure; return treasure_ == NULL; };
+	bool Place(std::vector<Item>* treasure);
 	//IsOpened: return true if the treasure has already been taken
-	bool IsOpened() { return treasure_ == NULL; };
+	bool IsOpened();
 	//Open: return true if successfully take the treasure:
-	bool Open() {
-		if (!this->IsOpened()) {
-			treasure_ = NULL;
-			return true;
-		}
-		else {
-			return false;
-		}
-	};
+	bool Open();
 	//return Treasure
-	std::string ToString() { return "Treasure"; };
+	std::string ToString();
 	//Print the treasure list, Treasure square returns "empty treasure" if empty
-	std::string PrintTreasure() {
-		if (treasure_ != NULL) {
-			std::string result;
-			int n = treasure_->size();
-			for (int i = 0; i < n; i++) {
-				Item item = treasure_->operator[](i);
-				result += item.GetName() + "\n";
-			}
-			return result;
-		}
-		else {
-			return "Empty Treasure";
-		}
-	};
+	std::string PrintTreasure();
 	//Print the unit occupying the square, Treasure square returns "empty square" if empty and other returns "Not Floor" by defaults
-	std::string PrintUnit() { return "Not Floor"; };
+	std::string PrintUnit();
 private:
 	std::vector<Item>* treasure_ = NULL;
 	Unit* unit_ = NULL;
 };
+#endif

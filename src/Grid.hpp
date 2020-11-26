@@ -1,61 +1,44 @@
 #pragma once
+#ifndef GRID_HEADER
+#define GRID_HEADER
 #include "Square.hpp"
 #include <vector>
 class Coord : std::pair<int, int> {
 public:
-	Coord(int x, int y) : std::pair<int, int>(x, y){}
+	Coord(int x, int y);
 
-	int x() { return x_; };
+	int x();
 
-	int y() { return y_; };
+	int y();
 
-	std::string ToString() { return "(" + std::to_string(x_) + ", " + std::to_string(y_) + ")"; };
+	std::string ToString();
 private:
 	int x_ = this->first;
 	int y_ = this->second;
 };
 class Grid {
 public:
-	Grid(int nrows, int ncols) : nrows_(nrows), ncols_(ncols) {}
+	Grid(int nrows, int ncols);
 	//returns all element of the grid as a 2D matrix
-	std::vector<std::vector<Square*>> Contents() { return contents_; };
+	std::vector<std::vector<Square*>> Contents();
 	//returns the size of the grid
-	int Size() { return nrows_ * ncols_; };
+	int Size();
 	//get the element at a specific coordinate
-	Square* Apply(Coord coord) { return contents_[coord.x()][coord.y()]; };
+	Square* Apply(Coord coord);
 	//update the element at a specific coordinate
-	void Update(Coord coord, Square* square) { contents_[coord.x()][coord.y()] = square; };
+	void Update(Coord coord, Square* square);
 	//print width of the Grid
-	int Rows() { return nrows_; };
+	int Rows();
 	//print height of the Grid
-	int Cols() { return ncols_; };
+	int Cols();
 	//returns the grid as string
-	std::string ToString() {
-		std::string result;
-		for (int y = 0; y < ncols_; y++) {
-			for (int x = 0; x < nrows_; x++) {
-				Coord coord = Coord(x, y);
-				Square* square = this->Apply(coord);
-				if (square->ToString() == "Wall")
-					result += "#";
-				else if (square->ToString() == "Floor")
-					result += ".";
-				else if (square->ToString() == "Treasure") {
-					if (square->IsOpened())
-						result += "0";
-					else
-						result += "1";
-				}
-				else
-					continue;
-			}
-			result += "\n";
-		}
-		return result;
-	};
+	std::string ToString();
+
 private:
 	int nrows_;
 	int ncols_;
 	std::vector<std::vector<Square*>> contents_ = 
 		std::vector<std::vector<Square*>> (nrows_, std::vector<Square*> (ncols_, new Wall));
 };
+
+#endif
