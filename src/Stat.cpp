@@ -38,5 +38,9 @@ int Stat::GetAtk() const {
 }
 
 Stat operator+(const Stat &a, const Stat &b) {
+    return Stat(a) += b;
+}
+
+Stat operator-(const Stat &a, const Stat &b) {
     return Stat(a) -= b;
 }
