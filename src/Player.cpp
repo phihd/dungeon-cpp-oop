@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Player::Player(const string &name): name_(name) {}
+Player::Player(const string &name): name_(name), hasQuit_(false), gold_(0) {}
 
 string Player::GetName() const {
     return name_;
@@ -19,6 +19,10 @@ string Player::ChangeName(string newName) {
 
 int Player::GetGold() const {
     return gold_;
+}
+
+map<Item, int> Player::GetInventory() const {
+    return inventory_;
 }
 
 bool Player::HasQuit() {
@@ -76,16 +80,14 @@ string Player::Inventory() {
     return "You are empty-handed.";
 }
 
+/*
 string Player::Equip(Item item, Ally unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
-            if (unit.Equip(item_iter)) {
-                RemoveItem(item_iter, 1);
-                return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
-            }
-            else
-                return "Unit " + unit.GetName() + " has already been equipped with " + item.GetName() + ".";             
+            unit.Equip(item_iter);
+            RemoveItem(item_iter, 1);
+            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
         }
     }
     return "There is no " + item.GetName() + " to equip.";
@@ -94,12 +96,9 @@ string Player::Equip(Item item, Ally unit) {
 string Player::Unequip(Item item, Ally unit) {
     for (auto item_iter: unit.GetInventory()) {
         if (item_iter == item) {
-            if (unit.Unequip(item_iter)) {
-                AddItem(item_iter, 1);
-                return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
-            }
-            else
-                return "There is no " + item.GetName() + " on " + unit.GetName() + "to unequip.";
+            unit.Unequip(item_iter);
+            AddItem(item_iter, 1);
+            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
         }
     }
     return "There is no " + item.GetName() + " to equip.";
@@ -116,6 +115,7 @@ string Player::Consume(Item item, Ally unit) {
     }
     return "There is no " + item.GetName() + " to consume.";
 }
+*/
 
 string Player::Buy(Item item, int quantity, map<Item, int> &stock) {
     if (quantity > 0) {

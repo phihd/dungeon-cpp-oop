@@ -2,6 +2,7 @@
 #ifndef PLAYER_HEADER
 #define PLAYER_HEADER
 
+#include "Item.hpp"
 #include "Unit.hpp"
 #include "Unit.cpp"
 #include "Ally.hpp"
@@ -34,6 +35,8 @@ public:
     string ChangeName(string newName);
 
     int GetGold() const;
+
+    map<Item, int> GetInventory() const;
 
     /*Determines if the player has indicated a desire to quit the game.*/
     bool HasQuit();
@@ -88,4 +91,3 @@ public:
     string Attack(Ally unit, Enemy opponent);
 
 };
-#endif
