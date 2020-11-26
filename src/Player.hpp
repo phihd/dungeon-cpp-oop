@@ -1,7 +1,11 @@
+#pragma once
+
 #include "Item.hpp"
 #include "Unit.hpp"
+#include "Unit.cpp"
 #include "Ally.hpp"
-#include "Item.hpp"
+#include "Enemy.hpp"
+//#include "Square.hpp"
 
 #include <iostream>
 #include <string>
@@ -44,32 +48,42 @@ public:
     void quit();
 
     /*Examine a certain item in inventory, return the item's description.*/
-    string Examine(string itemName);
+    string Examine(Item item);
 
-    /*Examine a certain item in a unit, return the item's description.*/
-    string Examine(string itemName, Unit unit);
+    /*Examine a certain item in an ally unit, return the item's description.*/
+    string Examine(Item item, Ally unit);
 
     /*Determines if the player has an item.*/
-    bool Has(string itemName);
+    bool Has(Item item);
 
     /*Describe items with coresponding quantities in the inventory*/
     string Inventory();
 
-    /*Equip a unit with a item*/
-    string Equip(string itemName, Unit unit);
+    /*Equip an ally unit with a item*/
+    string Equip(Item item, Ally unit);
 
-    /*Use a consumable item, e.g., potions*/
-    string Consume(string itemName, Unit unit);
+    /*Unequip a item from an ally unit*/
+    string Unequip(Item item, Ally unit);
+
+    /*Use a consumable item, e.g., potions for an ally unit*/
+    string Consume(Item item, Ally unit);
 
     /*Buy an item with a certain quantity*/
-    string Buy(string itemName, int quantity);
+    string Buy(Item item, int quantity, map<Item, int> &stock);
 
     /*Sell an item with a certain quantity*/
-    string Sell(string itemName, int quantity);
+    string Sell(Item item, int quantity, map<Item, int> &stock);
 
-    /*Loot an item, i.e., add the item to the inventory*/
-    string Loot(string itemName);
+    /*Add quantity x item(s) to the inventory*/
+    string AddItem(Item item, int quantity);
 
+    /*Remove quantity x item(s) in the inventory*/
+    string RemoveItem(Item item, int quantity);
 
+    /*Move an ally unit from a location to another one*/
+    // string Move(Ally unit, Floor o_location);
+
+    /*Command an ally unit to attack an opponent*/
+    string Attack(Ally unit, Enemy opponent);
 
 };

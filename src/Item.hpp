@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Stat.hpp"
 
 #include <iostream>
@@ -16,12 +18,16 @@ private:
 public:
     Item(const string &name, string description, Stat stat, int price);
 
-    string GetName();
+    string GetName() const;
 
-    string GetDescription();
+    string GetDescription() const;
 
-    Stat GetStats();
+    Stat GetStats() const;
 
-    int GetPrice();
+    int GetPrice() const;
 
 };
+
+bool operator==(const Item &a, const Item& b);
+
+bool operator<(const Item &a, const Item& b);
