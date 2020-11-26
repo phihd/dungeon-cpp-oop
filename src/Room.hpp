@@ -43,8 +43,8 @@ private:
 */
 class Battlefield : public Grid, public Room {
 public:
-	Battlefield(int nrows, int ncols, std::vector<Unit> enemies, std::vector<Unit> allies,
-		std::vector<Item> treasures, std::vector<Coord> spawn) : 
+	Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,
+		std::vector<Item>* treasures, std::vector<Coord> spawn) : 
 		Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) {
 		for (int x = 0; x < this->Rows(); x++) {
 			for (int y = 0; y < this->Cols(); y++) {
@@ -138,9 +138,9 @@ public:
 
 private:
 	std::vector<Coord> spawn_;
-	std::vector<Unit> enemies_;
-	std::vector<Unit> allies_;
-	std::vector<Item> treasures_;
+	std::vector<Unit*> enemies_;
+	std::vector<Unit*> allies_;
+	std::vector<Item>* treasures_;
 };
 
 
