@@ -9,6 +9,8 @@ class Room {
 public:
 	explicit Room();
 };
+
+/*Rest stop between the rooms*/
 /*
 class Rest : public Room {
 public:
@@ -43,6 +45,8 @@ private:
 	std::vector<Item> stock_;
 };
 */ 
+
+/*Playable Area*/
 class Battlefield : public Grid, public Room {
 public:
 	Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,
