@@ -76,14 +76,16 @@ string Player::Inventory() {
     return "You are empty-handed.";
 }
 
-/*
 string Player::Equip(Item item, Ally unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
-            unit.Equip(item_iter);
-            RemoveItem(item_iter, 1);
-            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            if (unit.Equip(item_iter)) {
+                RemoveItem(item_iter, 1);
+                return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            }
+            else
+                return "Unit " + unit.GetName() + " has already been equipped with " + item.GetName() + ".";             
         }
     }
     return "There is no " + item.GetName() + " to equip.";
@@ -92,9 +94,12 @@ string Player::Equip(Item item, Ally unit) {
 string Player::Unequip(Item item, Ally unit) {
     for (auto item_iter: unit.GetInventory()) {
         if (item_iter == item) {
-            unit.Unequip(item_iter);
-            AddItem(item_iter, 1);
-            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            if (unit.Unequip(item_iter)) {
+                AddItem(item_iter, 1);
+                return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            }
+            else
+                return "There is no " + item.GetName() + " on " + unit.GetName() + "to unequip.";
         }
     }
     return "There is no " + item.GetName() + " to equip.";
@@ -111,7 +116,6 @@ string Player::Consume(Item item, Ally unit) {
     }
     return "There is no " + item.GetName() + " to consume.";
 }
-*/
 
 string Player::Buy(Item item, int quantity, map<Item, int> &stock) {
     if (quantity > 0) {
@@ -185,9 +189,7 @@ string Player::RemoveItem(Item item, int quantity) {
     
 // }
 
-/*
 string Player::Attack(Ally unit, Enemy opponent) {
     unit.Attack(opponent);
     return unit.GetName() + " just attacked " + opponent.GetName();
 }
-*/

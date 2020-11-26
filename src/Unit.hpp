@@ -1,6 +1,7 @@
 #pragma once
+#ifndef UNIT_HEADER
+#define UNIT_HEADER
 
-#include "Stat.hpp"
 #include "Item.hpp"
 //#include "Square.hpp"
 
@@ -31,9 +32,9 @@ public:
 
     void AdjustStats(Stat b);
 
-    void Equip(Item item);
+    bool Equip(Item item);
 
-    void Unequip(Item item);
+    bool Unequip(Item item);
 
     void Consume(Item item);
 
@@ -42,3 +43,5 @@ public:
     //void Move(Floor o_location);
     
 };
+
+#endif

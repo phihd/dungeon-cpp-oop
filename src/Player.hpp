@@ -2,7 +2,6 @@
 #ifndef PLAYER_HEADER
 #define PLAYER_HEADER
 
-#include "Item.hpp"
 #include "Unit.hpp"
 #include "Unit.cpp"
 #include "Ally.hpp"
