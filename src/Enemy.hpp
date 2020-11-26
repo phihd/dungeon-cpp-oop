@@ -1,3 +1,6 @@
+#ifndef ENEMY_HEADER
+#define ENEMY_HEADER
+
 #include "Unit.hpp"
 
 #include <iostream>
@@ -10,3 +13,5 @@ class Enemy: public Unit {
 public:
     Enemy(const string &name, Stat stats);
 };
+
+#endif

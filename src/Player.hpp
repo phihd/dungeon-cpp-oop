@@ -1,4 +1,6 @@
 #pragma once
+#ifndef PLAYER_HEADER
+#define PLAYER_HEADER
 
 #include "Item.hpp"
 #include "Unit.hpp"
@@ -87,3 +89,4 @@ public:
     string Attack(Ally unit, Enemy opponent);
 
 };
+#endif

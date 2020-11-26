@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ITEM_HEADER
+#define ITEM_HEADER
 
 #include "Stat.hpp"
 
@@ -31,3 +33,5 @@ public:
 bool operator==(const Item &a, const Item& b);
 
 bool operator<(const Item &a, const Item& b);
+
+#endif

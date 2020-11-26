@@ -1,4 +1,6 @@
 #pragma once
+#ifndef STAT_HEADER
+#define STAT_HEADER
 
 #include <iostream>
 #include <string>
@@ -31,3 +33,5 @@ public:
 };
 
 Stat operator+(const Stat &a, const Stat &b);
+
+#endif
