@@ -3,7 +3,7 @@
 #define UNIT_HEADER
 
 #include "Item.hpp"
-//#include "Square.hpp"
+#include "World.hpp"
 
 #include <iostream>
 #include <string>
@@ -17,7 +17,7 @@ private:
     string name_;
     Stat stats_;
     vector<Item> inventory_;
-    //Floor location_;
+    Coord location_;
 
 public:
     Unit(const string &name, Stat stats);
@@ -40,7 +40,7 @@ public:
 
     void Attack(Unit opponent);
 
-    //void Move(Floor o_location);
+    void Move(Coord o_location);
     
 };
 

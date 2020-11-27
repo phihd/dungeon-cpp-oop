@@ -80,7 +80,6 @@ string Player::Inventory() {
     return "You are empty-handed.";
 }
 
-/*
 string Player::Equip(Item item, Ally unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
@@ -115,7 +114,6 @@ string Player::Consume(Item item, Ally unit) {
     }
     return "There is no " + item.GetName() + " to consume.";
 }
-*/
 
 string Player::Buy(Item item, int quantity, map<Item, int> &stock) {
     if (quantity > 0) {

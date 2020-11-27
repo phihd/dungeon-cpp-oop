@@ -91,3 +91,5 @@ public:
     string Attack(Ally unit, Enemy opponent);
 
 };
+
+#endif

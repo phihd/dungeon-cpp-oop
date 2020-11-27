@@ -51,3 +51,7 @@ void Unit::Attack(Unit opponent) {
     int dmg = alpha * stats_.GetAtk();
     opponent.AdjustStats(Stat(0, -dmg, 0, 0, 0));
 }
+
+void Unit::Move(Coord o_location) {
+    location_ = o_location;
+}
