@@ -20,7 +20,7 @@ private:
     Coord location_;
 
 public:
-    Unit(const string &name, Stat stats);
+    Unit(const string &name, Stat stats, Coord location);
 
     string GetName() const;
 

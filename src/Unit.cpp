@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string &name, Stat stats): name_(name), stats_(stats) {}
+Unit::Unit(const string &name, Stat stats, Coord location): name_(name), stats_(stats), location_(location) {}
 
 string Unit::GetName() const {
     return name_;
