@@ -17,16 +17,16 @@ private:
     string name_;
     Stat stats_;
     vector<Item> inventory_;
-    Coord location_;
+    Coord* location_;
 
 public:
-    Unit(const string &name, Stat stats, Coord location);
+    Unit(const string &name, Stat stats);
 
     string GetName() const;
 
     Stat GetStats() const;
 
-    Coord GetLocation() const;
+    Coord* GetLocation() const;
 
     vector<Item> GetInventory() const;
 
@@ -40,7 +40,7 @@ public:
 
     void Attack(Unit opponent);
 
-    void Move(Coord o_location);
+    void Move(Coord* o_location);
     
 };
 
@@ -48,14 +48,14 @@ public:
 class Ally: public Unit {
 
 public:
-    Ally(const string &name, Stat stats, Coord location);
+    Ally(const string &name, Stat stats);
 };
 
 
 class Enemy: public Unit {
 
 public:
-    Enemy(const string &name, Stat stats, Coord location);
+    Enemy(const string &name, Stat stats);
 };
 
 #endif
