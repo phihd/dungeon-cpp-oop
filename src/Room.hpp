@@ -3,8 +3,8 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Item.hpp"
 #include "Player.hpp"
+
 class Room {
 public:
 	explicit Room();

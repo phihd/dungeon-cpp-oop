@@ -4,8 +4,6 @@
 
 #include "Item.hpp"
 #include "Unit.hpp"
-#include "Unit.cpp"
-#include "Square.hpp"
 
 #include <iostream>
 #include <string>

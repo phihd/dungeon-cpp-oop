@@ -1,6 +1,7 @@
 #include "Coord.hpp"
+#include <string>
 
-Coord::Coord(int x, int y) : std::pair<int, int>(x, y) {}
+Coord::Coord(int x, int y) : std::pair<int, int>(x, y), x_(x), y_(y) {}
 
 int Coord::x() { return x_; }
 

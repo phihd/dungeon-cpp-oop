@@ -2,8 +2,7 @@
 #ifndef GRID_HEADER
 #define GRID_HEADER
 #include "Square.hpp"
-#include "Coord.hpp"
-#include <vector>
+
 class Grid {
 public:
 	Grid(int nrows, int ncols);

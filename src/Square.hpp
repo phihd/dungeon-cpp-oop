@@ -3,7 +3,6 @@
 #define SQUARE_HEADER
 
 #include "Unit.hpp"
-#include "Item.hpp"
 #include <vector>
 class Square {
 public:

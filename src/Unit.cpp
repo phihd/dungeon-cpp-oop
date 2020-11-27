@@ -23,12 +23,16 @@ vector<Item> Unit::GetInventory() const {
     return inventory_;
 }
 
+Coord Unit::GetLocation() const {
+    return location_;
+}
+
 void Unit::AdjustStats(Stat b) {
     stats_ += b;
 }
 
 bool Unit::Equip(Item item) {
-    for (int i = 0; i < inventory_.size(); i++)
+    for (unsigned int i = 0; i < inventory_.size(); i++)
         if (inventory_[i] == item)
             return false;
     inventory_.push_back(item);
@@ -37,7 +41,7 @@ bool Unit::Equip(Item item) {
 }
 
 bool Unit::Unequip(Item item) {
-    for (int i = 0; i < inventory_.size(); i++)
+    for (unsigned int i = 0; i < inventory_.size(); i++)
         if (inventory_[i] == item) {
             inventory_.erase(inventory_.begin() + i);
             stats_ -= item.GetStats();

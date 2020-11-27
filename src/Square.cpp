@@ -123,8 +123,8 @@ std::string Treasure::ToString() { return "Treasure"; }
 std::string Treasure::PrintTreasure() {
 	if (treasure_ != NULL) {
 		std::string result;
-		int n = treasure_->size();
-		for (int i = 0; i < n; i++) {
+		size_t n = treasure_->size();
+		for (unsigned int i = 0; i < n; i++) {
 			Item item = treasure_->operator[](i);
 			result += item.GetName() + "\n";
 		}
