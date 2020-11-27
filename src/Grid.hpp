@@ -2,20 +2,8 @@
 #ifndef GRID_HEADER
 #define GRID_HEADER
 #include "Square.hpp"
+#include "Coord.hpp"
 #include <vector>
-class Coord : std::pair<int, int> {
-public:
-	Coord(int x, int y);
-
-	int x();
-
-	int y();
-
-	std::string ToString();
-private:
-	int x_ = this->first;
-	int y_ = this->second;
-};
 class Grid {
 public:
 	Grid(int nrows, int ncols);
