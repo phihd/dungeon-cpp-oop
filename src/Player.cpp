@@ -182,10 +182,10 @@ string Player::RemoveItem(Item item, int quantity) {
     return "Remove " + to_string(quantity) + " " + item.GetName() + " from the inventory.";
 }
 
-string Player::Move(Ally unit, Coord o_location) {
-    unit.Move(o_location);
-    return "Unit moved.";
-}
+// string Player::Move(Ally unit, Coord o_location) {
+//     unit.Move(o_location);
+//     return "Unit moved.";
+// }
 
 string Player::Attack(Ally unit, Enemy opponent) {
     unit.Attack(opponent);

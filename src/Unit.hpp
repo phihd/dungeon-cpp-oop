@@ -26,7 +26,7 @@ public:
 
     Stat GetStats() const;
 
-    //Floor GetLocation() const;
+    Coord GetLocation() const;
 
     vector<Item> GetInventory() const;
 
@@ -42,6 +42,20 @@ public:
 
     void Move(Coord o_location);
     
+};
+
+
+class Ally: public Unit {
+
+public:
+    Ally(const string &name, Stat stats, Coord location);
+};
+
+
+class Enemy: public Unit {
+
+public:
+    Enemy(const string &name, Stat stats, Coord location);
 };
 
 #endif

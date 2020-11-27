@@ -55,3 +55,9 @@ void Unit::Attack(Unit opponent) {
 void Unit::Move(Coord o_location) {
     location_ = o_location;
 }
+
+
+Ally::Ally(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
+
+
+Enemy::Enemy(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}

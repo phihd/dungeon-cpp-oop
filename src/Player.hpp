@@ -5,8 +5,6 @@
 #include "Item.hpp"
 #include "Unit.hpp"
 #include "Unit.cpp"
-#include "Ally.hpp"
-#include "Enemy.hpp"
 #include "Square.hpp"
 
 #include <iostream>
@@ -85,7 +83,7 @@ public:
     string RemoveItem(Item item, int quantity);
 
     /*Move an ally unit from a location to another one*/
-    string Move(Ally unit, Coord o_location);
+    //string Move(Ally unit, Coord o_location);
 
     /*Command an ally unit to attack an opponent*/
     string Attack(Ally unit, Enemy opponent);
