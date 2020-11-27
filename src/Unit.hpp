@@ -3,7 +3,7 @@
 #define UNIT_HEADER
 
 #include "Item.hpp"
-#include "World.hpp"
+#include "Coord.hpp"
 
 #include <iostream>
 #include <string>

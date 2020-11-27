@@ -9,17 +9,17 @@ using namespace std;
 
 int main()
 {
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0));
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0));
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0));
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0));
-	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0));
+	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), Coord(1,8));
+	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), Coord(2,8));
+	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), Coord(3,8));
+	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), Coord(2, 7));
+	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), Coord(3, 7));
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0));
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0));
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0));
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0));
-	Enemy* canon = new Enemy("Range", Stat(200, 200, 70, 70, 0));
+	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), Coord(5, 7));
+	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), Coord(6, 7));
+	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), Coord(6, 5));
+	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(5, 5));
+	Enemy* canon = new Enemy("Range", Stat(200, 200, 70, 70, 0), Coord(5, 2));
 
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
 	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
