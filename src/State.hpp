@@ -8,6 +8,7 @@
 #include <vector>
 #include "Player.hpp"
 #include "World.hpp"
+#include "StateStack.hpp"
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
@@ -27,6 +28,7 @@ struct Context
     // FontHolder *fonts;
     // Player *player;
 };
+
 /* The game state (abstract) */
 class State
 {
@@ -36,9 +38,7 @@ public:
     explicit State(StateStack &stack, Context context /*string stateName*/);
 };
 
-/* Game state, triggered when player calls game menu. 
- * The state also serves as the starting screen (Title state) 
- */
+/* Game state, triggered when player calls game menu. */
 class MenuState : public State
 {
 public:
@@ -50,6 +50,20 @@ public:
 private:
     World mWorld;
     Player &mPlayer; // Maybe unnecessary
+};
+
+/* Title state, the first screen of the game. */
+class TitleState : public State
+{
+public:
+    TitleState(StateStack &stack, Context context);
+    virtual void draw();
+    virtual bool update(sf::Time dt);
+    virtual bool handleEvent(const sf::Event &event);
+
+private:
+    sf::Sprite mBackgroundSprite; // No background image yet
+    sf::Text mText;
 };
 
 /* Game state, triggered when player is in the dungeon */
