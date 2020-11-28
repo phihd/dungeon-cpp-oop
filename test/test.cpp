@@ -1,10 +1,17 @@
+//#include "Grid.hpp"
+#include <catch2/catch.hpp>
+#include <vector>
 #include <iostream>
-//#include <dungeon/Item.hpp>
+#include <string>
+#include <memory>
+#include <algorithm>
 
-TEST_CASE("", "")
-{
+TEST_CASE("mainTest"){
    SECTION("")
    {
-      REQUIRE(1 == 1);
+      int a = 1;
+      int b = 2;
+
+      REQUIRE(a == b);
    }
 }

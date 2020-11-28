@@ -19,18 +19,35 @@ find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-system sfml-window)
 
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.13.1)
+
+FetchContent_MakeAvailable(Catch2)
+
+
 # Add tests
 include(CTest)
 enable_testing()
 
-#add_executable(mainTest test.cpp ${PROJECT_DIR})
-#add_library(dungeonlib .)
-#target_link_libraries(mainTest
-#                        dungeonlib
-#                        ctest
-#                        sfml-graphics
-#                        sfml-audio
-#                        sfml-window
-#                        sfml-system    
-#)
-#add_test(mainTest mainTest)
+file(GLOB SOURCE_FILES CONFIGURE_DEPENDS
+    "./*"
+)
+file(GLOB TEST_1 CONFIGURE_DEPENDS "./Grid.hpp" "./Grid.cpp")
+
+set(TEST_DIR ../test)
+
+add_library(dungeonlib STATIC ${TEST_1})
+add_executable(mainTest ${TEST_DIR}/test.cpp)
+target_link_libraries(mainTest
+                        dungeonlib
+                        Catch2::Catch2
+                        sfml-graphics
+                        sfml-audio
+                        sfml-window
+                        sfml-system    
+)
+add_test(mainTest mainTest)

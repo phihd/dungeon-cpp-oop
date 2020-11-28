@@ -12,6 +12,9 @@
 			".vscode": true,
 			"**/.vs": true,
 			".gitignore": true
+		},
+		"files.associations": {
+			"string": "cpp"
 		}
 	},
 	"extensions": {
