@@ -16,17 +16,17 @@ class Rest : public Room {
 public:
 	Rest(std::vector<Item> stock) : Room(), stock_(stock) {};
 
-	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded	
-	bool Buy(Player player, Item item, int quantity) { 
+	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded
+	bool Buy(Player player, Item item, int quantity) {
 		if (player.GetGold() >= item.GetPrice() * quantity) {
 			player.Buy(item, quantity, stock_);
 			return true;
 		}
 		else
-			return false;	 
+			return false;
 	};
 	//The player can buy items at the shop if there are enough items to sell. Returns true if the action succeeded
-	bool Sell(Player player, Item item, int quantity) { 
+	bool Sell(Player player, Item item, int quantity) {
 		std::map<Item, int> inventory = player.GetInv entory();
 		if (inventory.find(item) == inventory.end())
 			return false;
@@ -38,18 +38,18 @@ public:
 			else
 				return false;
 		}
-		 
+
 	};
 	void Heal(Player player) { player.Rest(); };
 private:
 	std::vector<Item> stock_;
 };
-*/ 
+*/
 
 /*Playable Area*/
 class Battlefield : public Grid, public Room {
 public:
-	Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies, std::vector<Item>* treasures, std::vector<Coord> spawn);
+	Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies, std::vector<Item>* treasures);
 
 	//Add wall to a specific coordinate. This function helps design each room. Some sort of random algorithm 
 	//can be implemented along with this function to randomize the rooms.
@@ -65,9 +65,38 @@ public:
 	std::string FromString(std::vector<string> room);
 	//ToString saves the room as a vector of string.
 	std::vector<string> ToString();
+	//Set spawnpoints of allies
+	void SetAllySpawn(std::vector<Coord> spawns);
+	//Set spawnpoints of enemies
+	void SetEnemySpawn(std::vector<Coord> spawns);
+	//Return ally spawn coordinate
+	std::vector<Coord> AllySpawn();
+	//Return enemy spawn coordinate
+	std::vector<Coord> EnemySpawn();
+	//Spawn in allies from spawn coordinates returns true if action is successful
+	bool SpawnAlly();
+	//Spawn in Enemies randomly if enemy_spawn is not NULL, returns true if action is successful
+	bool SpawnEnemy();
+	//Return coordinate of the treasure chest
+	Coord TreasureCoord();
+	//Open treasure returns true if the action is successful.
+	bool OpenTreasure();
+	//Enemies returns list of alive enemy in the room
+	std::vector<Enemy*> Enemies();
+	//Allies returns list of alive ally in the room
+	std::vector<Ally*> Allies();
+	//Treasure returns list of unopened treasure
+	std::vector<Item>* RemainingTreasure();
+	//HasTreasure returns true if there is treasure remaining in the room and is unopened
+	bool HasTreasure();
+	//HasEnemies returns true if there is enemy remaining in the room
+	bool HasEnemies();
+	//IsClear returns true if the objective of the room is completed
+	bool IsClear();
 
 private:
-	std::vector<Coord> spawn_;
+	std::vector<Coord> ally_spawn_ = {};
+	std::vector<Coord> enemy_spawn_ = {};
 	std::vector<Enemy*> enemies_;
 	std::vector<Ally*> allies_;
 	std::vector<Item>* treasures_;

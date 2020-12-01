@@ -29,8 +29,18 @@ int Stat::GetMaxHP() const {
     return maxHP_;
 }
 
+int Stat::GetHP() const
+{
+    return HP_;
+}
+
 int Stat::GetDef() const {
     return def_;
+}
+
+int Stat::GetCrit() const
+{
+    return crit_;
 }
 
 int Stat::GetAtk() const {

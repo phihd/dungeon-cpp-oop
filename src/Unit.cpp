@@ -23,6 +23,10 @@ Coord Unit::GetLocation() const {
     return location_;
 }
 
+bool Unit::IsAlive(){
+    return (this->GetStats().GetMaxHP() - this->GetStats().GetHP()) == 0;
+}
+
 void Unit::AdjustStats(Stat b) {
     stats_ += b;
 }
@@ -50,18 +54,30 @@ void Unit::Consume(Item item) {
     stats_ += item.GetStats();
 }
 
-void Unit::Attack(Unit opponent) {
-    int alpha = 100 / (100 + opponent.GetStats().GetDef());
+void Unit::Attack(Unit* opponent) {
+    int alpha = 100 / (100 + opponent->GetStats().GetDef());
     int dmg = alpha * stats_.GetAtk();
-    opponent.AdjustStats(Stat(0, -dmg, 0, 0, 0));
+    opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0));
 }
 
 void Unit::Move(Coord o_location) {
     location_ = o_location;
 }
 
+string Unit::ToString() {
+    return "";
+}
+
 
 Ally::Ally(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
 
+string Ally::ToString() {
+    return "Ally";
+}
+
 
 Enemy::Enemy(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
+
+string Enemy::ToString() {
+    return "Enemy";
+}

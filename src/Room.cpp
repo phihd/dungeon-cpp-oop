@@ -1,9 +1,11 @@
 #include "Room.hpp"
+#include <algorithm>
+#include <random>
 
 Room::Room() {}
 
 Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies,
-	std::vector<Item>* treasures, std::vector<Coord> spawn) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures), spawn_(spawn) 
+	std::vector<Item>* treasures) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures)
 {
 	for (int x = 0; x < this->Rows(); x++) {
 		for (int y = 0; y < this->Cols(); y++) {
@@ -15,9 +17,13 @@ Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std:
 	}
 }
 
-void Battlefield::AddWall(Coord coord) { this->Update(coord, new Wall); }
+void Battlefield::AddWall(Coord coord) { 
+	this->Update(coord, new Wall); 
+}
 
-void Battlefield::AddTreasure(Coord coord) { this->Update(coord, new Treasure); }
+void Battlefield::AddTreasure(Coord coord) { 
+	this->Update(coord, new Treasure); 
+}
 
 std::string Battlefield::PutTreasure(Coord coord) {
 	Square* current = this->Apply(coord);
@@ -77,8 +83,19 @@ std::vector<string> Battlefield::ToString() {
 			Square* square = this->Apply(coord);
 			if (square->ToString() == "Wall")
 				row += "#";
-			else if (square->ToString() == "Floor")
-				row += ".";
+			else if (square->ToString() == "Floor") {
+				if (square->IsOccupied()) {
+					Unit* occupant = square->Get();
+					if (occupant->ToString() == "Ally")
+						row += "a";
+					else if (occupant->ToString() == "Enemy")
+						row += "e";
+					else
+						row += "u";
+				}
+				else
+					row += ".";
+			}
 			else if (square->ToString() == "Treasure") {
 				if (square->IsOpened())
 					row += "0";
@@ -91,5 +108,170 @@ std::vector<string> Battlefield::ToString() {
 		result.push_back(row);
 	}
 	return result;
+}
+
+void Battlefield::SetAllySpawn(std::vector<Coord> spawns) {
+	ally_spawn_ = spawns;
+}
+
+void Battlefield::SetEnemySpawn(std::vector<Coord> spawns) {
+	enemy_spawn_ = spawns;
+}
+
+std::vector<Coord> Battlefield::AllySpawn()
+{
+	return ally_spawn_;
+}
+
+std::vector<Coord> Battlefield::EnemySpawn()
+{
+	return enemy_spawn_;
+}
+
+bool Battlefield::SpawnAlly() {
+	if (ally_spawn_.empty())
+		return false;
+	for (unsigned int i = 0; i < std::min(allies_.size(), ally_spawn_.size()); i++) {
+		Ally* ally = allies_[i];
+		Coord spawn = ally_spawn_[i];
+		bool temp = this->AddUnit(spawn, ally);
+		if (!temp)
+			return false;
+	}
+	return true;
+}
+
+bool Battlefield::SpawnEnemy() {
+	if (enemy_spawn_.empty()) {
+		std::vector<Coord> available_coord = {};
+		//find all empty square
+		for (int x = 0; x < this->Rows(); x++) {
+			for (int y = 0; y < this->Cols(); y++) {
+				Coord coord = Coord(x, y);
+				Square* square = this->Apply(coord);
+				bool available = true;
+				for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
+					Coord spawn = ally_spawn_[i];
+					if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+						available = false;
+						break;
+					}
+				}
+				if (square->ToString() == "Floor" && available && !square->IsOccupied())
+					available_coord.push_back(coord);
+			}
+		}
+		//shuffle the empty square coordinates
+		auto rng = std::default_random_engine{};
+		std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
+		//put unit
+		for (unsigned int i = 0; i < enemies_.size(); i++) {
+			Coord coord = available_coord[i];
+			Enemy* enemy = enemies_[i];
+			bool temp = this->AddUnit(coord, enemy);
+			if (!temp)
+				return false;
+		}
+	}
+	else {
+		if (enemy_spawn_.size() < enemies_.size()) {
+			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
+				Coord coord = enemy_spawn_[i];
+				Enemy* enemy = enemies_[i];
+				bool temp = this->AddUnit(coord, enemy);
+				if (!temp)
+					return false;
+			}
+			//find all empty square
+			std::vector<Coord> available_coord = {};
+			for (int x = 0; x < this->Rows(); x++) {
+				for (int y = 0; y < this->Cols(); y++) {
+					Coord coord = Coord(x, y);
+					Square* square = this->Apply(coord);
+					bool available = true;
+					for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
+						Coord spawn = ally_spawn_[i];
+						if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+							available = false;
+							break;
+						}
+					}
+					if (square->ToString() == "Floor" && available && !square->IsOccupied())
+						available_coord.push_back(coord);
+				}
+			}
+			//shuffle the empty square coordinates
+			auto rng = std::default_random_engine{};
+			std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
+			//add remaining units to empty squares
+			for (unsigned int i = 0; i < enemies_.size() - enemy_spawn_.size(); i++) {
+				Coord coord = available_coord[i];
+				Enemy* enemy = enemies_[i + enemy_spawn_.size()];
+				bool temp = this->AddUnit(coord, enemy);
+				if (!temp)
+					return false;
+			}
+		}
+		else {
+			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
+				Coord coord = enemy_spawn_[i];
+				Enemy* enemy = enemies_[i];
+				bool temp = this->AddUnit(coord, enemy);
+				if (!temp)
+					return false;
+			}
+		}
+	}
+	return true;
+}
+
+Coord Battlefield::TreasureCoord() {
+	for (int x = 0; x < this->Rows(); x++) {
+		for (int y = 0; y < this->Cols(); y++) {
+			Square* current = this->Apply(Coord(x, y));
+			if (current->ToString() == "Treasure")
+				return Coord(x, y);
+		}
+	}
+	return Coord(-1, -1);
+}
+
+bool Battlefield::OpenTreasure() {
+	if (treasures_->empty())
+		return false;
+	else {
+		treasures_->clear();
+		return true;
+	}
+}
+
+std::vector<Enemy*> Battlefield::Enemies() {
+	return enemies_;
+}
+
+std::vector<Ally*> Battlefield::Allies() {
+	return allies_;
+}
+
+std::vector<Item>* Battlefield::RemainingTreasure() {
+	if (treasures_ == NULL)
+		return new std::vector<Item>{};
+	else
+		return treasures_;
+}
+
+bool Battlefield::HasTreasure() {
+	return treasures_ != NULL;
+}
+
+bool Battlefield::HasEnemies() {
+	auto iter = std::find_if(enemies_.begin(), enemies_.end(), [](Enemy* enemy) {
+		return enemy->IsAlive();
+		});
+	return iter != enemies_.end();
+}
+
+bool Battlefield::IsClear() {
+	return !this->HasEnemies() && !this->HasTreasure();
 }
 

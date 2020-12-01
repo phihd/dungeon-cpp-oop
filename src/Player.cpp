@@ -50,12 +50,12 @@ string Player::Examine(Item item) {
     return "If you want to examine something, you need to have it first.";
 }
 
-string Player::Examine(Item item, Ally unit) {
-    for (Item item_iter: unit.GetInventory()) {
+string Player::Examine(Item item, Ally* unit) {
+    for (Item item_iter: unit->GetInventory()) {
         if (item_iter == item)
-            return "Unit " + unit.GetName() + " is equipped with " + item_iter.GetName() + ".\n" + item_iter.GetDescription();
+            return "Unit " + unit->GetName() + " is equipped with " + item_iter.GetName() + ".\n" + item_iter.GetDescription();
     }
-    return "Unit " + unit.GetName() + "is not equipped with this item.";
+    return "Unit " + unit->GetName() + "is not equipped with this item.";
 }
 
 bool Player::Has(Item item) {
@@ -80,36 +80,36 @@ string Player::Inventory() {
     return "You are empty-handed.";
 }
 
-string Player::Equip(Item item, Ally unit) {
+string Player::Equip(Item item, Ally* unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
-            unit.Equip(item_iter);
+            unit->Equip(item_iter);
             RemoveItem(item_iter, 1);
-            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            return "Equipped unit " + unit->GetName() + " with " + item_iter.GetName() + ".";
         }
     }
     return "There is no " + item.GetName() + " to equip.";
 }
 
-string Player::Unequip(Item item, Ally unit) {
-    for (auto item_iter: unit.GetInventory()) {
+string Player::Unequip(Item item, Ally* unit) {
+    for (auto item_iter: unit->GetInventory()) {
         if (item_iter == item) {
-            unit.Unequip(item_iter);
+            unit->Unequip(item_iter);
             AddItem(item_iter, 1);
-            return "Equipped unit " + unit.GetName() + " with " + item_iter.GetName() + "."; 
+            return "Equipped unit " + unit->GetName() + " with " + item_iter.GetName() + ".";
         }
     }
     return "There is no " + item.GetName() + " to equip.";
 }
 
-string Player::Consume(Item item, Ally unit) {
+string Player::Consume(Item item, Ally* unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
-            unit.Consume(item_iter);
+            unit->Consume(item_iter);
             RemoveItem(item_iter, 1);
-            return "Consumed " + item_iter.GetName() + " for " + unit.GetName() + ".";
+            return "Consumed " + item_iter.GetName() + " for " + unit->GetName() + ".";
         }
     }
     return "There is no " + item.GetName() + " to consume.";
@@ -187,7 +187,121 @@ string Player::RemoveItem(Item item, int quantity) {
 //     return "Unit moved.";
 // }
 
-string Player::Attack(Ally unit, Enemy opponent) {
-    unit.Attack(opponent);
-    return unit.GetName() + " just attacked " + opponent.GetName();
+string Player::Attack(Ally* unit, Enemy* opponent) {
+    unit->Attack(opponent);
+    return unit->GetName() + " just attacked " + opponent->GetName();
+}
+
+string Player::Recruit(Ally* unit)
+{
+    if (army_.size() >= 5)
+        return "Army full!";
+    else {
+        army_.push_back(unit);
+        return unit->GetName() + "recruited.";
+    }
+}
+
+string Player::Recruit(vector<Ally*> units)
+{
+    if (army_.empty() && units.size() == 5) {
+        army_ = units;
+        return "Recruit successful";
+    }
+    else {
+        if (!army_.empty())
+            return "Army needs to be empty";
+        else
+            return "Number of allys exceeds 5";
+    }
+}
+
+string Player::Release(Ally* ally)
+{
+    bool temp = false;
+    for (unsigned int i = 0; i < army_.size(); i++) {
+        Ally* current = army_[i];
+        if (current->GetName() == ally->GetName()) {
+            temp = true;
+        }
+    }
+    if (temp)
+        return ally->GetName() + "released";
+    else
+        return "Unit not in army";
+}
+
+string Player::Move(Ally* ally, Coord new_coord)
+{
+    bool temp = false;
+    for (unsigned int i = 0; i < army_.size(); i++) {
+        Ally* current = army_[i];
+        if (current->GetName() == ally->GetName()) {
+            temp = true;
+        }
+    }
+    if (temp) {
+        ally->Move(new_coord);
+        return "Move successful";
+    }
+    else
+        return "Unit not in army";
+}
+
+Bot::Bot() {}
+
+string Bot::Attack(Enemy* unit, Ally* opponent) {
+    unit->Attack(opponent);
+    return unit->GetName() + " just attacked " + opponent->GetName();
+}
+
+string Bot::Recruit(Enemy* unit)
+{
+    if (army_.size() >= 5)
+        return "Army full!";
+    else {
+        army_.push_back(unit);
+        return unit->GetName() + "recruited.";
+    }
+}
+
+string Bot::Recruit(vector<Enemy*> units)
+{
+    for (unsigned int i = 0; i < units.size(); i++) {
+        Enemy* unit = units[i];
+        army_.push_back(unit);
+    }
+    return "Recruit successful";
+}
+
+string Bot::Release(Enemy* ally)
+{
+    bool temp = false;
+    for (unsigned int i = 0; i < army_.size(); i++) {
+        Enemy* current = army_[i];
+        if (current->GetName() == ally->GetName()) {
+            temp = true;
+        }
+    }
+    if (temp)
+        return ally->GetName() + "released";
+    else
+        return "Unit not in army";
+}
+
+string Bot::Move(Enemy* ally, Coord new_coord)
+{
+    bool temp = false;
+    for (unsigned int i = 0; i < army_.size(); i++) {
+        Enemy* current = army_[i];
+        if (current->GetName() == ally->GetName()) {
+            temp = true;
+        }
+    }
+    if (temp) {
+        ally->Move(new_coord);
+        return "Move successful";
+    }
+    else
+        return "Unit not in army";
 }
