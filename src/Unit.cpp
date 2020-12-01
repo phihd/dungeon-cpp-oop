@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string &name, Stat stats): name_(name), stats_(stats), location_(NULL) {}
+Unit::Unit(const string& name, Stat stats, Coord location) : name_(name), stats_(stats), location_(Coord(-1, 1)){}
 
 string Unit::GetName() const {
     return name_;
@@ -64,7 +64,7 @@ void Unit::Attack(Unit* opponent) {
     opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0));
 }
 
-void Unit::Move(Coord* o_location) {
+void Unit::Move(Coord o_location) {
     location_ = o_location;
 }
 
