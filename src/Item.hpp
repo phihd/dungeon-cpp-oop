@@ -3,7 +3,7 @@
 #define ITEM_HEADER
 
 #include "Stat.hpp"
-#include "Stat.cpp"     // Remove if you use visual studio
+#include "Stat.cpp"     // This is for VSCode, remove if you use visual studio
 
 #include <iostream>
 #include <string>

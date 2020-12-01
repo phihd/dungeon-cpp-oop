@@ -3,7 +3,7 @@
 #define GAME_HEADER
 
 #include "Room.hpp"
-#include "Room.cpp"		// Remove if you use visual studio
+#include "Room.cpp"		// This is for VSCode, remove if you use visual studio
 #include <map>
 
 class Game {

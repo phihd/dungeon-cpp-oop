@@ -2,6 +2,7 @@
 #include "World.hpp"
 #include <iostream>
 #include "Player.hpp"
+#include "Player.cpp"   // Remove if you use visual studio
 #include "Stat.hpp"
 #include "Item.hpp"
 using namespace std;
@@ -82,10 +83,11 @@ int main()
 
 	std::cout << "Type a command" << std::endl;
 	std::string command;
-	std::cin >> command;
-	while (command != "quit") {
-		if (turn == 0) {
+	do {
+		if (turn == 0) do {
 			std::cout << "It's your turn" << std::endl;
+			player.startNewTurn();
+			getline(cin, command);
 			if (command == "move") {
 				if (!moved) {
 					std::cout << "move" << std::endl;
@@ -103,24 +105,15 @@ int main()
 					std::cout << "Unit already attacked";
 				}
 			}
-			else if (command == "use")
-				std::cout << "use" << std::endl;
-			else if (command == "open")
-				std::cout << "open" << std::endl;
-			else if (command == "end turn") {
-				moved = false;
-				attacked = false;
-				unit_turn += 1;
-			}
-			else {
+			else if (command == "end turn" || command == "quit")
+				break;
+			else
 				std::cout << "Invalid command" << std::endl;
-			}
-			std::cin >> command;
-		}
-		else {
+		} while (true);
+
+		else
 			std::cout << "Bot's turn" << std::endl;
-		}
-	}
+	} while (command != "quit");
 	
 	return 0;
 }
