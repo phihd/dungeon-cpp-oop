@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Player::Player(const string &name): name_(name), hasQuit_(false), gold_(0) {}
+Player::Player(const string &name): name_(name) {}
 
 string Player::GetName() const {
     return name_;
@@ -182,71 +182,58 @@ string Player::RemoveItem(Item item, int quantity) {
     return "Remove " + to_string(quantity) + " " + item.GetName() + " from the inventory.";
 }
 
-string Player::Move(Ally unit, Coord* o_location) {
-    unit.Move(o_location);
-    return "Unit moved.";
-}
-
 string Player::Attack(Ally* unit, Enemy* opponent) {
     unit->Attack(opponent);
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 
-string Player::Recruit(Ally* unit)
-{
+string Player::Recruit(Ally* unit) {
     if (army_.size() >= 5)
         return "Army full!";
-    else {
-        army_.push_back(unit);
-        return unit->GetName() + "recruited.";
-    }
+    army_.push_back(unit);
+    return unit->GetName() + "recruited.";
 }
 
-string Player::Recruit(vector<Ally*> units)
-{
-    if (army_.empty() && units.size() == 5) {
+string Player::Recruit(vector<Ally*> units) {
+    if (army_.empty() && units.size() == army_max_size_) {
         army_ = units;
         return "Recruit successful";
     }
-    else {
-        if (!army_.empty())
-            return "Army needs to be empty";
-        else
-            return "Number of allys exceeds 5";
-    }
+    if (!army_.empty())
+        return "Army needs to be empty";
+    return "Number of allys exceeds 5";
 }
 
-string Player::Release(Ally* ally)
-{
-    bool temp = false;
+string Player::Release(Ally* ally) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Ally* current = army_[i];
-        if (current->GetName() == ally->GetName()) {
-            temp = true;
+        if (*current == *ally) {
+            return ally->GetName() + "released";
         }
     }
-    if (temp)
-        return ally->GetName() + "released";
-    else
-        return "Unit not in army";
+    return "Unit not in army";
 }
 
-string Player::Move(Ally* ally, Coord new_coord)
-{
-    bool temp = false;
+string Player::Move(Ally* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Ally* current = army_[i];
-        if (current->GetName() == ally->GetName()) {
-            temp = true;
+        if (*current == *ally) {
+            ally->Move(new_coord);
+            return "Move successful";
         }
     }
-    if (temp) {
-        ally->Move(new_coord);
-        return "Move successful";
-    }
-    else
-        return "Unit not in army";
+    return "Unit not in army";
 }
+
+string Player::startNewTurn() {
+    for (unsigned int i = 0; i < army_.size(); i++) {
+        Ally* unit = army_[i];
+        unit->startNewTurn();
+    }
+    return "Started a new turn";
+}
+
+//--------------------------------------------------------------------------------------------------------//
 
 Bot::Bot() {}
 

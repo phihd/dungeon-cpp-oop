@@ -2,8 +2,8 @@
 #ifndef PLAYER_HEADER
 #define PLAYER_HEADER
 
-#include "Item.hpp"
 #include "Unit.hpp"
+#include "Unit.cpp"     // Remove if you use visual studio
 
 #include <iostream>
 #include <string>
@@ -16,10 +16,11 @@ class Player {
 
 private:
     string name_;
-    bool hasQuit_;
+    bool hasQuit_ = false;
     vector<Ally*> army_ = {};
+    const int army_max_size_ = 5;
     map<Item, int> inventory_;
-    int gold_;
+    int gold_ = 0;
 
 public:
     Player(const string &name);
@@ -95,8 +96,11 @@ public:
     /*Release a unit from army*/
     string Release(Ally* ally);
 
-    /*move a unit on the map*/
+    /*Move a unit on the map*/
     string Move(Ally* ally, Coord new_coord);
+
+    /*Start a new turn by allowing all unit in the army to have 1 move and 1 attack*/
+    string startNewTurn();
 };
 
 class Bot {

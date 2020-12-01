@@ -2,6 +2,7 @@
 #ifndef GRID_HEADER
 #define GRID_HEADER
 #include "Square.hpp"
+#include "Square.cpp"	// Remove if you use visual studio
 
 class Grid {
 public:

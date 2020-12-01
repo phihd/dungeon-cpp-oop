@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string& name, Stat stats, Coord location) : name_(name), stats_(stats), location_(Coord(-1, 1)){}
+Unit::Unit(const string& name, Stat stats, Coord location) : name_(name), stats_(stats), location_(location) {}
 
 string Unit::GetName() const {
     return name_;
@@ -13,10 +13,6 @@ string Unit::GetName() const {
 
 Stat Unit::GetStats() const {
     return stats_;
-}
-
-Coord* Unit::GetLocation() const {
-    return location_;
 }
 
 vector<Item> Unit::GetInventory() const {
@@ -62,21 +58,34 @@ void Unit::Attack(Unit* opponent) {
     int alpha = 100 / (100 + opponent->GetStats().GetDef());
     int dmg = alpha * stats_.GetAtk();
     opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0));
+    hasAttacked = true;
 }
 
 void Unit::Move(Coord o_location) {
     location_ = o_location;
+    hasMoved = true;
 }
 
 string Unit::ToString() {
     return "";
 }
 
+void Unit::startNewTurn() {
+    hasAttacked = false;
+    hasMoved = false;
+}
 
-Ally::Ally(const string &name, Stat stats): Unit(name, stats) {}
+
+//----------------------------------------------------------------------------------------------------//
+
+Ally::Ally(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
 
 string Ally::ToString() {
     return "Ally";
+}
+
+bool operator==(const Ally &a, const Ally &b) {
+    return a.GetName() == b.GetName();
 }
 
 
