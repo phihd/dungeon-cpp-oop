@@ -10,7 +10,7 @@ Player::Player(const string &name): name_(name) {}
 string Player::GetName() const {
     return name_;
 }
-
+    
 string Player::ChangeName(string newName) {
     string tmp = name_;
     name_ = newName;
@@ -50,7 +50,7 @@ string Player::Examine(Item item) {
     return "If you want to examine something, you need to have it first.";
 }
 
-string Player::Examine(Item item, Ally* unit) {
+string Player::Examine(Item item, Unit* unit) {
     for (Item item_iter: unit->GetInventory()) {
         if (item_iter == item)
             return "Unit " + unit->GetName() + " is equipped with " + item_iter.GetName() + ".\n" + item_iter.GetDescription();
@@ -80,7 +80,7 @@ string Player::Inventory() {
     return "You are empty-handed.";
 }
 
-string Player::Equip(Item item, Ally* unit) {
+string Player::Equip(Item item, Unit* unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
@@ -92,7 +92,7 @@ string Player::Equip(Item item, Ally* unit) {
     return "There is no " + item.GetName() + " to equip.";
 }
 
-string Player::Unequip(Item item, Ally* unit) {
+string Player::Unequip(Item item, Unit* unit) {
     for (auto item_iter: unit->GetInventory()) {
         if (item_iter == item) {
             unit->Unequip(item_iter);
@@ -103,7 +103,7 @@ string Player::Unequip(Item item, Ally* unit) {
     return "There is no " + item.GetName() + " to equip.";
 }
 
-string Player::Consume(Item item, Ally* unit) {
+string Player::Consume(Item item, Unit* unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
@@ -182,21 +182,21 @@ string Player::RemoveItem(Item item, int quantity) {
     return "Remove " + to_string(quantity) + " " + item.GetName() + " from the inventory.";
 }
 
-string Player::Attack(Ally* unit, Enemy* opponent) {
+string Player::Attack(Unit* unit, Unit* opponent) {
     if (unit->HasAttacked())
         return "Unit already attacked in this turn.";
     unit->Attack(opponent);
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 
-string Player::Recruit(Ally* unit) {
+string Player::Recruit(Unit* unit) {
     if (army_.size() >= 5)
         return "Army full!";
     army_.push_back(unit);
     return unit->GetName() + "recruited.";
 }
 
-string Player::Recruit(vector<Ally*> units) {
+string Player::Recruit(vector<Unit*> units) {
     if (army_.empty() && units.size() == army_max_size_) {
         army_ = units;
         return "Recruit successful";
@@ -206,9 +206,9 @@ string Player::Recruit(vector<Ally*> units) {
     return "Number of allys exceeds 5";
 }
 
-string Player::Release(Ally* ally) {
+string Player::Release(Unit* ally) {
     for (unsigned int i = 0; i < army_.size(); i++) {
-        Ally* current = army_[i];
+        Unit* current = army_[i];
         if (*current == *ally) {
             return ally->GetName() + "released";
         }
@@ -216,9 +216,9 @@ string Player::Release(Ally* ally) {
     return "Unit not in army";
 }
 
-string Player::Move(Ally* ally, Coord new_coord) {
+string Player::Move(Unit* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
-        Ally* current = army_[i];
+        Unit* current = army_[i];
         if (*current == *ally) {
             if (current->HasMoved())
                 return "Unit already made its move for this turn.";
@@ -232,82 +232,18 @@ string Player::Move(Ally* ally, Coord new_coord) {
 
 string Player::startNewTurn() {
     for (unsigned int i = 0; i < army_.size(); i++) {
-        Ally* unit = army_[i];
+        Unit* unit = army_[i];
         unit->startNewTurn();
     }
     return "Started a new turn";
 }
 
-Ally* Player::GetUnit(string unitName) {
+Unit* Player::GetUnit(string unitName) {
     for (int i = 0; i < army_.size(); i++)
         if (army_[i]->GetName() == unitName)
             return army_[i];
     return NULL;
 }
 
-//--------------------------------------------------------------------------------------------------------//
 
-Bot::Bot() {}
-
-string Bot::Attack(Enemy* unit, Ally* opponent) {
-    unit->Attack(opponent);
-    return unit->GetName() + " just attacked " + opponent->GetName();
-}
-
-string Bot::Recruit(Enemy* unit)
-{
-    if (army_.size() >= 5)
-        return "Army full!";
-    else {
-        army_.push_back(unit);
-        return unit->GetName() + "recruited.";
-    }
-}
-
-string Bot::Recruit(vector<Enemy*> units)
-{
-    for (unsigned int i = 0; i < units.size(); i++) {
-        Enemy* unit = units[i];
-        army_.push_back(unit);
-    }
-    return "Recruit successful";
-}
-
-string Bot::Release(Enemy* ally)
-{
-    bool temp = false;
-    for (unsigned int i = 0; i < army_.size(); i++) {
-        Enemy* current = army_[i];
-        if (current->GetName() == ally->GetName()) {
-            temp = true;
-        }
-    }
-    if (temp)
-        return ally->GetName() + "released";
-    else
-        return "Unit not in army";
-}
-
-string Bot::Move(Enemy* ally, Coord new_coord)
-{
-    bool temp = false;
-    for (unsigned int i = 0; i < army_.size(); i++) {
-        Enemy* current = army_[i];
-        if (current->GetName() == ally->GetName()) {
-            temp = true;
-        }
-    }
-    if (temp) {
-        ally->Move(new_coord);
-        return "Move successful";
-    }
-    else
-        return "Unit not in army";
-}
-
-Enemy* Bot::GetUnit(string unitName) {
-    for (int i = 0; i < army_.size(); i++)
-        if (army_[i]->GetName() == unitName)
-            return army_[i];
-    return NULL;
-}
+Bot::Bot(const string &name): Player(name) {}

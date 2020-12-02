@@ -17,7 +17,7 @@ class Player {
 private:
     string name_;
     bool hasQuit_ = false;
-    vector<Ally*> army_ = {};
+    vector<Unit*> army_ = {};
     const int army_max_size_ = 5;
     map<Item, int> inventory_;
     int gold_ = 0;
@@ -52,7 +52,7 @@ public:
     string Examine(Item item);
 
     /*Examine a certain item in an ally unit, return the item's description.*/
-    string Examine(Item item, Ally* unit);
+    string Examine(Item item, Unit* unit);
 
     /*Determines if the player has an item.*/
     bool Has(Item item);
@@ -61,13 +61,13 @@ public:
     string Inventory();
 
     /*Equip an ally unit with a item*/
-    string Equip(Item item, Ally* unit);
+    string Equip(Item item, Unit* unit);
 
     /*Unequip a item from an ally unit*/
-    string Unequip(Item item, Ally* unit);
+    string Unequip(Item item, Unit* unit);
 
     /*Use a consumable item, e.g., potions for an ally unit*/
-    string Consume(Item item, Ally* unit);
+    string Consume(Item item, Unit* unit);
 
     /*Buy an item with a certain quantity*/
     string Buy(Item item, int quantity, map<Item, int> &stock);
@@ -82,58 +82,34 @@ public:
     string RemoveItem(Item item, int quantity);
 
     /*Move an ally unit from a location to another one*/
-    string Move(Ally unit, Coord* o_location);
+    string Move(Unit unit, Coord* o_location);
 
     /*Command an ally unit to attack an opponent*/
-    string Attack(Ally* unit, Enemy* opponent);
+    string Attack(Unit* unit, Unit* opponent);
 
     /*Recruit a unit to army*/
-    string Recruit(Ally* unit);
+    string Recruit(Unit* unit);
 
     /*Recruit a vector of unit to army, can only be done with empty army and vector has size 5*/
-    string Recruit(vector<Ally*> units);
+    string Recruit(vector<Unit*> units);
 
     /*Release a unit from army*/
-    string Release(Ally* ally);
+    string Release(Unit* ally);
 
     /*Move a unit on the map*/
-    string Move(Ally* ally, Coord new_coord);
+    string Move(Unit* ally, Coord new_coord);
 
     /*Start a new turn by allowing all unit in the army to have 1 move and 1 attack*/
     string startNewTurn();
 
     /*Return an ally unit by the provided name*/
-    Ally* GetUnit(string unitName);
+    Unit* GetUnit(string unitName);
 };
 
-class Bot {
-
-private:
-    vector<Enemy*> army_ = {};
+class Bot: public Player {
 
 public:
-    Bot();
-
-    /*Move an ally unit from a location to another one*/
-    //string Move(Ally unit, Coord o_location);
-
-    /*Command an ally unit to attack an opponent*/
-    string Attack(Enemy* unit, Ally* opponent);
-
-    /*Recruit a unit to army*/
-    string Recruit(Enemy* unit);
-
-    /*Recruit a vector of unit to army*/
-    string Recruit(vector<Enemy*> units);
-
-    /*Release a unit from army*/
-    string Release(Enemy* ally);
-
-    /*move a unit on the map*/
-    string Move(Enemy* ally, Coord new_coord);
-
-    /*Return an enemy unit by the provided name*/
-    Enemy* GetUnit(string unitName);
+    Bot(const string &name);
 };
 
 #endif
