@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string& name, Stat stats, Coord location) : name_(name), stats_(stats), location_(location) {}
+Unit::Unit(const string& name, Stat stats, Coord location, int range) : name_(name), stats_(stats), location_(location), range_(range) {}
 
 string Unit::GetName() const {
     return name_;
@@ -58,27 +58,31 @@ void Unit::Attack(Unit* opponent) {
     int alpha = 100 / (100 + opponent->GetStats().GetDef());
     int dmg = alpha * stats_.GetAtk();
     opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0));
-    hasAttacked = true;
+    hasAttacked_ = true;
 }
 
 void Unit::Move(Coord o_location) {
     location_ = o_location;
-    hasMoved = true;
-}
-
-string Unit::ToString() {
-    return "";
+    hasMoved_ = true;
 }
 
 void Unit::startNewTurn() {
-    hasAttacked = false;
-    hasMoved = false;
+    hasAttacked_ = false;
+    hasMoved_ = false;
+}
+
+bool Unit::HasMoved() {
+    return hasMoved_;
+}
+
+bool Unit::HasAttacked() {
+    return hasAttacked_;
 }
 
 
 //----------------------------------------------------------------------------------------------------//
 
-Ally::Ally(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
+Ally::Ally(const string &name, Stat stats, Coord location, int range): Unit(name, stats, location, range) {}
 
 string Ally::ToString() {
     return "Ally";
@@ -89,7 +93,7 @@ bool operator==(const Ally &a, const Ally &b) {
 }
 
 
-Enemy::Enemy(const string &name, Stat stats, Coord location): Unit(name, stats, location) {}
+Enemy::Enemy(const string &name, Stat stats, Coord location, int range): Unit(name, stats, location, range) {}
 
 string Enemy::ToString() {
     return "Enemy";

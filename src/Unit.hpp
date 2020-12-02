@@ -20,11 +20,12 @@ private:
     Stat stats_;
     vector<Item> inventory_;
     Coord location_ = Coord(-1, -1);
-    bool hasAttacked = true;
-    bool hasMoved = true;
+    bool hasAttacked_ = true;
+    bool hasMoved_ = true;
+    int range_ = 0;
 
 public:
-    Unit(const string &name, Stat stats, Coord location);
+    Unit(const string &name, Stat stats, Coord location, int range);
 
     string GetName() const;
 
@@ -48,16 +49,20 @@ public:
 
     void Move(Coord o_location);
     
-    virtual string ToString();
+    virtual string ToString() = 0;
 
     void startNewTurn();
+
+    bool HasMoved();
+
+    bool HasAttacked();
 };
 
 
 class Ally: public Unit {
 
 public:
-    Ally(const string &name, Stat stats, Coord location);
+    Ally(const string &name, Stat stats, Coord location, int range);
 
     string ToString();
 };
@@ -68,7 +73,7 @@ bool operator==(const Ally &a, const Ally &b);
 class Enemy: public Unit {
 
 public:
-    Enemy(const string &name, Stat stats, Coord location);
+    Enemy(const string &name, Stat stats, Coord location, int range);
 
     string ToString();
 };
