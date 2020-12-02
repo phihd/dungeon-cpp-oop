@@ -101,6 +101,9 @@ public:
 
     /*Start a new turn by allowing all unit in the army to have 1 move and 1 attack*/
     string startNewTurn();
+
+    /*Return an ally unit by the provided name*/
+    Ally* GetUnit(string unitName);
 };
 
 class Bot {
@@ -128,6 +131,9 @@ public:
 
     /*move a unit on the map*/
     string Move(Enemy* ally, Coord new_coord);
+
+    /*Return an enemy unit by the provided name*/
+    Enemy* GetUnit(string unitName);
 };
 
 #endif
