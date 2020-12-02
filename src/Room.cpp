@@ -159,6 +159,7 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						}
 						row.push_back(enemy);
 					}
+					row.push_back(9);
 				}
 				else
 					row.push_back(0);
