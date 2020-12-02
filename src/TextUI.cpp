@@ -2,26 +2,40 @@
 #include "World.hpp"
 #include <iostream>
 #include "Player.hpp"
-#include "Player.cpp"   // Remove if you use visual studio
+#include "Player.cpp"   // This is for VSCode, remove if you use visual studio
 #include "Stat.hpp"
 #include "Item.hpp"
+
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 using namespace std;
+
+template <class Container>
+void split1(const std::string& str, Container& cont)
+{
+    std::istringstream iss(str);
+    std::copy(std::istream_iterator<std::string>(iss),
+         std::istream_iterator<std::string>(),
+         std::back_inserter(cont));
+}
 
 
 int main()
 {
 	std::cout << "###########################################################################################################" << std::endl;
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), Coord(1,8));
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), Coord(2,8));
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), Coord(3,8));
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), Coord(2, 7));
-	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), Coord(3, 7));
+	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), Coord(1,8), 1);
+	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), Coord(2,8), 2);
+	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), Coord(3,8), 3);
+	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), Coord(2, 7), 4);
+	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), Coord(3, 7), 5);
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), Coord(5, 7));
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), Coord(6, 7));
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), Coord(6, 5));
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(6, 4));
-	Enemy* canon = new Enemy("Range", Stat(200, 200, 70, 70, 0), Coord(5, 2));
+	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), Coord(5, 7), 1);
+	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), Coord(6, 7), 1);
+	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), Coord(6, 5), 4);
+	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(6, 4), 4);
+	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), Coord(5, 2), 5);
 
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
 	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
@@ -80,30 +94,37 @@ int main()
 	std::cout << "###########################################################################################################" << std::endl;
 	std::cout << "Welcome to Dungeon Crawler Game. Type command to play the game" << std::endl;
 	std::cout << "Available commands are: move, attack, use, open, quit" << std::endl;
+	cout << "For example:" << endl;
+	cout << "move Kai'sa 2 3" << endl;
+	cout << "Kai'sa attack Cho'Gath" << endl;
 
-	std::cout << "Type a command" << std::endl;
 	std::string command;
 	do {
-		if (turn == 0) do {
-			std::cout << "It's your turn" << std::endl;
-			player.startNewTurn();
+		player.startNewTurn();
+		// Player's turn
+		do {
+			std::cout << "It's your turn, type a command:" << std::endl;
 			getline(cin, command);
-			if (command == "move") {
-				if (!moved) {
-					std::cout << "move" << std::endl;
-					moved = true;
-				}
-				else {
-					std::cout << "Unit made its move" << std::endl;
-				}
+			vector<string> cmd_split;
+			split1(command, cmd_split);
+
+			if (cmd_split[0] == "move") {
+				Ally* unit = player.GetUnit(cmd_split[1]);
+				if (!unit) 
+					cout << "Unit is not in the army" << endl;
+				else
+					cout << player.Move(unit, Coord(stoi(cmd_split[2]), stoi(cmd_split[3]))) << endl;
 			}
-			else if (command == "attack") {
-				if (!attacked) {
-					std::cout << "attack" << std::endl;
-				}
-				else {
-					std::cout << "Unit already attacked";
-				}
+			else if (cmd_split[1] == "attack") {
+				Ally* ally = player.GetUnit(cmd_split[0]);
+				if (!ally) 
+					cout << "Unit is not in the army" << endl;
+				Enemy* enemy = bot.GetUnit(cmd_split[2]);
+				if (!enemy) 
+					cout << "Enemy doesn't exist." << endl;
+				else
+					cout << player.Attack(ally, enemy) << endl;
+				
 			}
 			else if (command == "end turn" || command == "quit")
 				break;
@@ -111,8 +132,9 @@ int main()
 				std::cout << "Invalid command" << std::endl;
 		} while (true);
 
-		else
-			std::cout << "Bot's turn" << std::endl;
+		// Bot's turn
+		std::cout << "Bot's turn" << std::endl;
+		// Move
 	} while (command != "quit");
 	
 	return 0;
