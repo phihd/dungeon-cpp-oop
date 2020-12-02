@@ -79,6 +79,18 @@ bool Unit::HasAttacked() {
     return hasAttacked_;
 }
 
+string Unit::Description() {
+    string MaxHP = to_string(stats_.GetMaxHP());
+    string HP = to_string(GetStats().GetHP());
+    string Atk = to_string(GetStats().GetAtk());
+    string Def = to_string(GetStats().GetDef());
+    string Crit = to_string(GetStats().GetCrit());
+    return "Ally\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit;
+}
+
+bool operator==(const Unit &a, const Unit &b) {
+    return a.GetName() == b.GetName();
+}
 
 //----------------------------------------------------------------------------------------------------//
 
@@ -86,6 +98,10 @@ Ally::Ally(const string &name, Stat stats, Coord location, int range): Unit(name
 
 string Ally::ToString() {
     return "Ally";
+}
+
+string Ally::Description() {
+    return "Ally\n" + Unit::Description();
 }
 
 bool operator==(const Ally &a, const Ally &b) {
@@ -97,4 +113,12 @@ Enemy::Enemy(const string &name, Stat stats, Coord location, int range): Unit(na
 
 string Enemy::ToString() {
     return "Enemy";
+}
+
+string Enemy::Description() {
+    return "Enemy\n" + Unit::Description();
+}
+
+bool operator==(const Enemy &a, const Enemy &b) {
+    return a.GetName() == b.GetName();
 }
