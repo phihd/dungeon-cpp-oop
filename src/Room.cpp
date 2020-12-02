@@ -86,10 +86,26 @@ std::vector<string> Battlefield::ToString() {
 			else if (square->ToString() == "Floor") {
 				if (square->IsOccupied()) {
 					Unit* occupant = square->Get();
-					if (occupant->ToString() == "Ally")
-						row += "a";
-					else if (occupant->ToString() == "Enemy")
-						row += "e";
+					if (occupant->ToString() == "Ally") {
+						string ally;
+						for (unsigned int i = 0; i < allies_.size(); i++) {
+							if (occupant->GetName() == allies_[i]->GetName()) {
+								ally = std::to_string(i);
+								break;
+							}
+						}
+						row += ally;
+					}
+					else if (occupant->ToString() == "Enemy") {
+						string enemy;
+						for (unsigned int i = 0; i < enemies_.size(); i++) {
+							if (occupant->GetName() == enemies_[i]->GetName()) {
+								enemy = std::to_string(i);
+								break;
+							}
+						}
+						row += enemy;
+					}
 					else
 						row += "u";
 				}
@@ -98,9 +114,59 @@ std::vector<string> Battlefield::ToString() {
 			}
 			else if (square->ToString() == "Treasure") {
 				if (square->IsOpened())
-					row += "0";
+					row += "o";
 				else
-					row += "1";
+					row += "c";
+			}
+			else
+				continue;
+		}
+		result.push_back(row);
+	}
+	return result;
+}
+
+std::vector<std::vector<int>> Battlefield::ToInt() {
+	std::vector<std::vector<int>> result;
+	for (int y = 0; y < this->Cols(); y++) {
+		std::vector<int> row;
+		for (int x = 0; x < this->Rows(); x++) {
+			Coord coord = Coord(x, y);
+			Square* square = this->Apply(coord);
+			if (square->ToString() == "Wall")
+				row.push_back(6);
+			else if (square->ToString() == "Floor") {
+				if (square->IsOccupied()) {
+					Unit* occupant = square->Get();
+					if (occupant->ToString() == "Ally") {
+						int ally;
+						for (unsigned int i = 0; i < allies_.size(); i++) {
+							if (occupant->GetName() == allies_[i]->GetName()) {
+								ally = i+1;
+								break;
+							}
+						}
+						row.push_back(ally);
+					}
+					else if (occupant->ToString() == "Enemy") {
+						int enemy;
+						for (unsigned int i = 0; i < enemies_.size(); i++) {
+							if (occupant->GetName() == enemies_[i]->GetName()) {
+								enemy = -i-1;
+								break;
+							}
+						}
+						row.push_back(enemy);
+					}
+				}
+				else
+					row.push_back(0);
+			}
+			else if (square->ToString() == "Treasure") {
+				if (square->IsOpened())
+					row.push_back(7);
+				else
+					row.push_back(8);
 			}
 			else
 				continue;

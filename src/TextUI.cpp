@@ -2,7 +2,6 @@
 #include "World.hpp"
 #include <iostream>
 #include "Player.hpp"
-#include "Player.cpp"   // Remove if you use visual studio
 #include "Stat.hpp"
 #include "Item.hpp"
 using namespace std;
@@ -10,7 +9,6 @@ using namespace std;
 
 int main()
 {
-	std::cout << "###########################################################################################################" << std::endl;
 	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), Coord(1,8));
 	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), Coord(2,8));
 	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), Coord(3,8));
@@ -21,7 +19,7 @@ int main()
 	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), Coord(6, 7));
 	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), Coord(6, 5));
 	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(6, 4));
-	Enemy* canon = new Enemy("Range", Stat(200, 200, 70, 70, 0), Coord(5, 2));
+	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), Coord(5, 2));
 
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
 	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
@@ -49,27 +47,23 @@ int main()
 							   "......##..........##" };
 
 	std::string temp = room.FromString(design);
-	std::cout << temp << std::endl;
 
-	std::cout << room.TreasureCoord().ToString() << std::endl;
-	
-	std::cout << "Ally spawn:" << std::endl;
 	room.SetAllySpawn(std::vector<Coord>{Coord(1, 12), Coord(1, 11), Coord(2, 12), Coord(2, 11), Coord(3, 11)});
-	std::vector<Coord> ally_spawn = room.AllySpawn();
-	for (unsigned int i = 0; i < ally_spawn.size(); i++)
-		std::cout << ally_spawn[i].ToString() << std::endl;
 	
-	bool spawn_ally = room.SpawnAlly();
-	std::cout << spawn_ally << std::endl;
+	room.SpawnAlly();
 
-	std::cout << "Enemy spawn:" << std::endl;
-	bool spawn_enemy = room.SpawnEnemy();
-	std::cout << spawn_enemy << std::endl;
+	room.SpawnEnemy();
 	
 	std::vector<string> result = room.ToString();
-
 	for (unsigned int i = 0; i < result.size(); i++) {
 		std::cout << result[i] << std::endl;
+	}
+	std::cout << std::endl;
+	std::vector<std::vector<int>> int_result = room.ToInt();
+	for (unsigned int i = 0; i < int_result.size(); i++) {
+		for (unsigned int j = 0; j < int_result[i].size(); j++)
+			std::cout << int_result[i][j];
+		std::cout << std::endl;
 	}
 /**************************************************************************************************************************************************************/
 	int turn = 0;

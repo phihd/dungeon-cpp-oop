@@ -3,9 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 #include "Player.hpp"
-//#include "Player.cpp"	// Remove if you use visual studio
 
 class Room {
 public:
@@ -67,6 +65,8 @@ public:
 	std::string FromString(std::vector<string> room);
 	//ToString saves the room as a vector of string.
 	std::vector<string> ToString();
+	//ToInt saves the room as a vector of vector of int.
+	std::vector<std::vector<int>> ToInt();
 	//Set spawnpoints of allies
 	void SetAllySpawn(std::vector<Coord> spawns);
 	//Set spawnpoints of enemies
