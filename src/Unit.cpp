@@ -85,7 +85,7 @@ string Unit::Description() {
     string Atk = to_string(GetStats().GetAtk());
     string Def = to_string(GetStats().GetDef());
     string Crit = to_string(GetStats().GetCrit());
-    return "Ally\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit;
+    return " - " + name_ + "\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit;
 }
 
 bool operator==(const Unit &a, const Unit &b) {
