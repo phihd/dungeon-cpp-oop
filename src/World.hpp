@@ -42,7 +42,7 @@ public:
 
 
 	//Player
-	Bot bot = Bot();
+	Bot bot = Bot("Bot 1");
 
 
 

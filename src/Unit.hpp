@@ -49,7 +49,9 @@ public:
 
     void Move(Coord o_location);
     
-    virtual string ToString() = 0;
+    virtual string ToString() {return "";   };
+
+    virtual string Description();
 
     void startNewTurn();
 
@@ -65,6 +67,8 @@ public:
     Ally(const string &name, Stat stats, Coord location, int range);
 
     string ToString();
+
+    string Description();
 };
 
 bool operator==(const Ally &a, const Ally &b);
@@ -76,6 +80,8 @@ public:
     Enemy(const string &name, Stat stats, Coord location, int range);
 
     string ToString();
+
+    string Description();
 };
 
 bool operator==(const Enemy &a, const Enemy &b);
