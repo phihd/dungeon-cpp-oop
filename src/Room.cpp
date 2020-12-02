@@ -152,7 +152,8 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						int enemy;
 						for (unsigned int i = 0; i < enemies_.size(); i++) {
 							if (occupant->GetName() == enemies_[i]->GetName()) {
-								enemy = -i-1;
+								enemy = i+1;
+								enemy = -enemy;
 								break;
 							}
 						}
