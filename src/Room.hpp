@@ -3,6 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
+#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 #include "Player.hpp"
 
 class Room {

@@ -183,6 +183,8 @@ string Player::RemoveItem(Item item, int quantity) {
 }
 
 string Player::Attack(Ally* unit, Enemy* opponent) {
+    if (unit->HasAttacked())
+        return "Unit already attacked in this turn.";
     unit->Attack(opponent);
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
@@ -218,8 +220,11 @@ string Player::Move(Ally* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Ally* current = army_[i];
         if (*current == *ally) {
+            if (current->HasMoved())
+                return "Unit already made its move for this turn.";
+            Coord old_location = ally->GetLocation();
             ally->Move(new_coord);
-            return "Move successful";
+            return "Move successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();
         }
     }
     return "Unit not in army";
@@ -231,6 +236,13 @@ string Player::startNewTurn() {
         unit->startNewTurn();
     }
     return "Started a new turn";
+}
+
+Ally* Player::GetUnit(string unitName) {
+    for (int i = 0; i < army_.size(); i++)
+        if (army_[i]->GetName() == unitName)
+            return army_[i];
+    return NULL;
 }
 
 //--------------------------------------------------------------------------------------------------------//
@@ -291,4 +303,11 @@ string Bot::Move(Enemy* ally, Coord new_coord)
     }
     else
         return "Unit not in army";
+}
+
+Enemy* Bot::GetUnit(string unitName) {
+    for (int i = 0; i < army_.size(); i++)
+        if (army_[i]->GetName() == unitName)
+            return army_[i];
+    return NULL;
 }
