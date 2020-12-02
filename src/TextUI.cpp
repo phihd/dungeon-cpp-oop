@@ -37,13 +37,15 @@ int main()
 	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(6, 4), 4);
 	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), Coord(5, 2), 5);
 
+	vector<Unit*> allies_u{ paladin, knight, mage, archer, heavy_archer };
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
+	vector<Unit*> enemies_u{ melee, melee1, range, range1, canon };
 	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
 
 	Player player = Player("Player 1");
-	player.Recruit(allies);
-	Bot bot = Bot();
-	bot.Recruit(enemies);
+	player.Recruit(allies_u);
+	Bot bot = Bot("Bot 1");
+	bot.Recruit(enemies_u);
 	/**************************************************************************************************************************************************************/
 	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.F Sword", "big fucking sword", Stat(0, 0, 50, 0, 0), 1300), Item("Infinity Edge", "bigger fucking sword", Stat(0, 0, 125, 0, 0), 1300) };
 	
@@ -105,17 +107,17 @@ int main()
 			split1(command, cmd_split);
 
 			if (cmd_split[0] == "move") {
-				Ally* unit = player.GetUnit(cmd_split[1]);
+				Unit* unit = player.GetUnit(cmd_split[1]);
 				if (!unit) 
 					cout << "Unit is not in the army" << endl;
 				else
 					cout << player.Move(unit, Coord(stoi(cmd_split[2]), stoi(cmd_split[3]))) << endl;
 			}
 			else if (cmd_split[1] == "attack") {
-				Ally* ally = player.GetUnit(cmd_split[0]);
+				Unit* ally = player.GetUnit(cmd_split[0]);
 				if (!ally) 
 					cout << "Unit is not in the army" << endl;
-				Enemy* enemy = bot.GetUnit(cmd_split[2]);
+				Unit* enemy = bot.GetUnit(cmd_split[2]);
 				if (!enemy) 
 					cout << "Enemy doesn't exist." << endl;
 				else
@@ -127,6 +129,7 @@ int main()
 			else
 				std::cout << "Invalid command" << std::endl;
 		} while (true);
+
 
 		// Bot's turn
 		std::cout << "Bot's turn" << std::endl;
