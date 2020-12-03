@@ -11,7 +11,7 @@ public:
 	//IsObstacle(): Return true if a square is an obstacle: wall/river/mountain
 	virtual const bool IsObstacle();
 	//IsOccupied(): Return true if a square is occupied by either an enemy or ally unit
-	virtual const bool IsOccupied();
+	virtual const bool IsOccupied(); 
 	//clear(): clear any unit occupying the square
 	virtual void Clear();
 	//get(): get the unit occupying the square. If there is no unit currently occupying, return NULL
