@@ -52,15 +52,14 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	if (unit->GetLocation().x() != coord.x(), unit->GetLocation().y() != coord.y())
 		return false;
 	this->Apply(coord)->Clear();
+	unit->Move(Coord(-1, -1));
 		return true;
 }
 
 bool Battlefield::MoveUnit(Coord coord, Unit* unit)
 {
-	if (this->RemoveUnit(unit->GetLocation(), unit) && this->AddUnit(coord, unit)) {
-		unit->Move(coord);
+	if (this->RemoveUnit(unit->GetLocation(), unit) && this->AddUnit(coord, unit))
 		return true;
-	}
 	else
 		return false;
 }
@@ -149,7 +148,7 @@ std::vector<string> Battlefield::ToString() {
 std::vector<std::vector<int>> Battlefield::ToInt() {
 	std::vector<std::vector<int>> result;
 	for (int y = 1; y < this->Cols() - 1; y++) {
-		result.resize(12, std::vector<int>());
+		//result.resize(12, std::vector<int>());
 		std::vector<int> row;
 		for (int x = 1; x < this->Rows() - 1; x++) {
 			Coord coord = Coord(x, y);
@@ -163,7 +162,7 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						int ally;
 						for (unsigned int i = 0; i < allies_.size(); i++) {
 							if (occupant->GetName() == allies_[i]->GetName()) {
-								ally = i+1;
+								ally = i + 1;
 								break;
 							}
 						}
@@ -173,7 +172,7 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						int enemy;
 						for (unsigned int i = 0; i < enemies_.size(); i++) {
 							if (occupant->GetName() == enemies_[i]->GetName()) {
-								enemy = i+1;
+								enemy = i + 1;
 								enemy = -enemy;
 								break;
 							}
