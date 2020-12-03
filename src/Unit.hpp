@@ -35,6 +35,8 @@ public:
 
     vector<Item> GetInventory() const;
 
+    int GetRange() const;
+
     bool IsAlive();
 
     void AdjustStats(Stat b);

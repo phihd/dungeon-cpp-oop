@@ -21,6 +21,10 @@ vector<Item> Unit::GetInventory() const {
 
 Coord Unit::GetLocation() const {
     return location_;
+}  
+
+int Unit::GetRange() const {
+    return range_;
 }
 
 bool Unit::IsAlive(){
