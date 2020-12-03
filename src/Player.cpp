@@ -245,5 +245,9 @@ Unit* Player::GetUnit(string unitName) {
     return NULL;
 }
 
+vector<Unit*> Player::GetArmy() {
+    return army_;
+}
+
 
 Bot::Bot(const string &name): Player(name) {}
