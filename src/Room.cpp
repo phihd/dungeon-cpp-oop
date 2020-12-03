@@ -42,7 +42,27 @@ std::string Battlefield::PutTreasure(Coord coord) {
 bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 	Square* current = this->Apply(coord);
 	bool result = current->Put(unit);
+	if (result)
+		unit->Move(coord);
 	return result;
+}
+
+bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
+{
+	if (unit->GetLocation().x() != coord.x(), unit->GetLocation().y() != coord.y())
+		return false;
+	this->Apply(coord)->Clear();
+		return true;
+}
+
+bool Battlefield::MoveUnit(Coord coord, Unit* unit)
+{
+	if (this->RemoveUnit(unit->GetLocation(), unit) && this->AddUnit(coord, unit)) {
+		unit->Move(coord);
+		return true;
+	}
+	else
+		return false;
 }
 
 std::string Battlefield::FromString(std::vector<string> room) {
@@ -129,6 +149,7 @@ std::vector<string> Battlefield::ToString() {
 std::vector<std::vector<int>> Battlefield::ToInt() {
 	std::vector<std::vector<int>> result;
 	for (int y = 1; y < this->Cols() - 1; y++) {
+		result.resize(12, std::vector<int>());
 		std::vector<int> row;
 		for (int x = 1; x < this->Rows() - 1; x++) {
 			Coord coord = Coord(x, y);
@@ -159,7 +180,8 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						}
 						row.push_back(enemy);
 					}
-					row.push_back(9);
+					else
+						row.push_back(9);
 				}
 				else
 					row.push_back(0);
@@ -205,6 +227,7 @@ bool Battlefield::SpawnAlly() {
 		bool temp = this->AddUnit(spawn, ally);
 		if (!temp)
 			return false;
+		ally->Move(spawn);
 	}
 	return true;
 }
@@ -239,6 +262,7 @@ bool Battlefield::SpawnEnemy() {
 			bool temp = this->AddUnit(coord, enemy);
 			if (!temp)
 				return false;
+			enemy->Move(coord);
 		}
 	}
 	else {
@@ -249,6 +273,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
+				enemy->Move(coord);
 			}
 			//find all empty square
 			std::vector<Coord> available_coord = {};
@@ -278,6 +303,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
+				enemy->Move(coord);
 			}
 		}
 		else {
@@ -287,6 +313,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
+				enemy->Move(coord);
 			}
 		}
 	}

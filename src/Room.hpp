@@ -3,7 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
+//#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 #include "Player.hpp"
 
 class Room {
@@ -62,6 +62,10 @@ public:
 	//Add unit to a specific coordinate. This function helps arrange the units on the grid for the first turn
 	//and used to move the units around. Returns true if the action succeed
 	bool AddUnit(Coord coord, Unit* unit);
+	//RemoveUnit removes a unit from a specific Coordinate. Returns true if action succeed
+	bool RemoveUnit(Coord coord, Unit* unit);
+	//MoveUnit move a unit from it's original location and bring it to the destination coordinate. Returns true if action succeed
+	bool MoveUnit(Coord coord, Unit* unit);
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	std::string FromString(std::vector<string> room);
 	//ToString saves the room as a vector of string.
@@ -96,6 +100,7 @@ public:
 	bool HasEnemies();
 	//IsClear returns true if the objective of the room is completed
 	bool IsClear();
+	
 
 private:
 	std::vector<Coord> ally_spawn_ = {};
