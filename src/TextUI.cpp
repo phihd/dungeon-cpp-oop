@@ -1,10 +1,10 @@
 #pragma once
 #include "World.hpp"
 #include <iostream>
-#include "Player.hpp"
-#include "Player.cpp"   // This is for VSCode, remove if you use visual studio
-#include "Stat.hpp"
-#include "Item.hpp"
+//#include "Player.hpp"
+//#include "Player.cpp"   // This is for VSCode, remove if you use visual studio
+//#include "Stat.hpp"
+//#include "Item.hpp"
 
 #include <string>
 #include <sstream>
@@ -52,6 +52,8 @@ int main()
 	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.F Sword", "big fucking sword", Stat(0, 0, 50, 0, 0), 1300), Item("Infinity Edge", "bigger fucking sword", Stat(0, 0, 125, 0, 0), 1300) };
 	
 	Battlefield room(22, 14, enemies, allies, treasure_list);
+
+	player.Enter(&room);
 
 	std::vector<string> design{".....###..1.###.....",
 							   "...###........###...",
@@ -138,7 +140,10 @@ int main()
 		// Each enemy take a move and an attack
 		for (int i = 0; i < bot.GetArmy().size(); i++) {
 			Unit* enemy = bot.GetArmy()[i];
-
+			auto possible_new_locations = room.BFS(enemy->GetLocation(), enemy->GetRange());
+			auto new_location = possible_new_locations[rand() % possible_new_locations.size()];
+			bot.Move(enemy, new_location);
+			enemy->Attack(player.GetArmy()[rand() % player.GetArmy().size()]);
 		}
 	} while (command != "quit");
 	
