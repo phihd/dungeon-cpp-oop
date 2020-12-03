@@ -1,6 +1,7 @@
 #include "Room.hpp"
 #include <algorithm>
 #include <random>
+#include<time.h>
 
 Room::Room() {}
 
@@ -42,8 +43,8 @@ std::string Battlefield::PutTreasure(Coord coord) {
 bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 	Square* current = this->Apply(coord);
 	bool result = current->Put(unit);
-	if (result)
-		unit->Move(coord);
+	//if (result)
+		//unit->Move(coord);
 	return result;
 }
 
@@ -52,7 +53,7 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	if (unit->GetLocation() == coord)
 		return false;
 	this->Apply(coord)->Clear();
-	unit->Move(Coord(-1, -1));
+	//unit->Move(Coord(-1, -1));
 		return true;
 }
 
@@ -232,6 +233,8 @@ bool Battlefield::SpawnAlly() {
 }
 
 bool Battlefield::SpawnEnemy() {
+	srand(time(0));
+	auto seed = rand();
 	if (enemy_spawn_.empty()) {
 		std::vector<Coord> available_coord = {};
 		//find all empty square
@@ -242,7 +245,7 @@ bool Battlefield::SpawnEnemy() {
 				bool available = true;
 				for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
 					Coord spawn = ally_spawn_[i];
-					if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+					if (spawn == coord) {
 						available = false;
 						break;
 					}
@@ -253,6 +256,7 @@ bool Battlefield::SpawnEnemy() {
 		}
 		//shuffle the empty square coordinates
 		auto rng = std::default_random_engine{};
+		rng.seed(seed);
 		std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
 		//put unit
 		for (unsigned int i = 0; i < enemies_.size(); i++) {
@@ -261,7 +265,7 @@ bool Battlefield::SpawnEnemy() {
 			bool temp = this->AddUnit(coord, enemy);
 			if (!temp)
 				return false;
-			enemy->Move(coord);
+			//enemy->Move(coord);
 		}
 	}
 	else {
@@ -272,7 +276,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 			//find all empty square
 			std::vector<Coord> available_coord = {};
@@ -283,7 +287,7 @@ bool Battlefield::SpawnEnemy() {
 					bool available = true;
 					for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
 						Coord spawn = ally_spawn_[i];
-						if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+						if (spawn == coord) {
 							available = false;
 							break;
 						}
@@ -294,6 +298,7 @@ bool Battlefield::SpawnEnemy() {
 			}
 			//shuffle the empty square coordinates
 			auto rng = std::default_random_engine{};
+			rng.seed(seed);
 			std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
 			//add remaining units to empty squares
 			for (unsigned int i = 0; i < enemies_.size() - enemy_spawn_.size(); i++) {
@@ -302,7 +307,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 		}
 		else {
@@ -312,7 +317,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 		}
 	}
@@ -368,7 +373,7 @@ bool Battlefield::HasEnemies() {
 bool Battlefield::IsClear() {
 	return !this->HasEnemies() && !this->HasTreasure();
 }
-
+/**
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
 	std::vector<Coord> queue;
@@ -405,4 +410,5 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 	queue.erase(queue.begin());
 	return queue;
 }
+*/
 

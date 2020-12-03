@@ -3,7 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
+//#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 //#include "Player.hpp"
 
 class Room {
@@ -101,7 +101,7 @@ public:
 	//IsClear returns true if the objective of the room is completed
 	bool IsClear();
 	
-	std::vector<Coord> BFS(Coord coord, int range);
+	//std::vector<Coord> BFS(Coord coord, int range);
 private:
 	std::vector<Coord> ally_spawn_ = {};
 	std::vector<Coord> enemy_spawn_ = {};

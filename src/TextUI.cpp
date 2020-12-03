@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <iterator>
 #include <cstdlib>
+#include <random>
 
 using namespace std;
 
@@ -55,6 +56,22 @@ int main()
 
 	player.Enter(&room);
 
+	std::vector<string> result = room.ToString();
+	for (unsigned int i = 0; i < result.size(); i++) {
+		std::cout << result[i] << std::endl;
+	}
+	std::cout << std::endl;
+
+	std::vector<std::vector<int>> int_result = room.ToInt();
+	for (unsigned int i = 0; i < int_result.size(); i++) {
+		//std::cout << i << std::endl;
+		for (unsigned int j = 0; j < int_result[i].size(); j++)
+			std::cout << int_result[i][j];
+		std::cout << std::endl;
+	}
+
+	std::cout << std::endl;
+	std::cout << int_result.size() << "x" << int_result[1].size() << std::endl;
 	std::vector<string> design{".....###..1.###.....",
 							   "...###........###...",
 							   "...#.####...#...#...",
@@ -76,17 +93,25 @@ int main()
 
 	room.SpawnEnemy();
 	
-	std::vector<string> result = room.ToString();
+	result = room.ToString();
 	for (unsigned int i = 0; i < result.size(); i++) {
 		std::cout << result[i] << std::endl;
 	}
 	std::cout << std::endl;
-	std::vector<std::vector<int>> int_result = room.ToInt();
+
+	int_result = room.ToInt();
 	for (unsigned int i = 0; i < int_result.size(); i++) {
+		//std::cout << i << std::endl;
 		for (unsigned int j = 0; j < int_result[i].size(); j++)
 			std::cout << int_result[i][j];
 		std::cout << std::endl;
 	}
+	std::cout << int_result.size() << "x" << int_result[1].size() << std::endl;
+	/**
+	std::vector<Coord> avai_coords = room.BFS(Coord(6, 11), 4);
+	for (unsigned int i = 0; i < avai_coords.size(); i++)
+		std::cout << avai_coords[i].ToString() << std::endl;
+		*/
 /**************************************************************************************************************************************************************/
 	int turn = 0;
 	int unit_turn = 0;
@@ -99,7 +124,7 @@ int main()
 	cout << "For example:" << endl;
 	cout << "move Kai'sa 2 3" << endl;
 	cout << "Kai'sa attack Cho'Gath" << endl;
-
+/**
 	std::string command;
 	do {
 		player.startNewTurn();
@@ -134,7 +159,7 @@ int main()
 				std::cout << "Invalid command" << std::endl;
 		} while (true);
 
-
+	/**
 		// Bot's turn
 		std::cout << "Bot's turn" << std::endl;
 		// Each enemy take a move and an attack
@@ -145,7 +170,7 @@ int main()
 			bot.Move(enemy, new_location);
 			enemy->Attack(player.GetArmy()[rand() % player.GetArmy().size()]);
 		}
-	} while (command != "quit");
-	
+		*/
+	//} while (command != "quit");
 	return 0;
 }
