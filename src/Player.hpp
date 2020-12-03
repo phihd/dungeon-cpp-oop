@@ -104,6 +104,8 @@ public:
 
     /*Return an ally unit by the provided name*/
     Unit* GetUnit(string unitName);
+
+    vector<Unit*> GetArmy();
 };
 
 class Bot: public Player {

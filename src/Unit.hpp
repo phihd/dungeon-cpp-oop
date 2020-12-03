@@ -25,7 +25,7 @@ private:
     int range_ = 0;
 
 public:
-    Unit(const string &name, Stat stats, Coord location, int range);
+    Unit(const string &name, Stat stats, int range);
 
     string GetName() const;
 
