@@ -5,8 +5,7 @@
 #include "Room.hpp"
 #include "Room.cpp"
 #include "Unit.hpp"
-//#include "Unit.cpp"     // This is for VSCode, remove if you use visual studio
-#include "Room.hpp"
+#include "Unit.cpp"     // This is for VSCode, remove if you use visual studio
 
 #include <iostream>
 #include <string>
