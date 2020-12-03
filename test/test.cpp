@@ -1,4 +1,5 @@
 #include <iostream>
+#include <catch2/catch.hpp>
 //#include <dungeon/Item.hpp>
 
 TEST_CASE("", "")

@@ -2,15 +2,21 @@
 #include <sstream>
 #include <vector>
 #include <string>
+
+#include "Room.hpp"
+#include "Square.hpp"
+#include "Item.hpp"
+
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
 #include <SFML\Network.hpp>
 #include <SFML\Audio.hpp>
 
+using namespace std;
 int main()
 {
-   //Create the window
+   // Create the window
    sf::RenderWindow window(sf::VideoMode(1200, 720), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
    window.setFramerateLimit(500);
 
@@ -25,9 +31,9 @@ int main()
    text.setFont(font);
    text.setCharacterSize(40);
    text.setFillColor(sf::Color::Red);
-   text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+   text.setStyle(sf::Text::Bold);
    text.setPosition(600, 360);
-   text.setString("Dungeon\nPress Enter to start");
+   text.setString("Dungeon\nPress Enter to start\nPress 'M' to enter menu");
    window.clear();
    window.draw(text);
 
@@ -36,25 +42,74 @@ int main()
    {
       if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
          break;
-
       else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
          break;
+      else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+      {
+         cout << "Called menu" << endl;
+         // TODO: Implement Menu
+         break;
+      }
    }
    // ####################END OF STATE 1##########################
 
-   std::string state_type = "dungeon";
-   std::string state_number = "0";
+   // ##############################################
+   // State 2: Dungeon/Room
+   // ##############################################
 
-   //Set variables
-   float grid_size = 60.f;
+   string state_type = "dungeon";
+   string state_number = "0";
+   vector<Enemy *> e;
+   vector<Ally *> a;
+   vector<Item> *i = new vector<Item>{};
+   //Battlefield temp(20, 12, e, a, i);
+   // FIXME: Error occurred here: LNK2019: unresolved external symbol
+   /*Determine the type of square block*/
+   // string determineType(Square s)
+   // {
+   //    Wall *w = dynamic_cast<Wall *>(s);
+   //    Floor *f = dynamic_cast<Floor *>(s);
+   //    Treasure *t = dynamic_cast<Treasure *>(s);
+   //    if (w != null)
+   //    {
+   //       return "Wall";
+   //    }
+   //    else if (f != null)
+   //    {
+   //       return "Floor";
+   //    }
+   //    else
+   //    {
+   //       return "Treasure";
+   //    }
+   // }
+   // vector<string> design{".....###..1.###.....",
+   //  "...###........###...",
+   //  "...#.####...#...#...",
+   //  "##.....##...##....##",
+   //  "##..........########",
+   //  "##....##....##....##",
+   //  "##....##....###..###",
+   //  "##....##..........##",
+   //  "########....########",
+   //  "......##....##......",
+   //  "............##....##",
+   //  "......##..........##"};
+
+   // string status = temp.FromString(design);
+
+   // Some conditions to determine the correct room (=Battlefiled)
+   // Set variables
+   float grid_size = 60.0;
    sf::Vector2i mouse_pos_window;
    sf::Vector2u mouse_pos_grid;
    bool isClick = false;
 
    //Create the map
-   std::vector<std::vector<sf::RectangleShape>> tile_map;
+   vector<vector<sf::RectangleShape>> tile_map;
    sf::Vector2i map_size(20, 12);
-   tile_map.resize(map_size.x, std::vector<sf::RectangleShape>());
+   // FIXME: Cannot resize
+   tile_map.resize(map_size.x, vector<sf::RectangleShape>());
 
    for (int x = 0; x < map_size.x; x++)
    {
@@ -111,7 +166,7 @@ int main()
             mouse_pos_window = sf::Mouse::getPosition(window);
             mouse_pos_grid.x = mouse_pos_window.x / static_cast<unsigned>(grid_size);
             mouse_pos_grid.y = mouse_pos_window.y / static_cast<unsigned>(grid_size);
-            tile_mouse.setFillColor(sf::Color::Red);
+            tile_mouse.setFillColor(sf::Color::Blue);
             isClick = true;
          }
          else
@@ -139,6 +194,7 @@ int main()
       }
       else
       {
+         // Another scene
       }
    }
 

@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 # Set target
 add_executable(${PROJECT_NAME} main.cpp)
-add_executable(text_ui TextUI.cpp)
+#add_executable(text_ui TextUI.cpp)
 # Add target dependencies
 # Windows: Download SFML from website, extract the content and add 
 #          path to /bin to Environment Variable (PATH) 
@@ -41,14 +41,14 @@ file(GLOB TEST_1 CONFIGURE_DEPENDS "./Grid.hpp" "./Grid.cpp")
 
 set(TEST_DIR ../test)
 
-add_library(dungeonlib STATIC ${TEST_1})
-add_executable(mainTest ${TEST_DIR}/test.cpp)
-target_link_libraries(mainTest
-                        dungeonlib
-                        Catch2::Catch2
-                        sfml-graphics
-                        sfml-audio
-                        sfml-window
-                        sfml-system    
-)
-add_test(mainTest mainTest)
+#add_library(dungeonlib STATIC ${TEST_1})
+#add_executable(mainTest ${TEST_DIR}/test.cpp)
+#target_link_libraries(mainTest
+#                        dungeonlib
+#                        Catch2::Catch2
+#                        sfml-graphics
+#                        sfml-audio
+#                        sfml-window
+#                        sfml-system    
+#)
+#add_test(mainTest mainTest)
