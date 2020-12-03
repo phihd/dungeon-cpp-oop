@@ -148,10 +148,10 @@ std::vector<string> Battlefield::ToString() {
 
 std::vector<std::vector<int>> Battlefield::ToInt() {
 	std::vector<std::vector<int>> result;
-	for (int y = 1; y < this->Cols() - 1; y++) {
+	for (int y = 0; y < this->Cols(); y++) {
 		//result.resize(12, std::vector<int>());
 		std::vector<int> row;
-		for (int x = 1; x < this->Rows() - 1; x++) {
+		for (int x = 0; x < this->Rows(); x++) {
 			Coord coord = Coord(x, y);
 			Square* square = this->Apply(coord);
 			if (square->ToString() == "Wall")
