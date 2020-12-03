@@ -3,9 +3,9 @@
 #define UNIT_HEADER
 
 #include "Item.hpp"
-//#include "Item.cpp"     // This is for VSCode, remove if you use visual studio
+#include "Item.cpp"     // This is for VSCode, remove if you use visual studio
 #include "Coord.hpp"
-//#include "Coord.cpp"    // This is for VSCode, remove if you use visual studio
+#include "Coord.cpp"    // This is for VSCode, remove if you use visual studio
 
 #include <iostream>
 #include <string>

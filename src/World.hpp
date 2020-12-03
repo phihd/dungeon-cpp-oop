@@ -2,8 +2,10 @@
 #ifndef GAME_HEADER
 #define GAME_HEADER
 
-#include "Room.hpp"
-#include "Room.cpp"		// This is for VSCode, remove if you use visual studio
+//#include "Room.hpp"
+//#include "Room.cpp"		// This is for VSCode, remove if you use visual studio
+#include "Player.hpp"
+#include "Player.cpp"
 #include <map>
 
 class Game {
