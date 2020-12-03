@@ -64,7 +64,7 @@ public:
 class Ally: public Unit {
 
 public:
-    Ally(const string &name, Stat stats, Coord location, int range);
+    Ally(const string &name, Stat stats, int range);
 
     string ToString();
 
@@ -77,7 +77,7 @@ bool operator==(const Ally &a, const Ally &b);
 class Enemy: public Unit {
 
 public:
-    Enemy(const string &name, Stat stats, Coord location, int range);
+    Enemy(const string &name, Stat stats, int range);
 
     string ToString();
 

@@ -94,7 +94,7 @@ bool operator==(const Unit &a, const Unit &b) {
 
 //----------------------------------------------------------------------------------------------------//
 
-Ally::Ally(const string &name, Stat stats, Coord location, int range): Unit(name, stats, range) {}
+Ally::Ally(const string &name, Stat stats, int range): Unit(name, stats, range) {}
 
 string Ally::ToString() {
     return "Ally";
@@ -109,7 +109,7 @@ bool operator==(const Ally &a, const Ally &b) {
 }
 
 
-Enemy::Enemy(const string &name, Stat stats, Coord location, int range): Unit(name, stats, range) {}
+Enemy::Enemy(const string &name, Stat stats, int range): Unit(name, stats, range) {}
 
 string Enemy::ToString() {
     return "Enemy";
