@@ -23,7 +23,7 @@ private:
     const int army_max_size_ = 5;
     map<Item, int> inventory_;
     int gold_ = 0;
-    Room* room_ = NULL; 
+    Battlefield* battlefield_ = NULL; 
 
 public:
     Player(const string &name);
@@ -110,9 +110,9 @@ public:
 
     vector<Unit*> GetArmy();
 
-    void Enter(Room *room);
+    void Enter(Battlefield *battlefield);
 
-    void Exit(Room *room);
+    void Exit(Battlefield *battlefield);
 };
 
 class Bot: public Player {

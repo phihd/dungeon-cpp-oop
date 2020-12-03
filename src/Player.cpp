@@ -220,6 +220,8 @@ string Player::Move(Unit* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Unit* current = army_[i];
         if (*current == *ally) {
+            if (!battlefield_->MoveUnit(new_coord, ally))
+                return ally->GetName() + " can't move to this location.";
             if (current->HasMoved())
                 return "Unit already made its move for this turn.";
             Coord old_location = ally->GetLocation();
@@ -249,12 +251,12 @@ vector<Unit*> Player::GetArmy() {
     return army_;
 }
 
-void Player::Enter(Room *room) {
-    room_ = room;
+void Player::Enter(Battlefield *battlefield) {
+    battlefield_ = battlefield;
 }
 
-void Player::Exit(Room *room) {
-    room_ = NULL;
+void Player::Exit(Battlefield *battlefield) {
+    battlefield_ = NULL;
 }
 
 
