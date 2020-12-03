@@ -249,5 +249,13 @@ vector<Unit*> Player::GetArmy() {
     return army_;
 }
 
+void Player::Enter(Room *room) {
+    room_ = room;
+}
+
+void Player::Exit(Room *room) {
+    room_ = NULL;
+}
+
 
 Bot::Bot(const string &name): Player(name) {}
