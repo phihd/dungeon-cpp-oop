@@ -10,6 +10,8 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <cstdlib>
+
 using namespace std;
 
 template <class Container>
@@ -25,17 +27,17 @@ void split1(const std::string& str, Container& cont)
 int main()
 {
 	std::cout << "###########################################################################################################" << std::endl;
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), Coord(1,8), 1);
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), Coord(2,8), 2);
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), Coord(3,8), 3);
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), Coord(2, 7), 4);
-	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), Coord(3, 7), 5);
+	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), 1);
+	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), 2);
+	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), 3);
+	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), 4);
+	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), 5);
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), Coord(5, 7), 1);
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), Coord(6, 7), 1);
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), Coord(6, 5), 4);
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), Coord(6, 4), 4);
-	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), Coord(5, 2), 5);
+	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), 1);
+	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), 1);
+	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), 4);
+	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), 4);
+	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), 5);
 
 	vector<Unit*> allies_u{ paladin, knight, mage, archer, heavy_archer };
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
@@ -133,7 +135,11 @@ int main()
 
 		// Bot's turn
 		std::cout << "Bot's turn" << std::endl;
-		// Move
+		// Each enemy take a move and an attack
+		for (int i = 0; i < bot.GetArmy().size(); i++) {
+			Unit* enemy = bot.GetArmy()[i];
+
+		}
 	} while (command != "quit");
 	
 	return 0;
