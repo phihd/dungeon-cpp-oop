@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 # Set target
 add_executable(${PROJECT_NAME} main.cpp)
-
+add_executable(text_ui TextUI.cpp)
 # Add target dependencies
 # Windows: Download SFML from website, extract the content and add 
 #          path to /bin to Environment Variable (PATH) 
@@ -19,6 +19,7 @@ find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-system sfml-window)
 
+target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 Include(FetchContent)
 
 FetchContent_Declare(
