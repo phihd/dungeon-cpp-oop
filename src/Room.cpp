@@ -49,7 +49,7 @@ bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 
 bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 {
-	if (unit->GetLocation().x() != coord.x(), unit->GetLocation().y() != coord.y())
+	if (unit->GetLocation() == coord)
 		return false;
 	this->Apply(coord)->Clear();
 	unit->Move(Coord(-1, -1));
@@ -392,10 +392,10 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 			if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
 				&& (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
 				&& (dis[front - 1] + 1 <= range)
-				&& (map[c.y() + col[i]][c.x() + row[i]] > 0) && (map[c.y() + col[i]][c.x() + row[i]] < 9))
+				&& (map[(c.y() + col[i])][(c.x() + row[i])] > 0) && (map[(c.y() + col[i])][(c.x() + row[i])] < 9))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-				if (map[c.y() + col[i]][c.x() + row[i]] == 0) dis.push_back(dis[front - 1] + 1);
+				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) dis.push_back(dis[(front - 1)] + 1);
 				else dis.push_back(range+1);
 				back++;
 			}
