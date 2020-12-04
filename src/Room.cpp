@@ -43,8 +43,6 @@ std::string Battlefield::PutTreasure(Coord coord) {
 bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 	Square* current = this->Apply(coord);
 	bool result = current->Put(unit);
-	//if (result)
-		//unit->Move(coord);
 	return result;
 }
 
@@ -53,16 +51,21 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	if (unit->GetLocation() != coord)
 		return false;
 	this->Apply(coord)->Clear();
-	//unit->Move(Coord(-1, -1));
 		return true;
 }
 
 bool Battlefield::MoveUnit(Coord coord, Unit* unit)
 {
-	if (this->RemoveUnit(unit->GetLocation(), unit) && this->AddUnit(coord, unit))
+	Coord origin = unit->GetLocation();
+	if (this->RemoveUnit(origin, unit) && this->AddUnit(coord, unit))
 		return true;
 	else
+	{
+		if (!this->AddUnit(coord, unit)) {
+			this->AddUnit(origin, unit);
+		}
 		return false;
+	}
 }
 
 std::string Battlefield::FromString(std::vector<string> room) {
