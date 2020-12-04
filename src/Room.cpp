@@ -373,7 +373,7 @@ bool Battlefield::HasEnemies() {
 bool Battlefield::IsClear() {
 	return !this->HasEnemies() && !this->HasTreasure();
 }
-/**
+
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
 	std::vector<Coord> queue;
@@ -397,7 +397,7 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 			if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
 				&& (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
 				&& (dis[front - 1] + 1 <= range)
-				&& (map[(c.y() + col[i])][(c.x() + row[i])] > 0) && (map[(c.y() + col[i])][(c.x() + row[i])] < 9))
+				&& !((map[(c.y() + col[i])][(c.x() + row[i])] > 0) && (map[(c.y() + col[i])][(c.x() + row[i])] < 9)))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
 				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) dis.push_back(dis[(front - 1)] + 1);
@@ -410,5 +410,5 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 	queue.erase(queue.begin());
 	return queue;
 }
-*/
+
 
