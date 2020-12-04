@@ -18,5 +18,7 @@ private:
 };
 
 bool operator==(const Coord& a, const Coord& b);
+
+bool operator!=(const Coord& a, const Coord& b);
 #endif 
 

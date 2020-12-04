@@ -101,7 +101,7 @@ public:
 	//IsClear returns true if the objective of the room is completed
 	bool IsClear();
 	
-	//std::vector<Coord> BFS(Coord coord, int range);
+	std::vector<Coord> BFS(Coord coord, int range);
 private:
 	std::vector<Coord> ally_spawn_ = {};
 	std::vector<Coord> enemy_spawn_ = {};

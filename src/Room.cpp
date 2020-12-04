@@ -50,7 +50,7 @@ bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 
 bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 {
-	if (unit->GetLocation() == coord)
+	if (unit->GetLocation() != coord)
 		return false;
 	this->Apply(coord)->Clear();
 	//unit->Move(Coord(-1, -1));
