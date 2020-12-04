@@ -53,15 +53,26 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	this->Apply(coord)->Clear();
 		return true;
 }
-
+/**
+bool Battlefield::Movable(Coord coord, Unit* unit) {
+	Coord origin = unit->GetLocation();
+	std::vector<Coord> available_coords = this->BFS(coord, unit->GetRange());
+	Square* current = this->Apply(coord);
+	if (current->IsObstacle() || current->IsOccupied())
+		return false;
+	if (std::find(std::begin(available_coords), std::end(available_coords), coord) == std::end(available_coords))
+		return false;
+	return true;
+}
+*/
 bool Battlefield::MoveUnit(Coord coord, Unit* unit)
 {
 	Coord origin = unit->GetLocation();
-	if (this->RemoveUnit(origin, unit) && this->AddUnit(coord, unit))
+	if (this->RemoveUnit(origin, unit) && this->AddUnit(coord, unit) && !unit->HasMoved())
 		return true;
 	else
 	{
-		if (!this->AddUnit(coord, unit)) {
+		if ((!this->AddUnit(coord, unit) && origin != Coord(-1, -1))|| unit->HasMoved()) {
 			this->AddUnit(origin, unit);
 		}
 		return false;
