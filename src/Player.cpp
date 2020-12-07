@@ -220,10 +220,10 @@ string Player::Move(Unit* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Unit* current = army_[i];
         if (*current == *ally) {
-            if (!battlefield_->MoveUnit(new_coord, ally))
-                return ally->GetName() + " can't move to this location.";
             if (current->HasMoved())
                 return "Unit already made its move for this turn.";
+            if (!battlefield_->MoveUnit(new_coord, ally))
+                return ally->GetName() + " can't move to this location.";
             Coord old_location = ally->GetLocation();
             ally->Move(new_coord);
             return "Move successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();

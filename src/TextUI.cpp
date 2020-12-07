@@ -114,8 +114,9 @@ int main()
 				Unit* unit = player.GetUnit(cmd_split[1]);
 				if (!unit) 
 					cout << "Unit is not in the army" << endl;
-				else
+				else {
 					cout << player.Move(unit, Coord(stoi(cmd_split[2]), stoi(cmd_split[3]))) << endl;
+				}
 			}
 			else if (cmd_split[1] == "attack") {
 				Unit* ally = player.GetUnit(cmd_split[0]);
