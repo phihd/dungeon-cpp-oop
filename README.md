@@ -16,8 +16,6 @@ use as follows:
 
   * `test/` -- Unit tests.
 
-  * `font/` -- Fonts used in the project.
-
   * `README.md` -- This file. You should modify it to represent your project.
 
 You may also add other new directories as needed, for example
@@ -26,4 +24,3 @@ for testing tools.
 
 ### Dependencies
 - SFML 2.5.1
-- Catch2
