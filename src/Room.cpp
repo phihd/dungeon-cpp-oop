@@ -1,6 +1,7 @@
 #include "Room.hpp"
 #include <algorithm>
 #include <random>
+#include<time.h>
 
 Room::Room() {}
 
@@ -42,26 +43,40 @@ std::string Battlefield::PutTreasure(Coord coord) {
 bool Battlefield::AddUnit(Coord coord, Unit* unit) {
 	Square* current = this->Apply(coord);
 	bool result = current->Put(unit);
-	if (result)
-		unit->Move(coord);
 	return result;
 }
 
 bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 {
-	if (unit->GetLocation().x() != coord.x(), unit->GetLocation().y() != coord.y())
+	if (unit->GetLocation() != coord)
 		return false;
 	this->Apply(coord)->Clear();
-	unit->Move(Coord(-1, -1));
 		return true;
 }
-
+/**
+bool Battlefield::Movable(Coord coord, Unit* unit) {
+	Coord origin = unit->GetLocation();
+	std::vector<Coord> available_coords = this->BFS(coord, unit->GetRange());
+	Square* current = this->Apply(coord);
+	if (current->IsObstacle() || current->IsOccupied())
+		return false;
+	if (std::find(std::begin(available_coords), std::end(available_coords), coord) == std::end(available_coords))
+		return false;
+	return true;
+}
+*/
 bool Battlefield::MoveUnit(Coord coord, Unit* unit)
 {
-	if (this->RemoveUnit(unit->GetLocation(), unit) && this->AddUnit(coord, unit))
+	Coord origin = unit->GetLocation();
+	if (this->RemoveUnit(origin, unit) && this->AddUnit(coord, unit) && !unit->HasMoved())
 		return true;
 	else
+	{
+		if ((!this->AddUnit(coord, unit) && origin != Coord(-1, -1))|| unit->HasMoved()) {
+			this->AddUnit(origin, unit);
+		}
 		return false;
+	}
 }
 
 std::string Battlefield::FromString(std::vector<string> room) {
@@ -147,10 +162,10 @@ std::vector<string> Battlefield::ToString() {
 
 std::vector<std::vector<int>> Battlefield::ToInt() {
 	std::vector<std::vector<int>> result;
-	for (int y = 1; y < this->Cols() - 1; y++) {
+	for (int y = 0; y < this->Cols(); y++) {
 		//result.resize(12, std::vector<int>());
 		std::vector<int> row;
-		for (int x = 1; x < this->Rows() - 1; x++) {
+		for (int x = 0; x < this->Rows(); x++) {
 			Coord coord = Coord(x, y);
 			Square* square = this->Apply(coord);
 			if (square->ToString() == "Wall")
@@ -232,6 +247,8 @@ bool Battlefield::SpawnAlly() {
 }
 
 bool Battlefield::SpawnEnemy() {
+	srand(time(0));
+	auto seed = rand();
 	if (enemy_spawn_.empty()) {
 		std::vector<Coord> available_coord = {};
 		//find all empty square
@@ -242,7 +259,7 @@ bool Battlefield::SpawnEnemy() {
 				bool available = true;
 				for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
 					Coord spawn = ally_spawn_[i];
-					if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+					if (spawn == coord) {
 						available = false;
 						break;
 					}
@@ -253,6 +270,7 @@ bool Battlefield::SpawnEnemy() {
 		}
 		//shuffle the empty square coordinates
 		auto rng = std::default_random_engine{};
+		rng.seed(seed);
 		std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
 		//put unit
 		for (unsigned int i = 0; i < enemies_.size(); i++) {
@@ -261,7 +279,7 @@ bool Battlefield::SpawnEnemy() {
 			bool temp = this->AddUnit(coord, enemy);
 			if (!temp)
 				return false;
-			enemy->Move(coord);
+			//enemy->Move(coord);
 		}
 	}
 	else {
@@ -272,7 +290,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 			//find all empty square
 			std::vector<Coord> available_coord = {};
@@ -283,7 +301,7 @@ bool Battlefield::SpawnEnemy() {
 					bool available = true;
 					for (unsigned int i = 0; i < ally_spawn_.size(); i++) {
 						Coord spawn = ally_spawn_[i];
-						if (spawn.x() == coord.x() && spawn.y() == coord.y()) {
+						if (spawn == coord) {
 							available = false;
 							break;
 						}
@@ -294,6 +312,7 @@ bool Battlefield::SpawnEnemy() {
 			}
 			//shuffle the empty square coordinates
 			auto rng = std::default_random_engine{};
+			rng.seed(seed);
 			std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
 			//add remaining units to empty squares
 			for (unsigned int i = 0; i < enemies_.size() - enemy_spawn_.size(); i++) {
@@ -302,7 +321,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 		}
 		else {
@@ -312,7 +331,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				enemy->Move(coord);
+				//enemy->Move(coord);
 			}
 		}
 	}
@@ -392,10 +411,10 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 			if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
 				&& (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
 				&& (dis[front - 1] + 1 <= range)
-				&& (map[c.y() + col[i]][c.x() + row[i]] > 0) && (map[c.y() + col[i]][c.x() + row[i]] < 9))
+				&& !((map[(c.y() + col[i])][(c.x() + row[i])] > 0) && (map[(c.y() + col[i])][(c.x() + row[i])] < 9)))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-				if (map[c.y() + col[i]][c.x() + row[i]] == 0) dis.push_back(dis[front - 1] + 1);
+				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) dis.push_back(dis[(front - 1)] + 1);
 				else dis.push_back(range+1);
 				back++;
 			}
@@ -405,4 +424,5 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 	queue.erase(queue.begin());
 	return queue;
 }
+
 

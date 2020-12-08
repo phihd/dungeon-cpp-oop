@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string& name, Stat stats, int range) : name_(name), stats_(stats), range_(range) {}
+Unit::Unit(const string& name, Stat stats, int moveRange) : name_(name), stats_(stats), moveRange_(moveRange) {}
 
 string Unit::GetName() const {
     return name_;
@@ -23,8 +23,12 @@ Coord Unit::GetLocation() const {
     return location_;
 }  
 
-int Unit::GetRange() const {
-    return range_;
+int Unit::GetMoveRange() const {
+    return moveRange_;
+}
+
+int Unit::GetAttackRange() const {
+    return attackRange_;
 }
 
 bool Unit::IsAlive(){
@@ -99,7 +103,7 @@ bool operator==(const Unit &a, const Unit &b) {
 
 //----------------------------------------------------------------------------------------------------//
 
-Ally::Ally(const string &name, Stat stats, int range): Unit(name, stats, range) {}
+Ally::Ally(const string &name, Stat stats, int moveRange): Unit(name, stats, moveRange) {}
 
 string Ally::ToString() {
     return "Ally";
@@ -114,7 +118,7 @@ bool operator==(const Ally &a, const Ally &b) {
 }
 
 
-Enemy::Enemy(const string &name, Stat stats, int range): Unit(name, stats, range) {}
+Enemy::Enemy(const string &name, Stat stats, int moveRange): Unit(name, stats, moveRange) {}
 
 string Enemy::ToString() {
     return "Enemy";
