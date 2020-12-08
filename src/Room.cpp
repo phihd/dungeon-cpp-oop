@@ -279,7 +279,7 @@ bool Battlefield::SpawnEnemy() {
 			bool temp = this->AddUnit(coord, enemy);
 			if (!temp)
 				return false;
-			//enemy->Move(coord);
+			enemy->Move(coord);
 		}
 	}
 	else {
@@ -290,7 +290,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				//enemy->Move(coord);
+				enemy->Move(coord);
 			}
 			//find all empty square
 			std::vector<Coord> available_coord = {};
@@ -321,7 +321,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				//enemy->Move(coord);
+				enemy->Move(coord);
 			}
 		}
 		else {
@@ -331,7 +331,7 @@ bool Battlefield::SpawnEnemy() {
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
-				//enemy->Move(coord);
+				enemy->Move(coord);
 			}
 		}
 	}
