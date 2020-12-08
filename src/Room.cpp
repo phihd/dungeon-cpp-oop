@@ -390,14 +390,7 @@ bool Battlefield::IsClear() {
 
 bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 {
-	std::vector<Coord> area = this->BFS(attacker->GetLocation(), attacker->GetAttackRange());
-	/**
-	std::vector<Coord> all = this->BFS(attacker->GetLocation(), attacker->GetAttackRange());
-	std::vector<Coord> move = this->BFS(attacker->GetLocation(), attacker->GetMoveRange());
-	std::vector<Coord> area = std::remove_if(all.begin(), all.end(), [](Coord x)
-		{return (std::find(move.begin(), movable.end(), x) != move.end()); }
-	);
-	*/
+	std::vector<Coord> area = this->BFS_Attack(attacker->GetLocation(), attacker->GetAttackRange());
 	bool inrange = (std::find(area.begin(), area.end(), defender->GetLocation()) != area.end());
 	if (attacker->ToString() == defender->ToString() || !inrange)
 		return false;
@@ -428,11 +421,13 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 			if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
 				&& (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
 				&& (dis[front - 1] + 1 <= range)
-				&& !((map[(c.y() + col[i])][(c.x() + row[i])] > 0) && (map[(c.y() + col[i])][(c.x() + row[i])] < 9)))
+				&& (map[(c.y() + col[i])][(c.x() + row[i])] == 0))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) dis.push_back(dis[(front - 1)] + 1);
-				else dis.push_back(range+1);
+				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) 
+					dis.push_back(dis[(front - 1)] + 1);
+				else 
+					dis.push_back(range+1);
 				back++;
 			}
 		}
@@ -440,6 +435,51 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 
 	queue.erase(queue.begin());
 	return queue;
+}
+
+std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
+{
+	std::vector<Coord> queue;
+	std::vector<int> dis;
+	int front = 0;
+	int back = 0;
+	int row[4] = { 1, 0,  0,-1 };
+	int col[4] = { 0, 1, -1, 0 };
+	std::vector<std::vector<int>> map = this->ToInt();
+
+	queue.push_back(coord);
+	dis.push_back(0);
+
+	do
+	{
+		Coord c = queue[front];
+		front++;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
+				&& (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
+				&& (dis[front - 1] + 1 <= range)
+				&& (map[(c.y() + col[i])][(c.x() + row[i])] <= 0))
+			{
+				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
+				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0)
+					dis.push_back(dis[(front - 1)] + 1);
+				else
+					dis.push_back(range + 1);
+				back++;
+			}
+		}
+	} while (front <= back);
+
+	queue.erase(queue.begin());
+	std::vector<Coord> result;
+	for (unsigned int i = 0; i < queue.size(); i++) {
+		Coord current = queue[i];
+		if (std::find(enemy_spawn_.begin(), enemy_spawn_.end(), current) != enemy_spawn_.end())
+			result.push_back(current);
+	}
+	return result;
 }
 
 

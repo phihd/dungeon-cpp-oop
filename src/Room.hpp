@@ -3,7 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
+//#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 
 class Room {
 public:
@@ -107,6 +107,8 @@ public:
 	bool Outcome(Unit* attacker, Unit* defender);
 	
 	std::vector<Coord> BFS(Coord coord, int range);
+
+	std::vector<Coord> BFS_Attack(Coord coord, int range);
 private:
 	std::vector<Coord> ally_spawn_ = {};
 	std::vector<Coord> enemy_spawn_ = {};
