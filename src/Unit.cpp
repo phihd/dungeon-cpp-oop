@@ -71,8 +71,7 @@ void Unit::Attack(Unit* opponent) {
 
 void Unit::Move(Coord o_location) {
     location_ = o_location;
-    if (location_.x() >= 0 && location_.y() >= 0)
-        hasMoved_ = true;
+    hasMoved_ = true;
 }
 
 void Unit::startNewTurn() {

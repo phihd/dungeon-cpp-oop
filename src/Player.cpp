@@ -185,6 +185,8 @@ string Player::RemoveItem(Item item, int quantity) {
 string Player::Attack(Unit* unit, Unit* opponent) {
     if (unit->HasAttacked())
         return "Unit already attacked in this turn.";
+    if (!battlefield_->Outcome(unit, opponent))
+        return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
