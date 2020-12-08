@@ -69,9 +69,11 @@ public:
 	bool MoveUnit(Coord coord, Unit* unit);
 	//FromString creates a Room from a vector of string. Returns true if the action is successful.
 	std::string FromString(std::vector<string> room);
-	//ToString saves the room as a vector of string.
+	//ToString saves the room as a vector of string. #: wall, .:Room, 1-n: Ally or Enemy, no separating which is which
+	//o: opened Treasure, c:closed Treasure.
 	std::vector<string> ToString();
-	//ToInt saves the room as a vector of vector of int.
+	//ToInt saves the room as a vector of vector of int. 1-5: Allies, -1 to -n: Enemies, 0: Floor, 6:Wall, 7: opened Treasure,
+	//8: closed Treasure. This is feed forward to GUI.
 	std::vector<std::vector<int>> ToInt();
 	//Set spawnpoints of allies
 	void SetAllySpawn(std::vector<Coord> spawns);
@@ -101,6 +103,8 @@ public:
 	bool HasEnemies();
 	//IsClear returns true if the objective of the room is completed
 	bool IsClear();
+	//Return outcome of a battle between to units. Returns true if 2 units are able to attack each other and if they have different type
+	bool Outcome(Unit* attacker, Unit* defender);
 	
 	std::vector<Coord> BFS(Coord coord, int range);
 private:

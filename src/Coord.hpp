@@ -6,6 +6,8 @@
 class Coord : std::pair<int, int> {
 public:
 	Coord(int x, int y);
+	//for people how interpret coordinates as matrix
+	Coord(int x, int y, bool matrix);
 
 	int x() const;
 
@@ -13,8 +15,9 @@ public:
 
 	std::string ToString();
 private:
-	int x_ = this->first;
-	int y_ = this->second;
+	int x_;
+	int y_;
+	bool matrix_ = false;
 };
 
 bool operator==(const Coord& a, const Coord& b);
