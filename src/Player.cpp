@@ -225,6 +225,8 @@ string Player::Move(Unit* ally, Coord new_coord) {
             if (!battlefield_->MoveUnit(new_coord, ally))
                 return ally->GetName() + " can't move to this location.";
             Coord old_location = ally->GetLocation();
+            if (old_location == new_coord)
+                return "You don't wanna move to the same place (this is only for debug).";
             ally->Move(new_coord);
             return "Move successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();
         }
