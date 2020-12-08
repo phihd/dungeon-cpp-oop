@@ -3,7 +3,7 @@
 #define GAME_HEADER
 
 #include "Player.hpp"
-//#include "Player.cpp"
+#include "Player.cpp"
 
 #include <algorithm>
 #include <random>
@@ -113,7 +113,7 @@ public:
 								  "...##....##....##...",
 								  "..##..###..###..##..",
 								  ".##..............##." };
-	std::vector<std::vector<string>> lv1_designs = { lv2_1, lv2_2, lv2_3 };
+	std::vector<std::vector<string>> lv2_designs = { lv2_1, lv2_2, lv2_3 };
 
 	//Designs of Stage3
 	std::vector<string> lv3_1 = { ".........##.........",
@@ -154,7 +154,7 @@ public:
 								  ".##....######....##.",
 								  "..##.....##.....##..",
 								  ".........##........." };
-	std::vector<std::vector<string>> lv1_designs = { lv3_1, lv3_2, lv3_3 };
+	std::vector<std::vector<string>> lv3_designs = { lv3_1, lv3_2, lv3_3 };
 
 	//Designs of Boss1
 	std::vector<string> lv4 = {	  "...##############...",
@@ -209,7 +209,7 @@ public:
 								  "..##....##..........",
 								  "..##................",
 								  "..##....##.........." };
-	std::vector<std::vector<string>> lv1_designs = { lv5_1, lv5_2, lv5_3 };
+	std::vector<std::vector<string>> lv4_designs = { lv5_1, lv5_2, lv5_3 };
 
 	//Designs of Stage6
 	std::vector<string> lv6_1 = { ".........##.........",
@@ -250,7 +250,7 @@ public:
 								  ".....##......##.....",
 								  ".......##..##.......",
 								  ".........##........." };
-	std::vector<std::vector<string>> lv1_designs = { lv6_1, lv6_2, lv6_3 };
+	std::vector<std::vector<string>> lv5_designs = { lv6_1, lv6_2, lv6_3 };
 
 	//Designs of Boss2
 	std::vector<string> lv7 = {   ".....#........#.....",
@@ -305,7 +305,7 @@ public:
 								  "...######....##...##",
 								  ".....##......#.....#",
 								  ".....##......#######" };
-	std::vector<std::vector<string>> lv1_designs = { lv8_1, lv8_2, lv8_3 };
+	std::vector<std::vector<string>> lv6_designs = { lv8_1, lv8_2, lv8_3 };
 
 	//Designs of Stage9
 	std::vector<string> lv9_1 = { "..##............##..",
@@ -346,7 +346,7 @@ public:
 								  "....................",
 								  "..#####......#####..",
 								  ".....#........#....." };
-	std::vector<std::vector<string>> lv1_designs = { lv9_1, lv9_2, lv9_3 };
+	std::vector<std::vector<string>> lv7_designs = { lv9_1, lv9_2, lv9_3 };
 
 	//Designs of FinalBoss
 	std::vector<string> lv10 = {  "......########......",
