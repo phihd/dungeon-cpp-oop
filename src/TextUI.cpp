@@ -42,17 +42,17 @@ int main()
 {
 	// Create units
 	std::cout << "###########################################################################################################" << std::endl;
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0), 1);
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0), 2);
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0), 3);
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0), 4);
-	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0), 5);
+	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0, 1, 5));
+	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0, 2, 3));
+	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0, 3, 4));
+	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0, 4, 1));
+	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0, 5, 1));
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0), 1);
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0), 1);
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0), 4);
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0), 4);
-	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0), 5);
+	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0, 1, 3));
+	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0, 1, 4));
+	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0, 4, 2));
+	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0, 4, 3));
+	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0, 5, 1));
 
 	vector<Unit*> allies_u{ paladin, knight, mage, archer, heavy_archer };
 	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
@@ -64,11 +64,14 @@ int main()
 	Bot bot = Bot("Bot 1");
 	bot.Recruit(enemies_u);
 	/**************************************************************************************************************************************************************/
-	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.F Sword", "big fucking sword", Stat(0, 0, 50, 0, 0), 1300), Item("Infinity Edge", "bigger fucking sword", Stat(0, 0, 125, 0, 0), 1300) };
+	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.F Sword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 
+		Item("Infinity Edge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 1300) };
 	
 	Battlefield room(22, 14, enemies, allies, treasure_list);
 
 	player.Enter(&room);
+
+	bot.Enter(&room);
 
 	std::vector<string> result = room.ToString();
 	for (unsigned int i = 0; i < result.size(); i++) {
@@ -120,11 +123,13 @@ int main()
 	
 	std::cout << "###########################################################################################################" << std::endl;
 	std::cout << "Welcome to Dungeon Crawler Game. Type command to play the game" << std::endl;
-	std::cout << "Available commands are: move, attack, location" << std::endl;
+	std::cout << "Available commands are: move, attack, location, equip, consume" << std::endl;
 	cout << "For example:" << endl;
 	cout << "move Kai'sa 2 3" << endl;
 	cout << "Kai'sa attack Cho'Gath" << endl;
 	cout << "location Talon" << endl;
+	cout << "equip InfinityEdge";
+	cout << "consume CorruptingPotion";
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer
@@ -177,14 +182,24 @@ int main()
 		} while (true);
 
 		// Bot's turn
+		bot.startNewTurn();
 		std::cout << "Bot's turn" << std::endl;
 		// Each enemy take a move and an attack
 		for (int i = 0; i < bot.GetArmy().size(); i++) {
 			Unit* enemy = bot.GetArmy()[i];
+			cout << enemy->Description() << endl;
 			auto possible_new_locations = room.BFS(enemy->GetLocation(), enemy->GetMoveRange());
-			auto new_location = possible_new_locations[rand() % possible_new_locations.size()];
-			bot.Move(enemy, new_location);
-			enemy->Attack(player.GetArmy()[rand() % player.GetArmy().size()]);
+
+			if (!possible_new_locations.empty()) {
+				auto new_location = possible_new_locations[rand() % possible_new_locations.size()];
+				cout << bot.Move(enemy, new_location) << endl;
+			}
+
+			auto possible_ally_locations = room.BFS_Attack(enemy->GetLocation(), enemy->GetAttackRange());
+			if (!possible_ally_locations.empty()) {
+				auto new_ally = room.Apply(possible_ally_locations[rand() % possible_ally_locations.size()])->Get();
+				cout << bot.Attack(enemy, new_ally) << endl;
+			}
 		}
 	} while (command != "quit");
 	return 0;

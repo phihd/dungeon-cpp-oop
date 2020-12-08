@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string& name, Stat stats, int moveRange) : name_(name), stats_(stats), moveRange_(moveRange) {}
+Unit::Unit(const string& name, Stat stats) : name_(name), stats_(stats) {}
 
 string Unit::GetName() const {
     return name_;
@@ -24,11 +24,11 @@ Coord Unit::GetLocation() const {
 }  
 
 int Unit::GetMoveRange() const {
-    return moveRange_;
+    return GetStats().GetMoveRange();
 }
 
 int Unit::GetAttackRange() const {
-    return attackRange_;
+    return GetStats().GetAttackRange();
 }
 
 bool Unit::IsAlive(){
@@ -65,14 +65,13 @@ void Unit::Consume(Item item) {
 void Unit::Attack(Unit* opponent) {
     int alpha = 100 / (100 + opponent->GetStats().GetDef());
     int dmg = alpha * stats_.GetAtk();
-    opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0));
+    opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0, 0, 0));
     hasAttacked_ = true;
 }
 
 void Unit::Move(Coord o_location) {
     location_ = o_location;
-    if (location_.x() >= 0 && location_.y() >= 0)
-        hasMoved_ = true;
+    hasMoved_ = true;
 }
 
 void Unit::startNewTurn() {
@@ -94,7 +93,10 @@ string Unit::Description() {
     string Atk = to_string(GetStats().GetAtk());
     string Def = to_string(GetStats().GetDef());
     string Crit = to_string(GetStats().GetCrit());
-    return " - " + name_ + "\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit;
+    string MoveRange = to_string(GetStats().GetMoveRange());
+    string AttackRange = to_string(GetStats().GetAttackRange());
+    return " - " + name_ + "\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit + 
+            "\nMove range: " + MoveRange + + "\nAttack range: " + AttackRange;
 }
 
 bool operator==(const Unit &a, const Unit &b) {
@@ -103,7 +105,7 @@ bool operator==(const Unit &a, const Unit &b) {
 
 //----------------------------------------------------------------------------------------------------//
 
-Ally::Ally(const string &name, Stat stats, int moveRange): Unit(name, stats, moveRange) {}
+Ally::Ally(const string &name, Stat stats): Unit(name, stats) {}
 
 string Ally::ToString() {
     return "Ally";
@@ -118,7 +120,7 @@ bool operator==(const Ally &a, const Ally &b) {
 }
 
 
-Enemy::Enemy(const string &name, Stat stats, int moveRange): Unit(name, stats, moveRange) {}
+Enemy::Enemy(const string &name, Stat stats): Unit(name, stats) {}
 
 string Enemy::ToString() {
     return "Enemy";

@@ -185,6 +185,8 @@ string Player::RemoveItem(Item item, int quantity) {
 string Player::Attack(Unit* unit, Unit* opponent) {
     if (unit->HasAttacked())
         return "Unit already attacked in this turn.";
+    if (!battlefield_->Outcome(unit, opponent))
+        return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
@@ -228,7 +230,7 @@ string Player::Move(Unit* ally, Coord new_coord) {
             if (old_location == new_coord)
                 return "You don't wanna move to the same place (this is only for debug).";
             ally->Move(new_coord);
-            return "Move successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();
+            return ally->GetName() + " moved successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();
         }
     }
     return "Unit not in army";

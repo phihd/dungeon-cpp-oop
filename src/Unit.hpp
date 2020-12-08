@@ -22,11 +22,9 @@ private:
     Coord location_ = Coord(-1, -1);
     bool hasAttacked_ = true;
     bool hasMoved_ = true;
-    int moveRange_ = 0;
-    int attackRange_ = 0;
 
 public:
-    Unit(const string &name, Stat stats, int range);
+    Unit(const string &name, Stat stats);
 
     string GetName() const;
 
@@ -71,7 +69,7 @@ bool operator==(const Unit& a, const Unit& b);
 class Ally: public Unit {
 
 public:
-    Ally(const string &name, Stat stats, int range);
+    Ally(const string &name, Stat stats);
 
     string ToString();
 
@@ -84,7 +82,7 @@ bool operator==(const Ally &a, const Ally &b);
 class Enemy: public Unit {
 
 public:
-    Enemy(const string &name, Stat stats, int range);
+    Enemy(const string &name, Stat stats);
 
     string ToString();
 
