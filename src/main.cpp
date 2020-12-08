@@ -1,4 +1,3 @@
-/**
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -101,8 +100,6 @@ int main()
 
    // Some conditions to determine the correct room (=Battlefiled)
    // Set variables
-/**
-
    float grid_size = 60.0;
    sf::Vector2i mouse_pos_window;
    sf::Vector2u mouse_pos_grid;
@@ -202,4 +199,4 @@ int main()
    }
 
    return 0;
-} */
+}

@@ -390,7 +390,14 @@ bool Battlefield::IsClear() {
 
 bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 {
-	std::vector<Coord> area = this->BFS(attacker->GetLocation(), attacker->GetAttackRange());
+	std::vector<Coord> area = this->BFS(attacker->GetLocation(), attacker->GetRange());
+	/**
+	std::vector<Coord> all = this->BFS(attacker->GetLocation(), attacker->GetAttackRange());
+	std::vector<Coord> move = this->BFS(attacker->GetLocation(), attacker->GetMoveRange());
+	std::vector<Coord> area = std::remove_if(all.begin(), all.end(), [](Coord x)
+		{return (std::find(move.begin(), movable.end(), x) != move.end()); }
+	);
+	*/
 	bool inrange = (std::find(area.begin(), area.end(), defender->GetLocation()) != area.end());
 	if (attacker->ToString() == defender->ToString() || !inrange)
 		return false;

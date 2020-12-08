@@ -145,35 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Coord.cpp" />
-    <ClCompile Include="..\Grid.cpp" />
-    <ClCompile Include="..\Item.cpp" />
-    <ClCompile Include="..\main.cpp" />
-    <ClCompile Include="..\Player.cpp" />
-    <ClCompile Include="..\Room.cpp" />
-    <ClCompile Include="..\Square.cpp" />
-    <ClCompile Include="..\Stat.cpp" />
-    <ClCompile Include="..\TextUI.cpp" />
-    <ClCompile Include="..\Unit.cpp" />
-    <ClCompile Include="..\World.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Coord.hpp" />
-    <ClInclude Include="..\Grid.hpp" />
-    <ClInclude Include="..\Item.hpp" />
-    <ClInclude Include="..\Player.hpp" />
-    <ClInclude Include="..\Room.hpp" />
-    <ClInclude Include="..\Square.hpp" />
-    <ClInclude Include="..\Stat.hpp" />
-    <ClInclude Include="..\Unit.hpp" />
-    <ClInclude Include="..\World.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

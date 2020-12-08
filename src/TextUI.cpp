@@ -1,14 +1,17 @@
 #pragma once
 #include "World.hpp"
-
 #include <iostream>
+//#include "Player.hpp"
+//#include "Player.cpp"   // This is for VSCode, remove if you use visual studio
+//#include "Stat.hpp"
+//#include "Item.hpp"
+
 #include <string>
 #include <sstream>
 #include <algorithm>
 #include <iterator>
 #include <cstdlib>
 #include <random>
-#include<time.h>
 
 using namespace std;
 
@@ -52,6 +55,23 @@ int main()
 	Battlefield room(22, 14, enemies, allies, treasure_list);
 
 	player.Enter(&room);
+
+	std::vector<string> result = room.ToString();
+	for (unsigned int i = 0; i < result.size(); i++) {
+		std::cout << result[i] << std::endl;
+	}
+	std::cout << std::endl;
+
+	std::vector<std::vector<int>> int_result = room.ToInt();
+	for (unsigned int i = 0; i < int_result.size(); i++) {
+		//std::cout << i << std::endl;
+		for (unsigned int j = 0; j < int_result[i].size(); j++)
+			std::cout << int_result[i][j];
+		std::cout << std::endl;
+	}
+
+	std::cout << std::endl;
+	std::cout << int_result.size() << "x" << int_result[1].size() << std::endl;
 	std::vector<string> design{".....###..1.###.....",
 							   "...###........###...",
 							   "...#.####...#...#...",
@@ -72,25 +92,14 @@ int main()
 	room.SpawnAlly();
 
 	room.SpawnEnemy();
-
-	/**
-	std::vector<Coord> available_coord = room.BFS(Coord(3, 11), 5);
-	for (unsigned int i = 0; i < available_coord.size(); i++)
-		std::cout << available_coord[i].ToString() << std::endl;
-	srand(time(0));
-	auto seed = rand();
-	auto rng = std::default_random_engine{};
-	rng.seed(seed);
-	std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
-	*/
 	
-	vector<string> result = room.ToString();
+	result = room.ToString();
 	for (unsigned int i = 0; i < result.size(); i++) {
 		std::cout << result[i] << std::endl;
 	}
 	std::cout << std::endl;
 
-	vector<vector<int>>int_result = room.ToInt();
+	int_result = room.ToInt();
 	for (unsigned int i = 0; i < int_result.size(); i++) {
 		//std::cout << i << std::endl;
 		for (unsigned int j = 0; j < int_result[i].size(); j++)
