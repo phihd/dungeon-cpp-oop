@@ -95,7 +95,7 @@ string Unit::Description() {
     string Crit = to_string(GetStats().GetCrit());
     string MoveRange = to_string(GetStats().GetMoveRange());
     string AttackRange = to_string(GetStats().GetAttackRange());
-    return " - " + name_ + "\nHP: " + MaxHP + "/" + HP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit + 
+    return " - " + name_ + "\nHP: " + HP + "/" + MaxHP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit + 
             "\nMove range: " + MoveRange + + "\nAttack range: " + AttackRange;
 }
 

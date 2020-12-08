@@ -46,7 +46,7 @@ int main()
 	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0, 2, 3));
 	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0, 3, 4));
 	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0, 4, 1));
-	Ally* heavy_archer = new Ally("Heavy Archer", Stat(100, 100, 100, 0, 0, 5, 1));
+	Ally* heavy_archer = new Ally("HeavyArcher", Stat(100, 100, 100, 0, 0, 5, 20));
 
 	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0, 1, 3));
 	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0, 1, 4));
@@ -128,12 +128,12 @@ int main()
 	cout << "move Kai'sa 2 3" << endl;
 	cout << "Kai'sa attack Cho'Gath" << endl;
 	cout << "location Talon" << endl;
-	cout << "equip InfinityEdge";
-	cout << "consume CorruptingPotion";
+	cout << "equip InfinityEdge" << endl;
+	cout << "consume CorruptingPotion" << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer
-	// Enemy			|	-1 -> -n	|	Melee, Melee1, Range, Range1, Canon
+	// Enemy			|	-1 -> -5	|	Melee, Melee1, Range, Range1, Canon
 	// Wall				| 	6
 	// Opened Treasure	|	7
 	// Closed Treasure 	|	8
