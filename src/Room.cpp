@@ -72,7 +72,7 @@ bool Battlefield::MoveUnit(Coord coord, Unit* unit)
 		return true;
 	else
 	{
-		if ((!this->AddUnit(coord, unit) && origin != Coord(-1, -1))|| unit->HasMoved()) {
+		if ((!this->AddUnit(coord, unit) && origin != Coord(-1, -1)) || unit->HasMoved()) {
 			this->AddUnit(origin, unit);
 		}
 		return false;
