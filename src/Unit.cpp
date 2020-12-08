@@ -63,8 +63,8 @@ void Unit::Consume(Item item) {
 }
 
 void Unit::Attack(Unit* opponent) {
-    int alpha = 100 / (100 + opponent->GetStats().GetDef());
-    int dmg = alpha * stats_.GetAtk();
+    float alpha = (float)100 / (100 + opponent->GetStats().GetDef());
+    float dmg = alpha * stats_.GetAtk();
     opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0, 0, 0));
     hasAttacked_ = true;
 }
