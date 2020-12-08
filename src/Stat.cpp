@@ -5,7 +5,8 @@
 
 using namespace std;
 
-Stat::Stat(int maxHP, int HP, int atk, int def, int crit): maxHP_(maxHP), HP_(HP), atk_(atk), def_(def), crit_(crit) {}
+Stat::Stat(int maxHP, int HP, int atk, int def, int crit, int moveRange, int attackRange): maxHP_(maxHP), HP_(HP), atk_(atk), 
+                                                                                            def_(def), crit_(crit), moveRange_(moveRange), attackRange_(attackRange) {}
 
 Stat& Stat::operator+=(const Stat &b) {
     this->atk_ += b.atk_;
@@ -45,6 +46,14 @@ int Stat::GetCrit() const
 
 int Stat::GetAtk() const {
     return atk_;
+}
+
+int Stat::GetMoveRange() const {
+    return moveRange_;
+}
+
+int Stat::GetAttackRange() const {
+    return attackRange_;
 }
 
 Stat operator+(const Stat &a, const Stat &b) {

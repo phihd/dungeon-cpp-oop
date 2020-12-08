@@ -15,9 +15,11 @@ private:
     int atk_;
     int def_;
     int crit_;
+    int moveRange_;
+    int attackRange_;
 
 public:
-    Stat(int maxHP, int HP, int atk, int def, int crit);
+    Stat(int maxHP, int HP, int atk, int def, int crit, int moveRange, int attackRange);
 
     int GetMaxHP() const;
 
@@ -28,6 +30,10 @@ public:
     int GetDef() const;
 
     int GetCrit() const;
+
+    int GetMoveRange() const;
+
+    int GetAttackRange() const;
 
     Stat& operator+=(const Stat& b);
 
