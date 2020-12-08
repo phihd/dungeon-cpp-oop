@@ -22,7 +22,8 @@ private:
     Coord location_ = Coord(-1, -1);
     bool hasAttacked_ = true;
     bool hasMoved_ = true;
-    int range_ = 0;
+    int moveRange_ = 0;
+    int attackRange_ = 0;
 
 public:
     Unit(const string &name, Stat stats, int range);
@@ -35,7 +36,9 @@ public:
 
     vector<Item> GetInventory() const;
 
-    int GetRange() const;
+    int GetMoveRange() const;
+
+    int GetAttackRange() const;
 
     bool IsAlive();
 
