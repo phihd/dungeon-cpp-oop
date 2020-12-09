@@ -1,24 +1,26 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
+#include <cstdlib>
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
 #include <SFML\Network.hpp>
 #include <SFML\Audio.hpp>
-#include "Player.hpp"
+#include "Player.cpp"
 #include "Item.hpp"
-#include "Stat.hpp"
-#include "Room.hpp"
-#include "Unit.hpp"
-#include "World.hpp"
-// #include "Grid.hpp"
+//#include "Stat.hpp"
+//#include "Room.hpp"
+// #include "Unit.hpp"
+// #include "World.hpp"
+#include "Grid.cpp"
 // #include "Coord.hpp"
 // #include "Square.hpp"
+
 using namespace std;
 int main()
-{
+{   
+    
     Player player = Player("Player 1");
     Stat universalStatus = Stat(1, 1, 1, 1, 1, 1, 1);
     player.AddItem(Item("a", "a", universalStatus, 5), 12);
@@ -63,7 +65,7 @@ int main()
         // tile_mouse.setPosition(mouse_pos_grid.x * grid_size, mouse_pos_grid.y * grid_size);
         window.clear();
         sf::Font font;
-        font.loadFromFile("../font/Roboto-Medium.ttf");
+        font.loadFromFile("../../font/Roboto-Medium.ttf");
         if (isClick /*IS_MAIN_MENU_INTERFACE*/)
         {
             // display_animation = true;
@@ -73,7 +75,7 @@ int main()
             sf::Vector2f quitLoc(window_x * 0.75 - button_x / 2, window_y * 0.75 - button_y / 2);
             sf::Vector2f buttonSize(button_x, button_y);
             sf::Texture t;
-            t.loadFromFile("../font/button.png");
+            t.loadFromFile("../../font/button.png");
             sf::RectangleShape buyButton(buttonSize);
             buyButton.setTexture(&t);
             buyButton.setPosition(buyLoc);
@@ -112,7 +114,7 @@ int main()
             sf::Vector2f backButtonSize(200, 100);
             sf::Texture backButton;
 
-            backButton.loadFromFile("../font/stone_arrow.png");
+            backButton.loadFromFile("../../font/stone_arrow.png");
             sf::RectangleShape backButtonRect(backButtonSize);
             backButtonRect.setTexture(&backButton);
             backButtonRect.setPosition(backButtonPos);
@@ -134,7 +136,7 @@ int main()
                 sf::Vector2f descriptionPos(220, text_location_y);
                 sf::Vector2f pricePos(620, text_location_y);
                 sf::Vector2f quantityPos(780, text_location_y);
-                sf::Vector2f actionButtonPos(940, text_location_y-12);
+                sf::Vector2f actionButtonPos(940, text_location_y - 12);
                 name.setFont(font);
                 name.setFillColor(sf::Color::White);
                 name.setString(itemset.first.GetName());
@@ -160,7 +162,7 @@ int main()
                 window.draw(price);
                 window.draw(quantity);
                 sf::Texture actionButton;
-                actionButton.loadFromFile("../font/" + selected_case + ".png");
+                actionButton.loadFromFile("../../font/" + selected_case + ".png");
                 sf::Vector2f actionButtonSize(190, 60);
                 sf::RectangleShape actionButtonRect(actionButtonSize);
                 actionButtonRect.setTexture(&actionButton);
