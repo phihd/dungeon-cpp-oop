@@ -398,6 +398,26 @@ bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 		return true;
 }
 
+bool Battlefield::AllyArrive(std::vector<Ally*> army)
+{
+	if (army[0]->ToString() != "Ally")
+		return false;
+	else {
+		allies_ = army;
+		return true;
+	}
+}
+
+bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
+{
+	if (army[0]->ToString() != "Enemy")
+		return false;
+	else {
+		enemies_ = army;
+		return true;
+	}
+}
+
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
 	std::vector<Coord> queue;
