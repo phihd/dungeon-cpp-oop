@@ -189,7 +189,6 @@ string Player::Attack(Unit* unit, Unit* opponent) {
     if (!battlefield_->Outcome(unit, opponent))
         return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
-    RefreshArmy();
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 
