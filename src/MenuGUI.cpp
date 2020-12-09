@@ -13,7 +13,9 @@
 #include "Room.hpp"
 #include "Unit.hpp"
 #include "World.hpp"
-
+// #include "Grid.hpp"
+// #include "Coord.hpp"
+// #include "Square.hpp"
 using namespace std;
 int main()
 {
@@ -203,10 +205,10 @@ int main()
         {
 
             mouse_pos_window = sf::Mouse::getPosition(window);
-            mouse_pos_grid.x = mouse_pos_window.x;
-            mouse_pos_grid.y = mouse_pos_window.y;
-            cout << mouse_pos_grid.x << endl;
-            cout << mouse_pos_grid.y << endl;
+            // mouse_pos_grid.x = mouse_pos_window.x;
+            // mouse_pos_grid.y = mouse_pos_window.y;
+            // cout << mouse_pos_grid.x << endl;
+            // cout << mouse_pos_grid.y << endl;
         }
         // if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
         // {
