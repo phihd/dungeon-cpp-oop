@@ -32,7 +32,7 @@ int Unit::GetAttackRange() const {
 }
 
 bool Unit::IsAlive(){
-    return (this->GetStats().GetMaxHP() - this->GetStats().GetHP()) == 0;
+    return this->GetStats().GetHP() > 0;
 }
 
 void Unit::AdjustStats(Stat b) {
