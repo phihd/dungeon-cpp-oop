@@ -84,7 +84,8 @@ string Player::Equip(Item item, Unit* unit) {
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
-            unit->Equip(item_iter);
+            if (!unit->Equip(item_iter))
+                return "Inventory of " + unit->GetName() + " is already full.";
             RemoveItem(item_iter, 1);
             return "Equipped unit " + unit->GetName() + " with " + item_iter.GetName() + ".";
         }
@@ -188,6 +189,7 @@ string Player::Attack(Unit* unit, Unit* opponent) {
     if (!battlefield_->Outcome(unit, opponent))
         return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
+    RefreshArmy();
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 
@@ -244,12 +246,14 @@ string Player::startNewTurn() {
     return "Started a new turn.";
 }
 
-string Player::endTurn() {
+string Player::RefreshArmy() {
     auto it = army_.begin();
     while (it != army_.end()) {
         Unit* unit = *it;
-        if (!unit->IsAlive())
+        if (!unit->IsAlive()) {
+            this->battlefield_->RemoveUnit(unit->GetLocation(), unit);
             it = army_.erase(it);
+        }
         else
             it++;
     }

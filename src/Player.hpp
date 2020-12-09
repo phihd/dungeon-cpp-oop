@@ -107,8 +107,8 @@ public:
     /*Start a new turn by allowing all unit in the army to have 1 move and 1 attack*/
     string startNewTurn();
 
-    /*End turn by refresh the army - clear death unit*/
-    string endTurn();
+    /*Refresh the army - clear death unit*/
+    string RefreshArmy();
 
     /*Return an ally unit by the provided name*/
     Unit* GetUnit(string unitName);

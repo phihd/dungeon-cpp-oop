@@ -41,7 +41,7 @@ void Unit::AdjustStats(Stat b) {
 
 bool Unit::Equip(Item item) {
     for (unsigned int i = 0; i < inventory_.size(); i++)
-        if (inventory_[i] == item)
+        if (inventory_[i] == item || inventory_.size() >= inventory_max_size)
             return false;
     inventory_.push_back(item);
     stats_ += item.GetStats();
@@ -95,6 +95,11 @@ string Unit::Description() {
     string Crit = to_string(GetStats().GetCrit());
     string MoveRange = to_string(GetStats().GetMoveRange());
     string AttackRange = to_string(GetStats().GetAttackRange());
+
+    string Inventory = "Carrying:\n";
+    for (int i = 0; i < inventory_.size(); i++)
+        Inventory += inventory_[i].GetName() + "\n";
+
     return " - " + name_ + "\nHP: " + HP + "/" + MaxHP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit + 
             "\nMove range: " + MoveRange + + "\nAttack range: " + AttackRange;
 }

@@ -19,6 +19,7 @@ private:
     string name_;
     Stat stats_;
     vector<Item> inventory_;
+    const int inventory_max_size = 4;
     Coord location_ = Coord(-1, -1);
     bool hasAttacked_ = true;
     bool hasMoved_ = true;
