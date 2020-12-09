@@ -29,6 +29,8 @@ public:
 
     int GetPrice() const;
 
+    Item& operator=(const Item& b);
+
 };
 
 bool operator==(const Item &a, const Item& b);

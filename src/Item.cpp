@@ -19,6 +19,14 @@ Stat Item::GetStats() const {
     return stat_;
 }
 
+Item& Item::operator=(const Item& b) {
+    this->name_ = b.GetName();
+    this->description_ = b.GetDescription();
+    this->price_ = b.GetPrice();
+    this->stat_ = b.GetStats();
+    return *this;
+}
+
 int Item::GetPrice() const {
     return price_;
 }
