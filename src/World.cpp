@@ -17,7 +17,7 @@ std::vector<Room> Game::CreateWorld()
 		auto rng = std::default_random_engine{};
 		rng.seed(seed);
 		std::shuffle(std::begin(lv_designs), std::end(lv_designs), rng);
-		std::vector<string> design = lv_designs[i];
+		std::vector<string> design = lv_designs[0];
 		std::vector<Item>* treasure_list = new std::vector<Item>{};
 		if (i == 0 || i == 1) {
 			seed = rand();

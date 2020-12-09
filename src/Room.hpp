@@ -8,43 +8,24 @@
 class Room {
 public:
 	explicit Room();
+
+	virtual string type();
 };
 
 /*Rest stop between the rooms*/
-/*
+
 class Rest : public Room {
 public:
-	Rest(std::vector<Item> stock) : Room(), stock_(stock) {};
+	Rest(std::vector<Item>* stock);
 
-	//The player can buy items at the shop if there is enough money. Returns true if the action succeeded
-	bool Buy(Player player, Item item, int quantity) {
-		if (player.GetGold() >= item.GetPrice() * quantity) {
-			player.Buy(item, quantity, stock_);
-			return true;
-		}
-		else
-			return false;
-	};
-	//The player can buy items at the shop if there are enough items to sell. Returns true if the action succeeded
-	bool Sell(Player player, Item item, int quantity) {
-		std::map<Item, int> inventory = player.GetInv entory();
-		if (inventory.find(item) == inventory.end())
-			return false;
-		else {
-			if (inventory[item] >= quantity) {
-				player.Sell(item, quantity);
-				return true;
-			}
-			else
-				return false;
-		}
+	std::vector<Item>* Stock();
 
-	};
-	void Heal(Player player) { player.Rest(); };
+	string type();
+	//import items to stock
+	void Import(std::vector<Item> items);
 private:
-	std::vector<Item> stock_;
+	std::vector<Item>* stock_;
 };
-*/
 
 /*Playable Area*/
 class Battlefield : public Grid, public Room {
@@ -109,6 +90,8 @@ public:
 	bool AllyArrive(std::vector<Ally*> army);
 	//Add Enemy units to Room
 	bool EnemyArrive(std::vector<Enemy*> army);
+
+	string type();
 	
 	std::vector<Coord> BFS(Coord coord, int range);
 

@@ -157,7 +157,7 @@ public:
 	std::vector<std::vector<string>> lv3_designs = { lv3_1, lv3_2, lv3_3 };
 
 	//Designs of Boss1
-	std::vector<string> lv4 = { "...##############...",
+	std::vector<string> lv4 = {	  "...##############...",
 								  "...##..........##...",
 								  "...##..........##...",
 								  "...##..........##...",
@@ -254,7 +254,7 @@ public:
 	std::vector<std::vector<string>> lv6_designs = { lv6_1, lv6_2, lv6_3 };
 
 	//Designs of Boss2
-	std::vector<string> lv7 = { ".....#...c....#.....",
+	std::vector<string> lv7 = {   ".....#...c....#.....",
 								  ".....#........#.....",
 								  ".....###....###.....",
 								  ".......#....#.......",
@@ -363,7 +363,7 @@ public:
 								  "#######......#######",
 								  "....................",
 								  "...................." };
-	std::vector<std::vector<string>> lv10_designs = { lv9_1, lv9_2, lv9_3 };
+	std::vector<std::vector<string>> lv10_designs = { lv10 };
 	std::vector< std::vector<std::vector<string>>> designs = { lv1_designs, lv2_designs, lv3_designs, lv4_designs,
 					lv5_designs, lv6_designs, lv7_designs, lv8_designs, lv9_designs, lv10_designs };
 	std::vector<std::vector<Coord>> spawns = {

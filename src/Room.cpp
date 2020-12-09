@@ -5,6 +5,31 @@
 
 Room::Room() {}
 
+string Room::type()
+{
+	return "Room";
+}
+
+Rest::Rest(std::vector<Item>* stock) : Room(), stock_(stock) {}
+
+std::vector<Item>* Rest::Stock()
+{
+	return stock_;
+}
+
+string Rest::type()
+{
+	return "Rest";
+}
+
+void Rest::Import(std::vector<Item> items)
+{
+	for (unsigned int i = 0; i < items.size(); i++) {
+		Item item = items[i];
+		stock_->push_back(item);
+	}
+}
+
 Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies,
 	std::vector<Item>* treasures) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures)
 {
@@ -18,12 +43,12 @@ Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std:
 	}
 }
 
-void Battlefield::AddWall(Coord coord) { 
-	this->Update(coord, new Wall); 
+void Battlefield::AddWall(Coord coord) {
+	this->Update(coord, new Wall);
 }
 
-void Battlefield::AddTreasure(Coord coord) { 
-	this->Update(coord, new Treasure); 
+void Battlefield::AddTreasure(Coord coord) {
+	this->Update(coord, new Treasure);
 }
 
 std::string Battlefield::PutTreasure(Coord coord) {
@@ -51,7 +76,7 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	if (unit->GetLocation() != coord)
 		return false;
 	this->Apply(coord)->Clear();
-		return true;
+	return true;
 }
 /**
 bool Battlefield::Movable(Coord coord, Unit* unit) {
@@ -238,10 +263,12 @@ bool Battlefield::SpawnAlly() {
 	for (unsigned int i = 0; i < std::min(allies_.size(), ally_spawn_.size()); i++) {
 		Ally* ally = allies_[i];
 		Coord spawn = ally_spawn_[i];
-		bool temp = this->AddUnit(spawn, ally);
-		if (!temp)
-			return false;
-		ally->Move(spawn);
+		if (ally->IsAlive()) {
+			bool temp = this->AddUnit(spawn, ally);
+			if (!temp)
+				return false;
+			ally->Move(spawn);
+		}
 	}
 	return true;
 }
@@ -417,6 +444,12 @@ bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
 		return true;
 	}
 }
+
+string Battlefield::type()
+{
+	return "Battlefield";
+}
+
 
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
