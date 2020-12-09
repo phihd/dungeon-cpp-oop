@@ -19,7 +19,7 @@ std::vector<Battlefield> Game::CreateWorld()
 		std::shuffle(std::begin(lv_designs), std::end(lv_designs), rng);
 		std::vector<string> design = lv_designs[0];
 		std::vector<Item>* treasure_list = new std::vector<Item>{};
-		if (i == 0 || i == 1) {
+		if (i == 0 || i == 1 || i == 2) {
 			seed = rand();
 			rng.seed(seed);
 			std::vector<Item> temp_items = items[0];
@@ -35,7 +35,7 @@ std::vector<Battlefield> Game::CreateWorld()
 			for (unsigned int j = 0; j < 5; j++)
 				treasure_list->push_back(temp_items[j]);
 		}
-		else if (i == 5 || i == 7) {
+		else if (i == 6 || i == 7) {
 			seed = rand();
 			rng.seed(seed);
 			std::vector<Item> temp_items = items[2];
@@ -68,15 +68,16 @@ std::vector<Battlefield> Game::CreateWorld()
 			else if (i == 9)
 				new_room.SetEnemySpawn(boss_spawns[2]);
 			new_room.EnemyArrive(lv_enemies);
+			new_room.SpawnEnemy();
 		}
 		else {
 			std::shuffle(std::begin(lv_enemies), std::end(lv_enemies), rng);
 			lv_enemies.resize(6);
 			new_room.EnemyArrive(lv_enemies);
+			new_room.SpawnEnemy();
 		}
 
 		world.push_back(new_room);
 	}
 	return world;
 }
-
