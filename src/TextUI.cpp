@@ -1,5 +1,6 @@
 #pragma once
 #include "World.hpp"
+#include "World.cpp"	// This is for VSCode, remove if you use visual studio
 #include <iostream>
 
 #include <string>
@@ -64,12 +65,17 @@ int main()
 	Bot bot = Bot("Bot 1");
 	bot.Recruit(enemies_u);
 	/**************************************************************************************************************************************************************/
-	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.F Sword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 
-		Item("Infinity Edge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 1300) };
+	//Game game(player);
+	 
+	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 
+		Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 1300) };
 	
 	Battlefield room(22, 14, enemies, allies, treasure_list);
 
 	player.Enter(&room);
+
+	player.AddItem(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 1);
+	player.AddItem(Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 3200), 1);
 
 	bot.Enter(&room);
 
@@ -128,8 +134,8 @@ int main()
 	cout << "move Kai'sa 2 3" << endl;
 	cout << "Kai'sa attack Cho'Gath" << endl;
 	cout << "location Talon" << endl;
-	cout << "equip InfinityEdge" << endl;
-	cout << "consume CorruptingPotion" << endl;
+	cout << "equip Malphite InfinityEdge" << endl;
+	cout << "consume Garen CorruptingPotion" << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer
@@ -150,7 +156,7 @@ int main()
 			if (cmd_split[0] == "move") {
 				Unit* unit = player.GetUnit(cmd_split[1]);
 				if (!unit) 
-					cout << "Unit is not in the army" << endl;
+					cout << "Unit is not in the army." << endl;
 				else {
 					cout << player.Move(unit, Coord(stoi(cmd_split[2]), stoi(cmd_split[3]))) << endl;
 				}
@@ -158,7 +164,7 @@ int main()
 			else if (cmd_split[1] == "attack") {
 				Unit* ally = player.GetUnit(cmd_split[0]);
 				if (!ally) 
-					cout << "Unit is not in the army" << endl;
+					cout << "Unit is not in the army." << endl;
 				Unit* enemy = bot.GetUnit(cmd_split[2]);
 				if (!enemy) 
 					cout << "Enemy doesn't exist." << endl;
@@ -169,9 +175,19 @@ int main()
 			else if (cmd_split[0] == "location") {
 				Unit* unit = player.GetUnit(cmd_split[1]);
 				if (!unit) 
-					cout << "Unit is not in the army" << endl;
+					cout << "Unit is not in the army." << endl;
 				else
 					cout << "Location: " << unit->GetLocation().ToString() << endl;
+			}
+			else if (cmd_split[0] == "equip") {
+				Unit* unit = player.GetUnit(cmd_split[1]);
+				if (!unit) 
+					cout << "Unit is not in the army." << endl;
+				cout << "*Before equip:\n";
+				cout << unit->Description() << endl;
+				player.Equip(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), unit);
+				cout << "*After equip:\n";
+				cout << unit->Description() << endl;
 			}
 			else if (command == "end turn" || command == "quit")
 				break;
