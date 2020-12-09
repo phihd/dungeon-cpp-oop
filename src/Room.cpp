@@ -477,10 +477,7 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 				&& (map[(c.y() + col[i])][(c.x() + row[i])] == 0))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) 
-					dis.push_back(dis[(front - 1)] + 1);
-				else 
-					dis.push_back(range+1);
+				dis.push_back(dis[(front - 1)] + 1);
 				back++;
 			}
 		}
@@ -501,6 +498,10 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
   int col[4] = { 0, 1, -1, 0 };
   std::vector<std::vector<int>> map = this->ToInt();
 
+  bool is_ally;
+  if (this->Apply(coord)->Get()->ToString() == "Ally") is_ally = true;
+  else is_ally = false;
+
   queue.push_back(coord);
   dis.push_back(0);
 
@@ -514,21 +515,16 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
       if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
         && (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
         && (dis[front - 1] + 1 <= range)
-        && (map[(c.y() + col[i])][(c.x() + row[i])] <= 0))
+        && (map[(c.y() + col[i])][(c.x() + row[i])] < 6))
       {
         queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-        if (map[(c.y() + col[i])][(c.x() + row[i])] == 0)
-          dis.push_back(dis[(front - 1)] + 1);
-        else
-        {
-          dis.push_back(range + 1);
-          result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-        }
+        dis.push_back(dis[(front - 1)] + 1);
+		if (map[(c.y() + col[i])][(c.x() + row[i])] < 0 && is_ally) result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
+		if (map[(c.y() + col[i])][(c.x() + row[i])] > 0 && !is_ally) result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
         back++;
       }
     }
   } while (front <= back);
-
   return result;
 }
 
