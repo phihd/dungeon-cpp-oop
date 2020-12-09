@@ -5,9 +5,9 @@
 
 Game::Game(Player player) {}
 
-std::vector<Room> Game::CreateWorld()
+std::vector<Battlefield> Game::CreateWorld()
 {
-	std::vector<Room> world;
+	std::vector<Battlefield> world;
 	for (unsigned int i = 0; i < designs.size(); i++) {
 		//Design a new room
 		std::vector<std::vector<string>> lv_designs = designs[i];
@@ -60,8 +60,13 @@ std::vector<Room> Game::CreateWorld()
 		srand(time(0));
 		seed = rand();
 		rng.seed(seed);
-		if ((i == 2 || i == 7 || i == 9)) {
-			new_room.SetEnemySpawn(boss_spawns[i]);
+		if ((i == 3 || i == 7 || i == 9)) {
+			if (i == 3)
+				new_room.SetEnemySpawn(boss_spawns[0]);
+			else if (i == 7)
+				new_room.SetEnemySpawn(boss_spawns[1]);
+			else if (i == 9)
+				new_room.SetEnemySpawn(boss_spawns[2]);
 			new_room.EnemyArrive(lv_enemies);
 		}
 		else {
@@ -69,6 +74,7 @@ std::vector<Room> Game::CreateWorld()
 			lv_enemies.resize(6);
 			new_room.EnemyArrive(lv_enemies);
 		}
+
 		world.push_back(new_room);
 	}
 	return world;
