@@ -564,7 +564,7 @@ public:
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
 	
 	//Make game
-	std::vector<Room> CreateWorld();
+	std::vector<Battlefield> CreateWorld();
 
 	//bool CreateGame();
 	

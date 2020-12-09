@@ -15,6 +15,9 @@ set(SRC_DIR src)
 # Set target
 add_executable(${PROJECT_NAME} ${SRC_DIR}/main.cpp)
 
+add_executable(TEXT_UI ${SRC_DIR}/TextUI.cpp)
+
+add_executable(MENUGUI ${SRC_DIR}/MenuGUI.cpp)
 
 # Make the project files available as a library
 #file(GLOB DUNGEON_FILES CONFIGURE_DEPENDS "${SRC_DIR}/*.hpp" "${SRC_DIR}/*.cpp")
@@ -33,7 +36,7 @@ add_executable(${PROJECT_NAME} ${SRC_DIR}/main.cpp)
 find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-system sfml-window)
-
+target_link_libraries(MENUGUI sfml-graphics sfml-audio sfml-system sfml-window)
 ######################################################################
 # Stage 3: Download and install GoogleTest
 ######################################################################
@@ -83,9 +86,9 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
 file(GLOB DUNGEON_FILES_P CONFIGURE_DEPENDS "${SRC_DIR}/Coord.hpp" "${SRC_DIR}/Coord.cpp")
 add_library(DUNGEON_LIB_P ${DUNGEON_FILES_P})
 
-add_executable(example ${TEST_DIR}/CoordTest.cpp)
-target_link_libraries(example gtest_main DUNGEON_LIB_P sfml-graphics sfml-audio sfml-system sfml-window)
-add_test(NAME coordtest COMMAND example)
+add_executable(coordtest ${TEST_DIR}/CoordTest.cpp)
+target_link_libraries(coordtest gtest_main DUNGEON_LIB_P sfml-graphics sfml-audio sfml-system sfml-window)
+add_test(NAME coordtest COMMAND coordtest)
 
 # Add more tests here
 
