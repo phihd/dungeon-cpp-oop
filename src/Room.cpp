@@ -116,9 +116,9 @@ std::string Battlefield::FromString(std::vector<string> room) {
 			else if (c == '.') {
 				continue;
 			}
-			else if (c == '0' || c == '1') {
+			else if (c == 'o' || c == 'c') {
 				this->AddTreasure(coord);
-				if (c == '1') {
+				if (c == 'c') {
 					std::string result = this->PutTreasure(coord);
 					if (result == "Place Treasure Fail") {
 						return result;
