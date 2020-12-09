@@ -5,6 +5,31 @@
 
 Room::Room() {}
 
+string Room::type()
+{
+	return "Room";
+}
+
+Rest::Rest(std::vector<Item>* stock) : Room(), stock_(stock) {}
+
+std::vector<Item>* Rest::Stock()
+{
+	return stock_;
+}
+
+string Rest::type()
+{
+	return "Rest";
+}
+
+void Rest::Import(std::vector<Item> items)
+{
+	for (unsigned int i = 0; i < items.size(); i++) {
+		Item item = items[i];
+		stock_->push_back(item);
+	}
+}
+
 Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies,
 	std::vector<Item>* treasures) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures)
 {
@@ -18,12 +43,12 @@ Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std:
 	}
 }
 
-void Battlefield::AddWall(Coord coord) { 
-	this->Update(coord, new Wall); 
+void Battlefield::AddWall(Coord coord) {
+	this->Update(coord, new Wall);
 }
 
-void Battlefield::AddTreasure(Coord coord) { 
-	this->Update(coord, new Treasure); 
+void Battlefield::AddTreasure(Coord coord) {
+	this->Update(coord, new Treasure);
 }
 
 std::string Battlefield::PutTreasure(Coord coord) {
@@ -51,7 +76,7 @@ bool Battlefield::RemoveUnit(Coord coord, Unit* unit)
 	if (unit->GetLocation() != coord)
 		return false;
 	this->Apply(coord)->Clear();
-		return true;
+	return true;
 }
 /**
 bool Battlefield::Movable(Coord coord, Unit* unit) {
@@ -238,10 +263,12 @@ bool Battlefield::SpawnAlly() {
 	for (unsigned int i = 0; i < std::min(allies_.size(), ally_spawn_.size()); i++) {
 		Ally* ally = allies_[i];
 		Coord spawn = ally_spawn_[i];
-		bool temp = this->AddUnit(spawn, ally);
-		if (!temp)
-			return false;
-		ally->Move(spawn);
+		if (ally->IsAlive()) {
+			bool temp = this->AddUnit(spawn, ally);
+			if (!temp)
+				return false;
+			ally->Move(spawn);
+		}
 	}
 	return true;
 }
@@ -398,6 +425,32 @@ bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 		return true;
 }
 
+bool Battlefield::AllyArrive(std::vector<Ally*> army)
+{
+	if (army[0]->ToString() != "Ally")
+		return false;
+	else {
+		allies_ = army;
+		return true;
+	}
+}
+
+bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
+{
+	if (army[0]->ToString() != "Enemy")
+		return false;
+	else {
+		enemies_ = army;
+		return true;
+	}
+}
+
+string Battlefield::type()
+{
+	return "Battlefield";
+}
+
+
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
 	std::vector<Coord> queue;
@@ -424,10 +477,7 @@ std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 				&& (map[(c.y() + col[i])][(c.x() + row[i])] == 0))
 			{
 				queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-				if (map[(c.y() + col[i])][(c.x() + row[i])] == 0) 
-					dis.push_back(dis[(front - 1)] + 1);
-				else 
-					dis.push_back(range+1);
+				dis.push_back(dis[(front - 1)] + 1);
 				back++;
 			}
 		}
@@ -448,6 +498,10 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
   int col[4] = { 0, 1, -1, 0 };
   std::vector<std::vector<int>> map = this->ToInt();
 
+  bool is_ally;
+  if (this->Apply(coord)->Get()->ToString() == "Ally") is_ally = true;
+  else is_ally = false;
+
   queue.push_back(coord);
   dis.push_back(0);
 
@@ -461,29 +515,16 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
       if ((c.x() + row[i] > -1) && (c.x() + row[i] < this->Rows()) && (c.y() + col[i] > -1) && (c.y() + col[i] < this->Cols())
         && (std::find(queue.begin(), queue.end(), Coord(c.x() + row[i], c.y() + col[i])) == queue.end())
         && (dis[front - 1] + 1 <= range)
-        && (map[(c.y() + col[i])][(c.x() + row[i])] <= 0))
+        && (map[(c.y() + col[i])][(c.x() + row[i])] < 6))
       {
         queue.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-        if (map[(c.y() + col[i])][(c.x() + row[i])] == 0)
-          dis.push_back(dis[(front - 1)] + 1);
-        else
-        {
-          dis.push_back(range + 1);
-          result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
-        }
+        dis.push_back(dis[(front - 1)] + 1);
+		if (map[(c.y() + col[i])][(c.x() + row[i])] < 0 && is_ally) result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
+		if (map[(c.y() + col[i])][(c.x() + row[i])] > 0 && !is_ally) result.push_back(Coord(c.x() + row[i], c.y() + col[i]));
         back++;
       }
     }
   } while (front <= back);
-
-/*
-  queue.erase(queue.begin());
-  std::vector<Coord> result;
-  for (unsigned int i = 0; i < queue.size(); i++) {
-    Coord current = queue[i];
-    if (std::find(enemy_spawn_.begin(), enemy_spawn_.end(), current) != enemy_spawn_.end())
-      result.push_back(current);
-  }*/
   return result;
 }
 

@@ -81,6 +81,8 @@ public:
     /*Add quantity x item(s) to the inventory*/
     string AddItem(Item item, int quantity);
 
+    //string AddItems(vector<)
+
     /*Remove quantity x item(s) in the inventory*/
     string RemoveItem(Item item, int quantity);
 
@@ -104,6 +106,9 @@ public:
 
     /*Start a new turn by allowing all unit in the army to have 1 move and 1 attack*/
     string startNewTurn();
+
+    /*End turn by refresh the army - clear death unit*/
+    string endTurn();
 
     /*Return an ally unit by the provided name*/
     Unit* GetUnit(string unitName);

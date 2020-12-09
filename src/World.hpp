@@ -3,7 +3,7 @@
 #define GAME_HEADER
 
 #include "Player.hpp"
-#include "Player.cpp"
+//#include "Player.cpp"
 
 #include <algorithm>
 #include <random>
@@ -157,7 +157,7 @@ public:
 	std::vector<std::vector<string>> lv3_designs = { lv3_1, lv3_2, lv3_3 };
 
 	//Designs of Boss1
-	std::vector<string> lv4 = { "...##############...",
+	std::vector<string> lv4 = {	  "...##############...",
 								  "...##..........##...",
 								  "...##..........##...",
 								  "...##..........##...",
@@ -254,7 +254,7 @@ public:
 	std::vector<std::vector<string>> lv6_designs = { lv6_1, lv6_2, lv6_3 };
 
 	//Designs of Boss2
-	std::vector<string> lv7 = { ".....#...c....#.....",
+	std::vector<string> lv7 = {   ".....#...c....#.....",
 								  ".....#........#.....",
 								  ".....###....###.....",
 								  ".......#....#.......",
@@ -363,7 +363,7 @@ public:
 								  "#######......#######",
 								  "....................",
 								  "...................." };
-	std::vector<std::vector<string>> lv10_designs = { lv9_1, lv9_2, lv9_3 };
+	std::vector<std::vector<string>> lv10_designs = { lv10 };
 	std::vector< std::vector<std::vector<string>>> designs = { lv1_designs, lv2_designs, lv3_designs, lv4_designs,
 					lv5_designs, lv6_designs, lv7_designs, lv8_designs, lv9_designs, lv10_designs };
 	std::vector<std::vector<Coord>> spawns = {
@@ -509,6 +509,7 @@ public:
 	};
 
 	//Items
+	
 	std::vector<Item> lv1_items = {
 		Item("Leather armor", "A light and reliable piece of armor", Stat(0, 0, 0, 50, 0, 0, 0), 100),
 		Item("Blunt dagger", "A blunt dagger. Can it cut through anything?", Stat(0, 0, 20, 0, 0, 0, 0), 50),
@@ -519,8 +520,7 @@ public:
 		Item("Heavy sword", "Deals nice damge, but so heavy to carry around.", Stat(0, 0, 90, 0, 0, -1, 0), 250),
 		Item("Wooden Bow", "A normal wooden bow", Stat(0, 0, 30, 0, 0, 0, 1), 100),
 		Item("Hermit's Ring", "People say this ring curse those who wear it", Stat(20, 0, 10, 20, 0, -2, 0), 150),
-		Item("Makeshift sword", "You can tell it's not crafted by a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100),
-		Item("Small potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20)
+		Item("Makeshift sword", "You can tell it's not crafted by a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100)
 	};
 	std::vector<Item> lv2_items = {
 		Item("Assassin's Blade", "Swift and deadly", Stat(0, 0, 80, 0, 0, 0, 0), 300),
@@ -532,8 +532,7 @@ public:
 		Item("Crossbow", "A deadlier version of a bow", Stat(0, 0, 60, 0, 0, 0, 1), 250),
 		Item("Steel armor", "Some nice armor", Stat(0, 0, 0, 100, 0, 0, 0), 450),
 		Item("Shield", "Some shield for protection", Stat(0, 0, 0, 50, 0, 0, 0), 200),
-		Item("Heavy Glaive", "Doubles the damge with 2 blades but heavy", Stat(0, 0, 150, 0, 0, -1, 0), 500),
-		Item("Medium potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50)
+		Item("Heavy Glaive", "Doubles the damge with 2 blades but heavy", Stat(0, 0, 150, 0, 0, -1, 0), 500)
 	};
 	std::vector<Item> lv3_items = {
 		Item("Master's Sword", "A fine sword wielded by a weapon master", Stat(0, 0, 200, 0, 0, 0, 0), 700),
@@ -545,8 +544,7 @@ public:
 		Item("Faerie Charm", "You get a guardian angel by your side", Stat(100, 0, 50, 100, 0, 0, 0), 700),
 		Item("Blood Thirster", "It protects, it attacks", Stat(70, 0, 175, 0, 0, 0, 0), 750),
 		Item("Vanguard's Shield", "High quality shield for skilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
-		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 100, 0, 0, 0, 1), 700),
-		Item("Large Heal", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100)
+		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 100, 0, 0, 0, 1), 700)
 	};
 	std::vector<Item> lv4_items = {
 		Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
@@ -556,15 +554,20 @@ public:
 		Item("Laevatein", "Deadly and mischievous", Stat(0, 0, 500, 0, 0, 1, 2), 1500),
 		Item("Blessed Charm", "It blesses its wearer", Stat(200, 0, 300, 300, 0, 1, 1), 1800),
 		Item("Assassin's Cloak", "Move so fast no one can catch you", Stat(0, 0, 0, 200, 0, 3, 2), 1000),
-		Item("Armor of life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000),
-		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250)
+		Item("Armor of life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
 	};
-
+	std::vector<Item> potions = {
+		Item("Small potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20),
+		Item("Medium potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50),
+		Item("Large Heal", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100),
+		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250) };
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
+	
 	//Make game
-	std::vector<Room> CreateWorld();
+	std::vector<Battlefield> CreateWorld();
 
-	bool CreateGame();
+	//bool CreateGame();
+	
 
 private:
 };
