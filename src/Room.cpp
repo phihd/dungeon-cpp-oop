@@ -398,6 +398,26 @@ bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 		return true;
 }
 
+bool Battlefield::AllyArrive(std::vector<Ally*> army)
+{
+	if (army[0]->ToString() != "Ally")
+		return false;
+	else {
+		allies_ = army;
+		return true;
+	}
+}
+
+bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
+{
+	if (army[0]->ToString() != "Enemy")
+		return false;
+	else {
+		enemies_ = army;
+		return true;
+	}
+}
+
 std::vector<Coord> Battlefield::BFS(Coord coord, int range)
 {
 	std::vector<Coord> queue;
@@ -476,14 +496,6 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
     }
   } while (front <= back);
 
-/*
-  queue.erase(queue.begin());
-  std::vector<Coord> result;
-  for (unsigned int i = 0; i < queue.size(); i++) {
-    Coord current = queue[i];
-    if (std::find(enemy_spawn_.begin(), enemy_spawn_.end(), current) != enemy_spawn_.end())
-      result.push_back(current);
-  }*/
   return result;
 }
 

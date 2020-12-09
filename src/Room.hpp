@@ -3,7 +3,7 @@
 #define ROOM_HEADER
 
 #include "Grid.hpp"
-#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
+//#include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
 
 class Room {
 public:
@@ -105,6 +105,10 @@ public:
 	bool IsClear();
 	//Return outcome of a battle between to units. Returns true if 2 units are able to attack each other and if they have different type
 	bool Outcome(Unit* attacker, Unit* defender);
+	//Add Ally units to Room
+	bool AllyArrive(std::vector<Ally*> army);
+	//Add Enemy units to Room
+	bool EnemyArrive(std::vector<Enemy*> army);
 	
 	std::vector<Coord> BFS(Coord coord, int range);
 
