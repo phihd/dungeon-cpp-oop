@@ -222,13 +222,13 @@ string Player::Move(Unit* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Unit* current = army_[i];
         if (*current == *ally) {
+            Coord old_location = ally->GetLocation();
+            if (old_location == new_coord)
+                return "You don't wanna move to the same place (this is only for debug).";
             if (current->HasMoved())
                 return "Unit already made its move for this turn.";
             if (!battlefield_->MoveUnit(new_coord, ally))
                 return ally->GetName() + " can't move to this location.";
-            Coord old_location = ally->GetLocation();
-            if (old_location == new_coord)
-                return "You don't wanna move to the same place (this is only for debug).";
             ally->Move(new_coord);
             return ally->GetName() + " moved successful from " + old_location.ToString() + " to " + ally->GetLocation().ToString();
         }
@@ -241,7 +241,19 @@ string Player::startNewTurn() {
         Unit* unit = army_[i];
         unit->startNewTurn();
     }
-    return "Started a new turn";
+    return "Started a new turn.";
+}
+
+string Player::endTurn() {
+    auto it = army_.begin();
+    while (it != army_.end()) {
+        Unit* unit = *it;
+        if (!unit->IsAlive())
+            it = army_.erase(it);
+        else
+            it++;
+    }
+    return "Turn ended.";
 }
 
 Unit* Player::GetUnit(string unitName) {
