@@ -13,7 +13,6 @@ public:
 };
 
 /*Rest stop between the rooms*/
-
 class Rest : public Room {
 public:
 	Rest(std::vector<Item>* stock);
