@@ -15,7 +15,7 @@
 //#include "Room.hpp"
 // #include "Unit.hpp"
 // #include "World.hpp"
-#include "Grid.cpp"
+//#include "Grid.cpp"
 // #include "Coord.hpp"
 // #include "Square.hpp"
 
@@ -87,7 +87,7 @@ int main()
     font.loadFromFile("../../font/Roboto-Medium.ttf");
     sf::Vector2i mouse_pos;
     sf::Event event;
-    
+
     while (window.isOpen())
     {
         window.clear();
