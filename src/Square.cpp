@@ -108,13 +108,14 @@ bool Treasure::Place(std::vector<Item>* treasure) { treasure_ = treasure; return
 
 bool Treasure::IsOpened() { return treasure_ == NULL; }
 
-bool Treasure::Open() {
+std::vector<Item>* Treasure::Open() {
 	if (!this->IsOpened()) {
+		std::vector<Item>* result = treasure_;
 		treasure_ = NULL;
-		return true;
+		return result;
 	}
 	else {
-		return false;
+		return new std::vector<Item>{};
 	}
 }
 
