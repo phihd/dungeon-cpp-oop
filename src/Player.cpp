@@ -280,7 +280,15 @@ vector<Unit*> Player::GetArmy() {
 
 void Player::Enter(Battlefield *battlefield) {
     battlefield_ = battlefield;
-    //battlefield_->AllyArrive(army_);
+
+    // Change army (vector of Unit) -> vector of Ally
+    vector<Ally*> allies;
+    for (int i = 0; i < army_.size(); i++) {
+        Unit* unit = army_[i];
+        Ally* new_ally = new Ally(unit->GetName(), unit->GetStats());
+        allies.push_back(new_ally);
+    }
+    battlefield_->AllyArrive(allies);
 }
 
 void Player::Exit(Battlefield *battlefield) {
