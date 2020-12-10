@@ -16,6 +16,8 @@ use as follows:
 
   * `test/` -- Unit tests.
 
+  * `resource/` -- Resources used in the project (fonts, pictures, ...).
+
   * `README.md` -- This file. You should modify it to represent your project.
 
 You may also add other new directories as needed, for example
@@ -29,7 +31,7 @@ for testing tools.
 - Git
 
 ### Running the program
-Step 1: Clone the project
+Step 1: Clone the project from repo
 ```shell
 git clone git@courses-git.comnet.aalto.fi:CPP-F2020/dungeon-2020-4.git
 ```
@@ -44,4 +46,21 @@ make dungeon
 Step 3: Execute the program
 ```shell
 ./dungeon
+
+```
+
+### Testing
+`TextUI` is an Text-based user interface used for debugging purpose. 
+To run the program, run the code showing below in the root directory of project. 
+ ```shell
+cd build
+make TEXT_UI
+./TEXT_UI
+```
+There are also some unit tests available. For instance, unit test for `Coord` class 
+can be executed by running the following code in the root directory of project
+ ```shell
+cd build
+make coordtest
+./coordtest
 ```

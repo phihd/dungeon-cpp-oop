@@ -71,13 +71,13 @@ int main()
     int text_shine = 0;
     // Initial stage of the program
     int stage = START_SCREEN_STAGE;
-    ifstream ifs("../../font/story.txt");
+    ifstream ifs("../../resource/story.txt");
     string story((istreambuf_iterator<char>(ifs)),
                  (istreambuf_iterator<char>()));
     string selectedCase = "Buy";
 
     sf::Font font;
-    font.loadFromFile("../../font/Roboto-Medium.ttf");
+    font.loadFromFile("../../resource/Roboto-Medium.ttf");
     sf::Vector2i mouse_pos;
     sf::Event event;
 
@@ -91,10 +91,10 @@ int main()
             sf::RectangleShape upgradeButton = createButton(windowX * 0.25f, windowY * 0.75f, (float)buttonX, (float)buttonY, transparency, true);
             sf::RectangleShape quitButton = createButton(windowX * 0.75f, windowY * 0.75f, (float)buttonX, (float)buttonY, transparency, true);
             sf::Texture buyTexture, sellTexture, upgradeTexture, quitTexture;
-            buyTexture.loadFromFile("../../font/Buy_option.png");
-            sellTexture.loadFromFile("../../font/Sell_option.png");
-            upgradeTexture.loadFromFile("../../font/Upgrade_option.png");
-            quitTexture.loadFromFile("../../font/Quit_option.png");
+            buyTexture.loadFromFile("../../resource/Buy_option.png");
+            sellTexture.loadFromFile("../../resource/Sell_option.png");
+            upgradeTexture.loadFromFile("../../resource/Upgrade_option.png");
+            quitTexture.loadFromFile("../../resource/Quit_option.png");
             buyButton.setTexture(&buyTexture);
             sellButton.setTexture(&sellTexture);
             upgradeButton.setTexture(&upgradeTexture);
@@ -148,7 +148,7 @@ int main()
         {
             sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100);
             sf::Texture backButton;
-            backButton.loadFromFile("../../font/stone_arrow.png");
+            backButton.loadFromFile("../../resource/stone_arrow.png");
             backButtonRect.setTexture(&backButton);
             window.draw(backButtonRect);
 
@@ -191,7 +191,7 @@ int main()
                 quantity.setPosition(quantityPos);
 
                 sf::Texture actionButton;
-                actionButton.loadFromFile("../../font/" + selectedCase + ".png");
+                actionButton.loadFromFile("../../resource/" + selectedCase + ".png");
                 sf::RectangleShape actionButtonRect = createButton(940, text_location_y, 190, 60);
                 actionButtonRect.setTexture(&actionButton);
                 actionButtons.push_back(actionButtonRect);
