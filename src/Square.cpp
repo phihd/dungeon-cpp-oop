@@ -15,7 +15,7 @@ bool Square::Place(std::vector<Item>* treasure) { return false; }
 
 bool Square::IsOpened() { return false; }
 
-bool Square::Open() { return false; }
+std::vector<Item> Square::Open() { return {}; }
 
 std::string Square::PrintTreasure() { return ""; }
 
@@ -41,7 +41,7 @@ bool Wall::Place(std::vector<Item>* treasure) { return false; }
 
 bool Wall::IsOpened() { return false; }
 
-bool Wall::Open() { return false; }
+std::vector<Item> Wall::Open() { return {}; }
 
 std::string Wall::PrintTreasure() { return "Not Treasure Square"; }
 
@@ -75,7 +75,7 @@ bool Floor::Place(std::vector<Item>* treasure) { return false; }
 
 bool Floor::IsOpened() { return false; }
 
-bool Floor::Open() { return false; }
+std::vector<Item> Floor::Open() { return {}; }
 
 std::string Floor::PrintTreasure() { return "Not Treasure Square"; }
 
@@ -108,14 +108,18 @@ bool Treasure::Place(std::vector<Item>* treasure) { treasure_ = treasure; return
 
 bool Treasure::IsOpened() { return treasure_ == NULL; }
 
-std::vector<Item>* Treasure::Open() {
+std::vector<Item> Treasure::Open() {
+	std::vector<Item> result = {};
 	if (!this->IsOpened()) {
-		std::vector<Item>* result = treasure_;
+		for (unsigned int i = 0; i < treasure_->size(); i++) {
+			Item item = treasure_->operator[](i);
+			result.push_back(item);
+		}
 		treasure_ = NULL;
 		return result;
 	}
 	else {
-		return new std::vector<Item>{};
+		return std::vector<Item>{};
 	}
 }
 

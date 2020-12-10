@@ -227,9 +227,9 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 			}
 			else if (square->ToString() == "Treasure") {
 				if (square->IsOpened())
-					row.push_back(7);
-				else
 					row.push_back(8);
+				else
+					row.push_back(7);
 			}
 			else
 				continue;
@@ -411,6 +411,18 @@ bool Battlefield::HasEnemies() {
 
 bool Battlefield::IsClear() {
 	return !this->HasEnemies() && !this->HasTreasure();
+}
+
+bool Battlefield::IsLost()
+{
+	bool lost = true;
+	for (unsigned int i = 0; i < allies_.size(); i++) {
+		if (allies_[i]->IsAlive()) {
+			lost = false;
+			break;
+		}
+	}
+	return false;
 }
 
 bool Battlefield::Outcome(Unit* attacker, Unit* defender)

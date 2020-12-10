@@ -23,7 +23,7 @@ public:
 	//IsOpened: return true if the treasure in the treasure square is opened
 	virtual bool IsOpened();
 	//Open: return true if successfully take the treasure:
-	virtual std::vector<Item>* Open();
+	virtual std::vector<Item> Open();
 	//Print the treasure list, Treasure square returns "empty treasure" if empty and other returns "Not Treasure" by defaults
 	virtual std::string PrintTreasure();
 	//Print the unit occupying the square, Treasure square returns "empty square" if empty and other returns "Not Floor" by defaults
@@ -50,7 +50,7 @@ public:
 	//IsOpened: return false by default
 	bool IsOpened();
 	//Open: return false by default
-	std::vector<Item>* Open();
+	std::vector<Item> Open();
 	//returns"Not Treasure" by defaults
 	std::string PrintTreasure();
 	//returns "Not Floor" by defaults
@@ -80,7 +80,7 @@ public:
 	//IsOpened: return false by default
 	bool IsOpened();
 	//Open: return false by default
-	std::vector<Item>* Open();
+	std::vector<Item> Open();
 	//returns"Not Treasure" by defaults
 	std::string PrintTreasure();
 	//Print the unit occupying the square, Treasure square returns "empty square" if empty
@@ -110,7 +110,7 @@ public:
 	//IsOpened: return true if the treasure has already been taken
 	bool IsOpened();
 	//Open: return true if successfully take the treasure:
-	std::vector<Item>* Open();
+	std::vector<Item> Open();
 	//return Treasure
 	std::string ToString();
 	//Print the treasure list, Treasure square returns "empty treasure" if empty

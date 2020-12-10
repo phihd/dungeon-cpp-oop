@@ -81,7 +81,7 @@ public:
     /*Add quantity x item(s) to the inventory*/
     string AddItem(Item item, int quantity);
 
-    //string AddItems(vector<)
+    string AddItems(vector<Item*> items);
 
     /*Remove quantity x item(s) in the inventory*/
     string RemoveItem(Item item, int quantity);
@@ -118,6 +118,8 @@ public:
     void Enter(Battlefield *battlefield);
 
     void Exit(Battlefield *battlefield);
+
+    string OpenTreasure(Unit *unit, Treasure treasure);
 };
 
 class Bot: public Player {
