@@ -413,6 +413,18 @@ bool Battlefield::IsClear() {
 	return !this->HasEnemies() && !this->HasTreasure();
 }
 
+bool Battlefield::IsLost()
+{
+	bool lost = true;
+	for (unsigned int i = 0; i < allies_.size(); i++) {
+		if (allies_[i]->IsAlive()) {
+			lost = false;
+			break;
+		}
+	}
+	return false;
+}
+
 bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 {
 	std::vector<Coord> area = this->BFS_Attack(attacker->GetLocation(), attacker->GetAttackRange());

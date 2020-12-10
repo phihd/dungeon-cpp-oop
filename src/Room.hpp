@@ -83,6 +83,8 @@ public:
 	bool HasEnemies();
 	//IsClear returns true if the objective of the room is completed
 	bool IsClear();
+	//IsLost returns true if the Player dies
+	bool IsLost();
 	//Return outcome of a battle between to units. Returns true if 2 units are able to attack each other and if they have different type
 	bool Outcome(Unit* attacker, Unit* defender);
 	//Add Ally units to Room
