@@ -2,6 +2,8 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
+#include <fstream>
+#include <string>
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
@@ -9,18 +11,42 @@
 #include <SFML\Audio.hpp>
 #include "Player.cpp"
 #include "Item.hpp"
-//#include "Stat.hpp"
-//#include "Room.hpp"
-// #include "Unit.hpp"
-// #include "World.hpp"
-#include "Grid.cpp"
-// #include "Coord.hpp"
-// #include "Square.hpp"
+
+#define START_SCREEN_STAGE 0
+#define STORY_STAGE 1
+#define STORE_FUNCTIONALITY_SELECTION_STAGE 2
+#define STORE_TRADE_STAGE 3
+#define BATTLE_ROOM_STAGE 4
 
 using namespace std;
+
+bool buttonClicked(sf::RectangleShape button, sf::Vector2i mousePosition)
+{
+    return button.getPosition().x <= mousePosition.x && mousePosition.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePosition.y && mousePosition.y <= button.getPosition().y + button.getSize().y;
+}
+
+sf::RectangleShape createButton(float xPos, float yPos, float xSize, float ySize, int opacity = 255, bool centered = false)
+{
+    sf::Vector2f buttonPos;
+    if (centered)
+    {
+        buttonPos.x = xPos - xSize / 2;
+        buttonPos.y = yPos - ySize / 2;
+    }
+    else
+    {
+        buttonPos.x = xPos;
+        buttonPos.y = yPos;
+    }
+    sf::Vector2f buttonSize(xSize, ySize);
+    sf::RectangleShape button(buttonSize);
+    button.setPosition(buttonPos);
+    button.setFillColor(sf::Color::Color(255, 255, 255, opacity));
+    return button;
+}
+
 int main()
-{   
-    
+{
     Player player = Player("Player 1");
     Stat universalStatus = Stat(1, 1, 1, 1, 1, 1, 1);
     player.AddItem(Item("a", "a", universalStatus, 5), 12);
@@ -32,94 +58,100 @@ int main()
     player.AddItem(Item("g", "a", universalStatus, 2), 1200);
     player.AddItem(Item("h", "a", universalStatus, 2), 2);
 
-    unsigned int window_x = 1200;
-    unsigned int window_y = 720;
-    unsigned int button_x = 400;
-    unsigned int button_y = 200;
+    unsigned int windowX = 1200;
+    unsigned int windowY = 720;
+    unsigned int buttonX = 400;
+    unsigned int buttonY = 200;
     //Create the window
-    sf::RenderWindow window(sf::VideoMode(window_x, window_y), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode((int)windowX, (int)windowY), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(500);
     float grid_size = 60.f;
-
-    sf::Vector2i mouse_pos_window;
-    sf::Vector2u mouse_pos_grid;
-    bool isClick = false;
-    bool WINDOW_HAS_FOCUS = false;
-    //Create the map
-    std::vector<std::vector<sf::RectangleShape>> tile_map;
-    sf::Vector2i map_size(20, 12);
-    bool IS_MAIN_MENU_INTERFACE = false;
-    // bool display_animation = true;
     bool direction = true;
     int transparency = 155;
-    string selected_case = "Buy";
+    int text_shine = 0;
+    // Initial stage of the program
+    int stage = START_SCREEN_STAGE;
+    ifstream ifs("../../font/story.txt");
+    string story((istreambuf_iterator<char>(ifs)),
+                 (istreambuf_iterator<char>()));
+    string selectedCase = "Buy";
+
+    sf::Font font;
+    font.loadFromFile("../../font/Roboto-Medium.ttf");
+    sf::Vector2i mouse_pos;
+    sf::Event event;
 
     while (window.isOpen())
     {
-        //Update mouse positions
-        // mouse_pos_window = sf::Mouse::getPosition(window);
-        // mouse_pos_grid.x = mouse_pos_window.x / static_cast<unsigned>(grid_size);
-        // mouse_pos_grid.y = mouse_pos_window.y / static_cast<unsigned>(grid_size);
-
-        // //Update the selector
-        // tile_mouse.setPosition(mouse_pos_grid.x * grid_size, mouse_pos_grid.y * grid_size);
         window.clear();
-        sf::Font font;
-        font.loadFromFile("../../font/Roboto-Medium.ttf");
-        if (isClick /*IS_MAIN_MENU_INTERFACE*/)
+        if (stage == STORE_FUNCTIONALITY_SELECTION_STAGE)
         {
-            // display_animation = true;
-            sf::Vector2f buyLoc(window_x * 0.25 - button_x / 2, window_y * 0.25 - button_y / 2);
-            sf::Vector2f sellLoc(window_x * 0.75 - button_x / 2, window_y * 0.25 - button_y / 2);
-            sf::Vector2f upgradeLoc(window_x * 0.25 - button_x / 2, window_y * 0.75 - button_y / 2);
-            sf::Vector2f quitLoc(window_x * 0.75 - button_x / 2, window_y * 0.75 - button_y / 2);
-            sf::Vector2f buttonSize(button_x, button_y);
-            sf::Texture t;
-            t.loadFromFile("../../font/button.png");
-            sf::RectangleShape buyButton(buttonSize);
-            buyButton.setTexture(&t);
-            buyButton.setPosition(buyLoc);
-            buyButton.setFillColor(sf::Color::Color(255, 255, 255, transparency));
-            sf::RectangleShape sellButton(buttonSize);
-            sellButton.setTexture(&t);
-            sellButton.setPosition(sellLoc);
-            sellButton.setFillColor(sf::Color::Color(255, 255, 255, transparency));
-            sf::RectangleShape upgradeButton(buttonSize);
-            upgradeButton.setTexture(&t);
-            upgradeButton.setPosition(upgradeLoc);
-            upgradeButton.setFillColor(sf::Color::Color(255, 255, 255, transparency));
-            sf::RectangleShape quitButton(buttonSize);
-            quitButton.setTexture(&t);
-            quitButton.setPosition(quitLoc);
-            quitButton.setFillColor(sf::Color::Color(255, 255, 255, transparency));
+            sf::RectangleShape buyButton = createButton(windowX * 0.25f, windowY * 0.25f, (float)buttonX, (float)buttonY, transparency, true);
+            sf::RectangleShape sellButton = createButton(windowX * 0.75f, windowY * 0.25f, (float)buttonX, (float)buttonY, transparency, true);
+            sf::RectangleShape upgradeButton = createButton(windowX * 0.25f, windowY * 0.75f, (float)buttonX, (float)buttonY, transparency, true);
+            sf::RectangleShape quitButton = createButton(windowX * 0.75f, windowY * 0.75f, (float)buttonX, (float)buttonY, transparency, true);
+            sf::Texture buyTexture, sellTexture, upgradeTexture, quitTexture;
+            buyTexture.loadFromFile("../../font/Buy_option.png");
+            sellTexture.loadFromFile("../../font/Sell_option.png");
+            upgradeTexture.loadFromFile("../../font/Upgrade_option.png");
+            quitTexture.loadFromFile("../../font/Quit_option.png");
+            buyButton.setTexture(&buyTexture);
+            sellButton.setTexture(&sellTexture);
+            upgradeButton.setTexture(&upgradeTexture);
+            quitButton.setTexture(&quitTexture);
             window.draw(buyButton);
             window.draw(sellButton);
             window.draw(upgradeButton);
             window.draw(quitButton);
-            if (direction)
+
+            if (window.pollEvent(event))
             {
-                if (++transparency == 255)
-                    direction ^= true;
+                if (event.type == sf::Event::Closed)
+                {
+                    window.close();
+                }
+                else if (event.type == sf::Event::MouseButtonReleased)
+                {
+                    mouse_pos = sf::Mouse::getPosition(window);
+                    if (buttonClicked(buyButton, mouse_pos))
+                    {
+                        stage = STORE_TRADE_STAGE;
+                        selectedCase = "Buy";
+                    }
+                    else if (buttonClicked(sellButton, mouse_pos))
+                    {
+                        stage = STORE_TRADE_STAGE;
+                        selectedCase = "Sell";
+                    }
+                    else if (buttonClicked(upgradeButton, mouse_pos))
+                    {
+                        stage = STORE_TRADE_STAGE;
+                        selectedCase = "Upgrade";
+                    }
+                    else if (buttonClicked(quitButton, mouse_pos))
+                    {
+                        stage = BATTLE_ROOM_STAGE;
+                        selectedCase = "";
+                    }
+                }
             }
-            else
+            if (direction && ++transparency == 255)
             {
-                if (--transparency == 155)
-                    direction ^= true;
+                direction ^= true;
+            }
+            else if (!direction && --transparency == 155)
+            {
+                direction ^= true;
             }
         }
-        else
+        else if (stage == STORE_TRADE_STAGE)
         {
-
-            sf::Vector2f backButtonPos(50, 30);
-            sf::Vector2f backButtonSize(200, 100);
+            sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100);
             sf::Texture backButton;
-
             backButton.loadFromFile("../../font/stone_arrow.png");
-            sf::RectangleShape backButtonRect(backButtonSize);
             backButtonRect.setTexture(&backButton);
-            backButtonRect.setPosition(backButtonPos);
-            // if (display_animation-- > 0)  back_buttonRect.setOutlineColor(sf::Color::Blue);
             window.draw(backButtonRect);
+
             sf::Text title;
             sf::Vector2f titlePos(80, 150);
             title.setFont(font);
@@ -128,7 +160,8 @@ int main()
             title.setString("Name       Description                              Price           Quantity     Action");
             title.setPosition(titlePos);
             window.draw(title);
-            unsigned int text_location_y = 210;
+            float text_location_y = 210;
+            vector<sf::RectangleShape> actionButtons;
             for (auto itemset : player.GetInventory())
             {
                 sf::Text name, description, price, quantity;
@@ -136,7 +169,7 @@ int main()
                 sf::Vector2f descriptionPos(220, text_location_y);
                 sf::Vector2f pricePos(620, text_location_y);
                 sf::Vector2f quantityPos(780, text_location_y);
-                sf::Vector2f actionButtonPos(940, text_location_y - 12);
+
                 name.setFont(font);
                 name.setFillColor(sf::Color::White);
                 name.setString(itemset.first.GetName());
@@ -157,85 +190,109 @@ int main()
                 quantity.setString(to_string(itemset.second));
                 quantity.setPosition(quantityPos);
 
+                sf::Texture actionButton;
+                actionButton.loadFromFile("../../font/" + selectedCase + ".png");
+                sf::RectangleShape actionButtonRect = createButton(940, text_location_y, 190, 60);
+                actionButtonRect.setTexture(&actionButton);
+                actionButtons.push_back(actionButtonRect);
                 window.draw(name);
                 window.draw(description);
                 window.draw(price);
                 window.draw(quantity);
-                sf::Texture actionButton;
-                actionButton.loadFromFile("../../font/" + selected_case + ".png");
-                sf::Vector2f actionButtonSize(190, 60);
-                sf::RectangleShape actionButtonRect(actionButtonSize);
-                actionButtonRect.setTexture(&actionButton);
-                actionButtonRect.setPosition(actionButtonPos);
                 window.draw(actionButtonRect);
 
                 text_location_y += 60;
             }
-            // display_animation = false;
-        }
-
-        //Events
-        sf::Event evnt;
-        while (window.pollEvent(evnt))
-        {
-
-            switch (evnt.type)
+            if (window.pollEvent(event))
             {
-            case sf::Event::Closed:
-                window.close();
-                break;
-
-                // case sf::Event::MouseEntered:
-                //     WINDOW_HAS_FOCUS = true;
-
-                // case sf::Event::MouseLeft:
-                //     WINDOW_HAS_FOCUS = false;
-
-            case sf::Event::KeyPressed:
-                if (evnt.key.code == sf::Keyboard::Escape)
+                if (event.type == sf::Event::Closed)
+                {
                     window.close();
-                break;
-            case sf::Event::MouseButtonReleased:
-                isClick = !isClick;
-                break;
-
-            default:
-                break;
+                }
+                else if (event.type == sf::Event::MouseButtonReleased)
+                {
+                    mouse_pos = sf::Mouse::getPosition(window);
+                    if (buttonClicked(backButtonRect, mouse_pos))
+                    {
+                        stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
+                        selectedCase = "";
+                    }
+                    else
+                        for (auto b : actionButtons)
+                            if (buttonClicked(b, mouse_pos))
+                            {
+                                int itemNum = (int)(b.getPosition().y - 210) / 60;
+                                // FIXME: Do correct operation accordingly
+                            }
+                }
             }
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        else if (stage == BATTLE_ROOM_STAGE)
         {
-
-            mouse_pos_window = sf::Mouse::getPosition(window);
-            // mouse_pos_grid.x = mouse_pos_window.x;
-            // mouse_pos_grid.y = mouse_pos_window.y;
-            // cout << mouse_pos_grid.x << endl;
-            // cout << mouse_pos_grid.y << endl;
         }
-        // if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        // {
-        // 	mouse_pos_window = sf::Mouse::getPosition(window);
-        // 	mouse_pos_grid.x = mouse_pos_window.x / static_cast<unsigned>(grid_size);
-        // 	mouse_pos_grid.y = mouse_pos_window.y / static_cast<unsigned>(grid_size);
-        // 	tile_mouse.setFillColor(sf::Color::Red);
-        // 	isClick = true;
-        // }
-        // else
-        // {
-        // 	if (isClick)
-        // 	{
-        // 		isClick = false;
-        // 		tile_mouse.setFillColor(sf::Color::Transparent);
-        // 		if (tile_map[mouse_pos_grid.x][mouse_pos_grid.y].getFillColor() == sf::Color::Cyan) tile_map[mouse_pos_grid.x][mouse_pos_grid.y].setFillColor(sf::Color::Red);
-        // 		else tile_map[mouse_pos_grid.x][mouse_pos_grid.y].setFillColor(sf::Color::Cyan);
-        // 	}
-        // }
+        else if (stage == START_SCREEN_STAGE)
+        {
+            sf::Text dungeonTitle, clickToStart;
 
-        //Clear and draw
+            dungeonTitle.setFont(font);
+            dungeonTitle.setFillColor(sf::Color::White);
+            dungeonTitle.setString("Dungeon Crawler!!!");
+            dungeonTitle.setCharacterSize(72);
+            dungeonTitle.setStyle(sf::Text::Bold);
 
-        // for (int x = 0; x < map_size.x; x++)
-        // 	for (int y = 0; y < map_size.y; y++) window.draw(tile_map[x][y]);
-        // window.draw(tile_mouse);
+            sf::FloatRect titleRect = dungeonTitle.getLocalBounds();
+            dungeonTitle.setOrigin(titleRect.left + titleRect.width / 2.0f,
+                                   titleRect.top + titleRect.height / 2.0f);
+            dungeonTitle.setPosition(sf::Vector2f(windowX / 2.0f, windowY * 0.2f));
+
+            clickToStart.setFont(font);
+            clickToStart.setFillColor(sf::Color::White);
+            clickToStart.setString("Click anywhere to start");
+            sf::FloatRect ctsRect = clickToStart.getLocalBounds();
+            clickToStart.setOrigin(ctsRect.left + ctsRect.width / 2.0f,
+                                   ctsRect.top + ctsRect.height / 2.0f);
+            clickToStart.setPosition(sf::Vector2f(windowX / 2.0f, windowY * 0.8f));
+
+            window.draw(dungeonTitle);
+            if (++text_shine % 800 > 400)
+            {
+                window.draw(clickToStart);
+            }
+
+            if (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                {
+                    window.close();
+                }
+                else if (event.type == sf::Event::MouseButtonReleased)
+                {
+                    text_shine = 1;
+                    stage = STORY_STAGE;
+                }
+            }
+        }
+        else if (stage == STORY_STAGE)
+        {
+            sf::Text storyText;
+            storyText.setFont(font);
+            storyText.setFillColor(sf::Color::White);
+            storyText.setString(story.substr(0, (text_shine++) / 10));
+
+            sf::FloatRect storyRect = storyText.getLocalBounds();
+            storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
+                                storyRect.top);
+            storyText.setPosition(sf::Vector2f(windowX / 2.0f, windowY * 0.1f));
+            window.draw(storyText);
+            if (size(story) == size(storyText.getString().toAnsiString()))
+                stage = STORE_FUNCTIONALITY_SELECTION_STAGE; // Here should be something else
+            if (window.pollEvent(event) && event.type == sf::Event::Closed)
+                window.close();
+        }
+        else
+        {
+            window.close();
+        }
 
         window.display();
     }
