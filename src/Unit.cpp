@@ -96,12 +96,14 @@ string Unit::Description() {
     string MoveRange = to_string(GetStats().GetMoveRange());
     string AttackRange = to_string(GetStats().GetAttackRange());
 
-    string Inventory = "\n\nCarrying:\n";
+    string Inventory = "";
+    if (!Inventory.empty())
+        Inventory += "\n\nCarrying:\n";
     for (int i = 0; i < inventory_.size(); i++)
         Inventory += inventory_[i].GetName() + "\n";
 
-    return " - " + name_ + "\nHP: " + HP + "/" + MaxHP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical strike chance: " + Crit + 
-            "\nMove range: " + MoveRange + + "\nAttack range: " + AttackRange + Inventory;
+    return " - " + name_ + "\nHP: " + HP + "/" + MaxHP + "\nAttack: " + Atk + "\nDefence: " + Def + "\nCritical Strike Chance: " + Crit + 
+            "\nMove Range: " + MoveRange + + "\nAttack Range: " + AttackRange + Inventory;
 }
 
 bool operator==(const Unit &a, const Unit &b) {
