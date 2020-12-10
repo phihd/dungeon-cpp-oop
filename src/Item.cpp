@@ -31,29 +31,30 @@ string Item::FullDescription() {
     if (stat_.GetAtk() != 0) {
         if (stat_.GetAtk() > 0)
             fullDescription += "+";
-        fullDescription += stat_.GetAtk() + " Attack Damage\n";
+        fullDescription += to_string(stat_.GetAtk()) + " Attack Damage\n";
     }
     if (stat_.GetDef() != 0) {
         if (stat_.GetDef() > 0)
             fullDescription += "+";
-        fullDescription += stat_.GetDef() + " Defense\n";
+        fullDescription += to_string(stat_.GetDef()) + " Defense\n";
     }
     if (stat_.GetCrit() != 0) {
         if (stat_.GetCrit() > 0)
             fullDescription += "+";
-        fullDescription += stat_.GetCrit() + " Critical Strike Chance\n";
+        fullDescription += to_string(stat_.GetCrit()) + " Critical Strike Chance\n";
     }
     if (stat_.GetMoveRange() != 0) {
         if (stat_.GetMoveRange() > 0)
             fullDescription += "+";
-        fullDescription += stat_.GetMoveRange() + " Move Range\n";
+        fullDescription += to_string(stat_.GetMoveRange()) + " Move Range\n";
     }
     if (stat_.GetAttackRange() != 0) {
         if (stat_.GetAttackRange() > 0)
             fullDescription += "+";
-        fullDescription += stat_.GetAttackRange() + " Attack Range\n";
+        fullDescription += to_string(stat_.GetAttackRange()) + " Attack Range\n";
     }
     fullDescription += "\"" + GetDescription() + "\"";
+    return fullDescription;
 }
 
 Stat Item::GetStats() const {

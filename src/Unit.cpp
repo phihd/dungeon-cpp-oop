@@ -40,9 +40,8 @@ void Unit::AdjustStats(Stat b) {
 }
 
 bool Unit::Equip(Item item) {
-    for (unsigned int i = 0; i < inventory_.size(); i++)
-        if (inventory_[i] == item || inventory_.size() >= inventory_max_size)
-            return false;
+    if (inventory_.size() >= inventory_max_size)
+        return false;
     inventory_.push_back(item);
     stats_ += item.GetStats();
     return true;
@@ -97,7 +96,7 @@ string Unit::Description() {
     string AttackRange = to_string(GetStats().GetAttackRange());
 
     string Inventory = "";
-    if (!Inventory.empty())
+    if (!inventory_.empty())
         Inventory += "\n\nCarrying:\n";
     for (int i = 0; i < inventory_.size(); i++)
         Inventory += inventory_[i].GetName() + "\n";

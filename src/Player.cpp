@@ -280,6 +280,7 @@ vector<Unit*> Player::GetArmy() {
 
 void Player::Enter(Battlefield *battlefield) {
     battlefield_ = battlefield;
+    //battlefield_->AllyArrive(army_);
 }
 
 void Player::Exit(Battlefield *battlefield) {
@@ -289,18 +290,17 @@ void Player::Exit(Battlefield *battlefield) {
 string Player::OpenTreasure(Unit *unit, Square treasure) {
     if (find(army_.begin(), army_.end(), unit) == army_.end())
         return unit->GetName() + " is not in the army.";
-    if (battlefield_->NearTreasure(unit))  {
-        auto tmp = treasure.Open();
+    if (!battlefield_->NearTreasure(unit))
+        return unit->GetName() + " can not reach the treasure.";
+    vector<Item> tmp = battlefield_->OpenTreasure(unit);
+    if (!tmp.empty())  {
         vector<Item*> loots;
         for (int i = 0; i < tmp.size(); i++)
             loots.push_back(&tmp[i]);
-
-        if (loots.empty())
-            return "This treasure has been opened.";
         AddItems(loots);
         return "Opened treasure.";
     }
-    return unit->GetName() + " can not reach the treasure.";
+    return "This treasure has been opened.";
 }
 
 
