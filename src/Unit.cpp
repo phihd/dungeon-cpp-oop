@@ -104,6 +104,14 @@ string Unit::Description() {
             "\nMove range: " + MoveRange + + "\nAttack range: " + AttackRange;
 }
 
+vector<Item*> Unit::OpenTreasure(Treasure treasure) {
+    auto tmp = treasure.Open();
+    vector<Item*> res;
+    for (int i = 0; i < tmp.size(); i++)
+        res.push_back(&tmp[i]);
+    return res;
+}
+
 bool operator==(const Unit &a, const Unit &b) {
     return a.GetName() == b.GetName();
 }
