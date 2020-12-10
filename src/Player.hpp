@@ -119,7 +119,8 @@ public:
 
     void Exit(Battlefield *battlefield);
 
-    string OpenTreasure(Unit *unit, Treasure treasure);
+    /*Open a treasure through provided coord*/
+    string OpenTreasure(Unit *unit, Square treasure);
 };
 
 class Bot: public Player {
