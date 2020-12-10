@@ -180,6 +180,7 @@ string Player::AddItem(Item item, int quantity) {
 string Player::AddItems(vector<Item*> items) {
     for (int i = 0; i < items.size(); i++)
         AddItem(*items[i], 1);
+    return "Added lots of items.";
 }
 
 string Player::RemoveItem(Item item, int quantity) {
@@ -289,7 +290,11 @@ string Player::OpenTreasure(Unit *unit, Treasure treasure) {
     if (find(army_.begin(), army_.end(), unit) == army_.end())
         return unit->GetName() + " is not in the army.";
     if (battlefield_->NearTreasure(unit))  {
-        vector<Item*> loots = unit->OpenTreasure(treasure);
+        auto tmp = treasure.Open();
+        vector<Item*> loots;
+        for (int i = 0; i < tmp.size(); i++)
+            loots.push_back(&tmp[i]);
+
         if (loots.empty())
             return "This treasure has been opened.";
         AddItems(loots);
