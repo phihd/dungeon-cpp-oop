@@ -62,8 +62,6 @@ public:
     bool HasMoved();
 
     bool HasAttacked();
-
-    vector<Item*> OpenTreasure(Treasure treasure);
 };
 
 bool operator==(const Unit& a, const Unit& b);
