@@ -395,6 +395,8 @@ public:
 	Ally* wizard = new Ally("Grand Wizard", Stat(200, 200, 120, 50, 0, 3, 5));
 	Ally* guardian = new Ally("Guardian", Stat(500, 500, 50, 200, 0, 4, 1));
 	Ally* swordman = new Ally("Sword man", Stat(300, 300, 100, 60, 0, 6, 1));
+	std::vector<Ally*> allies = { paladin, knight, mage, archer, sniper, valkyrie, assassin, wizard, guardian, swordman };
+	std::vector<Unit*> allies_u = { paladin, knight, mage, archer, sniper, valkyrie, assassin, wizard, guardian, swordman };
 
 	//Enemies
 	std::vector<std::vector<Enemy*>> enemies = {
