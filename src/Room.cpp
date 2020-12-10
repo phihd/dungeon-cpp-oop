@@ -145,7 +145,7 @@ std::vector<string> Battlefield::ToString() {
 			else if (square->ToString() == "Floor") {
 				if (square->IsOccupied()) {
 					Unit* occupant = square->Get();
-					if (occupant->ToString() == "Ally") {
+					if (occupant->isAlly()) {
 						string ally;
 						for (unsigned int i = 0; i < allies_.size(); i++) {
 							if (occupant->GetName() == allies_[i]->GetName()) {
@@ -155,7 +155,7 @@ std::vector<string> Battlefield::ToString() {
 						}
 						row += ally;
 					}
-					else if (occupant->ToString() == "Enemy") {
+					else if (!occupant->isAlly()) {
 						string enemy;
 						for (unsigned int i = 0; i < enemies_.size(); i++) {
 							if (occupant->GetName() == enemies_[i]->GetName()) {
@@ -198,7 +198,7 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 			else if (square->ToString() == "Floor") {
 				if (square->IsOccupied()) {
 					Unit* occupant = square->Get();
-					if (occupant->ToString() == "Ally") {
+					if (occupant->isAlly()) {
 						int ally;
 						for (unsigned int i = 0; i < allies_.size(); i++) {
 							if (occupant->GetName() == allies_[i]->GetName()) {
@@ -208,7 +208,7 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 						}
 						row.push_back(ally);
 					}
-					else if (occupant->ToString() == "Enemy") {
+					else if (!occupant->isAlly()) {
 						int enemy;
 						for (unsigned int i = 0; i < enemies_.size(); i++) {
 							if (occupant->GetName() == enemies_[i]->GetName()) {
@@ -299,6 +299,7 @@ bool Battlefield::SpawnEnemy() {
 		auto rng = std::default_random_engine{};
 		rng.seed(seed);
 		std::shuffle(std::begin(available_coord), std::end(available_coord), rng);
+		
 		//put unit
 		for (unsigned int i = 0; i < enemies_.size(); i++) {
 			Coord coord = available_coord[i];
@@ -310,7 +311,6 @@ bool Battlefield::SpawnEnemy() {
 		}
 	}
 	else {
-		std::cout << "#Spawn Coord < #Enemy " << std::endl;
 		if (enemy_spawn_.size() < enemies_.size()) {
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
@@ -353,7 +353,6 @@ bool Battlefield::SpawnEnemy() {
 			}
 		}
 		else {
-			std::cout << "#Spawn Coord >= #Enemy " << std::endl;
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
 				Unit* enemy = enemies_[i];

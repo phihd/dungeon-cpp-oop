@@ -1,6 +1,6 @@
 #pragma once
 #include "World.hpp"
-#include "World.cpp"	// This is for VSCode, remove if you use visual studio
+//#include "World.cpp"	// This is for VSCode, remove if you use visual studio
 #include <iostream>
 
 #include <string>
@@ -41,85 +41,16 @@ void PrintRoomInt(Battlefield room) {
 
 int main()
 {
-	// Create units
-	std::cout << "###########################################################################################################" << std::endl;
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0, 1, 5));
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0, 2, 3));
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0, 3, 4));
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0, 4, 1));
-	Ally* heavy_archer = new Ally("HeavyArcher", Stat(100, 100, 100, 0, 0, 5, 20));
+	Player player = Player("dm Phi");
+	Game game = Game(player);
+	Bot bot = game.bot;
+	std::vector<Battlefield> world = game.CreateWorld();
+	Battlefield room = world[2];
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0, 1, 3));
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0, 1, 4));
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0, 4, 2));
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0, 4, 3));
-	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0, 5, 1));
+	for (unsigned int k = 0; k < room.ToString().size(); k++)
+		std::cout << room.ToString()[k] << std::endl;
+	std::cout << "----------------------------------------------------------------------------------------" << std::endl;
 
-	vector<Unit*> allies_u{ paladin, knight, mage, archer, heavy_archer };
-	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
-	vector<Unit*> enemies_u{ melee, melee1, range, range1, canon };
-	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
-
-	Player player = Player("Player 1");
-	player.Recruit(allies_u);
-	Bot bot = Bot("Bot 1");
-	bot.Recruit(enemies_u);
-	/**************************************************************************************************************************************************************/
-	//Game game(player);
-	 
-	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 
-		Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 1300) };
-	
-	Battlefield room(22, 14, enemies, allies, treasure_list);
-
-	player.Enter(&room);
-
-	player.AddItem(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 1);
-	player.AddItem(Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 3200), 1);
-
-	bot.Enter(&room);
-
-	std::vector<string> result = room.ToString();
-	for (unsigned int i = 0; i < result.size(); i++) {
-		std::cout << result[i] << std::endl;
-	}
-	std::cout << std::endl;
-
-	PrintRoomInt(room);
-
-	std::vector<string> design{".....###..1.###.....",
-							   "...###........###...",
-							   "...#.####...#...#...",
-							   "##.....##...##....##",
-							   "##..........########",
-							   "##....##....##....##",
-							   "##....##....###..###",
-							   "##....##..........##",
-							   "########....########",
-							   "......##....##......",
-							   "............##....##",
-							   "......##..........##" };
-
-	std::string temp = room.FromString(design);
-
-	room.SetAllySpawn(std::vector<Coord>{Coord(1, 12), Coord(1, 11), Coord(2, 12), Coord(2, 11), Coord(3, 11)});
-	
-	room.SpawnAlly();
-
-	room.SpawnEnemy();
-	
-	result = room.ToString();
-	for (unsigned int i = 0; i < result.size(); i++) {
-		std::cout << result[i] << std::endl;
-	}
-	std::cout << std::endl;
-
-	PrintRoomInt(room);
-	/**
-	std::vector<Coord> avai_coords = room.BFS(Coord(6, 11), 4);
-	for (unsigned int i = 0; i < avai_coords.size(); i++)
-		std::cout << avai_coords[i].ToString() << std::endl;
-		*/
 /**************************************************************************************************************************************************************/
 	// A turn-based match between player vs Bot
 	int turn = 0;

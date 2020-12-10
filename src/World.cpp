@@ -75,18 +75,17 @@ std::vector<Battlefield> Game::CreateWorld()
 			new_room.UnitArrive(lv_enemies);
 		}
 		new_room.SpawnEnemy();
-		/**
+		
 		std::cout << "Room: " << i+1 << std::endl;
 		for (unsigned int k = 0; k < lv_enemies.size(); k++) {
 			std::cout << lv_enemies[k]->Description() << std::endl;
 			std::cout << "----------------------------" << std::endl;
 		}
-		std::cout << "\nSpawn:" << new_room.SpawnEnemy() << std::endl;
 		std::cout << std::endl;
 		for (unsigned int k = 0; k < new_room.ToString().size(); k++)
 			std::cout << new_room.ToString()[k] << std::endl;
 		std::cout << "----------------------------------------------------------------------------------------"<< std::endl;
-		*/
+		
 		world.push_back(new_room);
 	}
 	return world;
