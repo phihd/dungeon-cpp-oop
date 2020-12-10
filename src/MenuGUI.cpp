@@ -11,13 +11,6 @@
 #include <SFML\Audio.hpp>
 #include "Player.cpp"
 #include "Item.hpp"
-//#include "Stat.hpp"
-//#include "Room.hpp"
-// #include "Unit.hpp"
-// #include "World.hpp"
-//#include "Grid.cpp"
-// #include "Coord.hpp"
-// #include "Square.hpp"
 
 #define START_SCREEN_STAGE 0
 #define STORY_STAGE 1
@@ -123,17 +116,17 @@ int main()
                     if (buttonClicked(buyButton, mouse_pos))
                     {
                         stage = STORE_TRADE_STAGE;
-                        selectedCase = "buy";
+                        selectedCase = "Buy";
                     }
                     else if (buttonClicked(sellButton, mouse_pos))
                     {
                         stage = STORE_TRADE_STAGE;
-                        selectedCase = "sell";
+                        selectedCase = "Sell";
                     }
                     else if (buttonClicked(upgradeButton, mouse_pos))
                     {
                         stage = STORE_TRADE_STAGE;
-                        selectedCase = "upgrade";
+                        selectedCase = "Upgrade";
                     }
                     else if (buttonClicked(quitButton, mouse_pos))
                     {
