@@ -286,7 +286,7 @@ void Player::Exit(Battlefield *battlefield) {
     battlefield_ = NULL;
 }
 
-string Player::OpenTreasure(Unit *unit, Treasure treasure) {
+string Player::OpenTreasure(Unit *unit, Square treasure) {
     if (find(army_.begin(), army_.end(), unit) == army_.end())
         return unit->GetName() + " is not in the army.";
     if (battlefield_->NearTreasure(unit))  {
