@@ -43,25 +43,30 @@ int main()
 {
 	// Create units
 	std::cout << "###########################################################################################################" << std::endl;
-	Ally* paladin = new Ally("Paladin", Stat(200, 200, 100, 75, 0, 1, 5));
-	Ally* knight = new Ally("Knight", Stat(150, 150, 75, 75, 0, 2, 3));
-	Ally* mage = new Ally("Mage", Stat(100, 100, 50, 25, 0, 3, 4));
-	Ally* archer = new Ally("Archer", Stat(100, 100, 50, 0, 0, 4, 1));
-	Ally* heavy_archer = new Ally("HeavyArcher", Stat(100, 100, 100, 0, 0, 5, 20));
+	Unit* paladin = new Unit("Paladin", Stat(400, 400, 100, 75, 0, 6, 1));
+  	Unit* knight = new Unit("Knight", Stat(300, 300, 75, 75, 0, 5, 1));
+  	Unit* mage = new Unit("Mage", Stat(200, 200, 50, 25, 50, 4, 5));
+  	Unit* archer = new Unit("Archer", Stat(200, 200, 50, 50, 0, 4, 4));
+  	Unit* sniper = new Unit("Heavy Archer", Stat(200, 200, 100, 50, 0, 3, 5));
+  	Unit* valkyrie = new Unit("Valkyrie", Stat(300, 300, 100, 80, 0, 5, 1));
+  	Unit* assassin = new Unit("Assassin", Stat(300, 300, 175, 90, 0, 7, 1));
+  	Unit* wizard = new Unit("Grand Wizard", Stat(200, 200, 120, 50, 0, 3, 5));
+  	Unit* guardian = new Unit("Guardian", Stat(500, 500, 50, 200, 0, 4, 1));
+  	Unit* swordman = new Unit("Sword man", Stat(300, 300, 100, 60, 0, 6, 1));
 
-	Enemy* melee = new Enemy("Melee", Stat(100, 100, 25, 50, 0, 1, 3));
-	Enemy* melee1 = new Enemy("Melee1", Stat(100, 100, 25, 50, 0, 1, 4));
-	Enemy* range = new Enemy("Range", Stat(100, 100, 40, 20, 0, 4, 2));
-	Enemy* range1 = new Enemy("Range1", Stat(100, 100, 40, 20, 0, 4, 3));
-	Enemy* canon = new Enemy("Canon", Stat(200, 200, 70, 70, 0, 5, 1));
+	Unit* melee = new Unit("Melee", Stat(100, 100, 25, 50, 0, 1, 3), false);
+	Unit* melee1 = new Unit("Melee1", Stat(100, 100, 25, 50, 0, 1, 4), false);
+	Unit* range = new Unit("Range", Stat(100, 100, 40, 20, 0, 4, 2), false);
+	Unit* range1 = new Unit("Range1", Stat(100, 100, 40, 20, 0, 4, 3), false);
+	Unit* canon = new Unit("Canon", Stat(200, 200, 70, 70, 0, 5, 1), false);
 
-	vector<Unit*> allies_u{ paladin, knight, mage, archer, heavy_archer };
-	vector<Ally*> allies{ paladin, knight, mage, archer, heavy_archer };
+	vector<Unit*> allies_u{ paladin, knight, mage, archer, sniper };
+	vector<Unit*> allies{ paladin, knight, mage, archer, sniper };
 	vector<Unit*> enemies_u{ melee, melee1, range, range1, canon };
-	vector<Enemy*> enemies{ melee, melee1, range, range1, canon };
+	vector<Unit*> enemies{ melee, melee1, range, range1, canon };
 
 	Player player = Player("Player 1");
-	player.Recruit(allies_u);
+	player.Recruit(paladin);
 	Bot bot = Bot("Bot 1");
 	bot.Recruit(enemies_u);
 	/**************************************************************************************************************************************************************/
@@ -136,6 +141,9 @@ int main()
 	cout << "location Talon" << endl;
 	cout << "equip Malphite InfinityEdge" << endl;
 	cout << "consume Garen CorruptingPotion" << endl;
+	cout << Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300).FullDescription() << endl;
+	player.Equip(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), paladin);
+	cout << paladin->Description() << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer
