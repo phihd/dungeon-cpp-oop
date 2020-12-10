@@ -76,7 +76,7 @@ public:
 	//Allies returns list of alive ally in the room
 	std::vector<Ally*> Allies();
 	//Treasure returns list of unopened treasure
-	std::vector<Item>* RemainingTreasure();
+	std::vector<Item> RemainingTreasure();
 	//HasTreasure returns true if there is treasure remaining in the room and is unopened
 	bool HasTreasure();
 	//HasEnemies returns true if there is enemy remaining in the room

@@ -391,11 +391,16 @@ std::vector<Ally*> Battlefield::Allies() {
 	return allies_;
 }
 
-std::vector<Item>* Battlefield::RemainingTreasure() {
+std::vector<Item> Battlefield::RemainingTreasure() {
+	std::vector<Item> result = {};
 	if (treasures_ == NULL)
-		return new std::vector<Item>{};
+		return std::vector<Item>{};
 	else
-		return treasures_;
+	{
+		for (unsigned int i = 0; i < treasures_->size(); i++)
+			result.push_back(treasures_->operator[](i));
+		return result;
+	}
 }
 
 bool Battlefield::HasTreasure() {
