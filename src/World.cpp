@@ -8,7 +8,7 @@ Game::Game(Player player) {}
 std::vector<Battlefield> Game::CreateWorld()
 {
 	std::vector<Battlefield> world;
-	for (unsigned int i = 6; i < designs.size(); i++) {
+	for (unsigned int i = 0; i < designs.size(); i++) {
 		//Design a new room
 		std::vector<std::vector<string>> lv_designs = designs[i];
 		std::vector<Enemy*> lv_enemies = enemies[i];
@@ -74,6 +74,8 @@ std::vector<Battlefield> Game::CreateWorld()
 			lv_enemies.resize(6);
 			new_room.EnemyArrive(lv_enemies);
 		}
+		new_room.SpawnEnemy();
+		/**
 		std::cout << "Room: " << i+1 << std::endl;
 		for (unsigned int k = 0; k < lv_enemies.size(); k++) {
 			std::cout << lv_enemies[k]->Description() << std::endl;
@@ -84,6 +86,7 @@ std::vector<Battlefield> Game::CreateWorld()
 		for (unsigned int k = 0; k < new_room.ToString().size(); k++)
 			std::cout << new_room.ToString()[k] << std::endl;
 		std::cout << "----------------------------------------------------------------------------------------"<< std::endl;
+		*/
 		world.push_back(new_room);
 	}
 	return world;

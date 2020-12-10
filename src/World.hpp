@@ -565,7 +565,7 @@ public:
 		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true) };
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
 	
-	//Make game
+	//Make game...
 	std::vector<Battlefield> CreateWorld();
 
 	//bool CreateGame();
