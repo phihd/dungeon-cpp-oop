@@ -14,8 +14,11 @@ Stat& Stat::operator+=(const Stat &b) {
     this->def_ += b.def_;
     this->HP_ += b.HP_;
     this->maxHP_ += b.maxHP_;
+    if (b.maxHP_ > 0)
+        this->HP_ += b.maxHP_;
 
     this->HP_ = max(this->HP_, 0);
+    this->HP_ = min(this->maxHP_, this->HP_);
     this->maxHP_ = max(this->maxHP_, 0);
     return *this;
 }
@@ -28,6 +31,7 @@ Stat& Stat::operator-=(const Stat &b) {
     this->maxHP_  -= b.maxHP_;
 
     this->HP_ = max(this->HP_, 0);
+    this->HP_ = min(this->maxHP_, this->HP_);
     this->maxHP_ = max(this->maxHP_, 0);
     return *this;
 }

@@ -28,6 +28,14 @@ string Item::FullDescription() {
         fullDescription += "Consume\n";
     else
         fullDescription += "Equip\n";
+    if (stat_.GetMaxHP() != 0) {
+        if (stat_.GetMaxHP() > 0)
+            fullDescription += "+";
+        fullDescription += to_string(stat_.GetMaxHP()) + " Health\n";
+    }
+    if (stat_.GetHP() != 0) {
+        fullDescription += "Regenerate " + to_string(stat_.GetHP()) + " Health\n";
+    }
     if (stat_.GetAtk() != 0) {
         if (stat_.GetAtk() > 0)
             fullDescription += "+";
@@ -53,7 +61,7 @@ string Item::FullDescription() {
             fullDescription += "+";
         fullDescription += to_string(stat_.GetAttackRange()) + " Attack Range\n";
     }
-    fullDescription += "\"" + GetDescription() + "\"";
+    fullDescription += "\n\"" + GetDescription() + "\"";
     return fullDescription;
 }
 
