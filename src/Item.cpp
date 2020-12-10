@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Item::Item(const string &name, string description, Stat stat, int price): name_(name), description_(description), stat_(stat), price_(price) {}
+Item::Item(const string &name, string description, Stat stat, int price, bool consumable): name_(name), description_(description), stat_(stat), price_(price), consumable_(consumable) {}
 
 string Item::GetName() const {
     return name_;
@@ -13,6 +13,47 @@ string Item::GetName() const {
 
 string Item::GetDescription() const {
     return description_;
+}
+
+string Item::FullDescription() {
+    /* Infinity Edge - 340000 gold
+    Equip
+    +50 Attack Damge
+    -1 Move Range
+    "Bigger Fucking Sword"
+    */
+    string fullDescription = "";
+    fullDescription += name_ + " - " + to_string(price_) + " gold\n";
+    if (consumable_)
+        fullDescription += "Consume\n";
+    else
+        fullDescription += "Equip\n";
+    if (stat_.GetAtk() != 0) {
+        if (stat_.GetAtk() > 0)
+            fullDescription += "+";
+        fullDescription += stat_.GetAtk() + " Attack Damage\n";
+    }
+    if (stat_.GetDef() != 0) {
+        if (stat_.GetDef() > 0)
+            fullDescription += "+";
+        fullDescription += stat_.GetDef() + " Defense\n";
+    }
+    if (stat_.GetCrit() != 0) {
+        if (stat_.GetCrit() > 0)
+            fullDescription += "+";
+        fullDescription += stat_.GetCrit() + " Critical Strike Chance\n";
+    }
+    if (stat_.GetMoveRange() != 0) {
+        if (stat_.GetMoveRange() > 0)
+            fullDescription += "+";
+        fullDescription += stat_.GetMoveRange() + " Move Range\n";
+    }
+    if (stat_.GetAttackRange() != 0) {
+        if (stat_.GetAttackRange() > 0)
+            fullDescription += "+";
+        fullDescription += stat_.GetAttackRange() + " Attack Range\n";
+    }
+    fullDescription += "\"" + GetDescription() + "\"";
 }
 
 Stat Item::GetStats() const {

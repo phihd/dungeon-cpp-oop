@@ -17,13 +17,16 @@ private:
     string description_;
     Stat stat_;
     int price_;
+    bool consumable_;
 
 public:
-    Item(const string &name, string description, Stat stat, int price);
+    Item(const string &name, string description, Stat stat, int price, bool consumable = false);
 
     string GetName() const;
 
     string GetDescription() const;
+
+    string FullDescription();
 
     Stat GetStats() const;
 
