@@ -459,6 +459,17 @@ bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
 	}
 }
 
+std::vector<Item> Battlefield::OpenTreasure(Unit* unit) {
+	std::vector<Item> result = {};
+	if (this->NearTreasure(unit)) {
+		if (!this->RemainingTreasure().empty()) {
+			result = this->Apply(this->TreasureCoord())->Open();
+			treasures_->clear();
+		}
+	}
+	return result;
+}
+
 
 string Battlefield::type()
 {

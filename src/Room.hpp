@@ -91,6 +91,8 @@ public:
 	bool AllyArrive(std::vector<Ally*> army);
 	//Add Enemy units to Room
 	bool EnemyArrive(std::vector<Enemy*> army);
+	//Return the Treasure Square of the Room
+	std::vector<Item> OpenTreasure(Unit* unit);
 
 	string type();
 	
@@ -103,6 +105,7 @@ private:
 	std::vector<Enemy*> enemies_;
 	std::vector<Ally*> allies_;
 	std::vector<Item>* treasures_;
+	Treasure* treasure_square_ = NULL;
 };
 #endif
 
