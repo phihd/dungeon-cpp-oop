@@ -227,9 +227,9 @@ std::vector<std::vector<int>> Battlefield::ToInt() {
 			}
 			else if (square->ToString() == "Treasure") {
 				if (square->IsOpened())
-					row.push_back(7);
-				else
 					row.push_back(8);
+				else
+					row.push_back(7);
 			}
 			else
 				continue;
