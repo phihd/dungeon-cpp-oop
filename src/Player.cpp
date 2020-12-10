@@ -87,7 +87,7 @@ string Player::Equip(Item item, Unit* unit) {
         Item item_iter = p.first;
         if (item_iter == item) {
             if (!unit->Equip(item_iter))
-                return "Inventory of " + unit->GetName() + " is already full.";
+                return "Inventory of " + unit->GetName() + " is already full or already has this item.";
             RemoveItem(item_iter, 1);
             return "Equipped unit " + unit->GetName() + " with " + item_iter.GetName() + ".";
         }

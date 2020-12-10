@@ -40,8 +40,9 @@ void Unit::AdjustStats(Stat b) {
 }
 
 bool Unit::Equip(Item item) {
-    if (inventory_.size() >= inventory_max_size)
-        return false;
+    for (unsigned int i = 0; i < inventory_.size(); i++)
+        if (inventory_[i] == item || inventory_.size() >= inventory_max_size)
+            return false;
     inventory_.push_back(item);
     stats_ += item.GetStats();
     return true;
