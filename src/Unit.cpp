@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Unit::Unit(const string& name, Stat stats) : name_(name), stats_(stats) {}
+Unit::Unit(const string& name, Stat stats, bool ally) : name_(name), stats_(stats), ally_(ally) {}
 
 string Unit::GetName() const {
     return name_;
@@ -110,32 +110,3 @@ bool operator==(const Unit &a, const Unit &b) {
 }
 
 //----------------------------------------------------------------------------------------------------//
-
-Ally::Ally(const string &name, Stat stats): Unit(name, stats) {}
-
-string Ally::ToString() {
-    return "Ally";
-}
-
-string Ally::Description() {
-    return "Ally" + Unit::Description();
-}
-
-bool operator==(const Ally &a, const Ally &b) {
-    return a.GetName() == b.GetName();
-}
-
-
-Enemy::Enemy(const string &name, Stat stats): Unit(name, stats) {}
-
-string Enemy::ToString() {
-    return "Enemy";
-}
-
-string Enemy::Description() {
-    return "Enemy" + Unit::Description();
-}
-
-bool operator==(const Enemy &a, const Enemy &b) {
-    return a.GetName() == b.GetName();
-}

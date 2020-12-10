@@ -23,9 +23,10 @@ private:
     Coord location_ = Coord(-1, -1);
     bool hasAttacked_ = true;
     bool hasMoved_ = true;
+    bool ally_;
 
 public:
-    Unit(const string &name, Stat stats);
+    Unit(const string &name, Stat stats, bool ally = true);
 
     string GetName() const;
 
@@ -62,34 +63,10 @@ public:
     bool HasMoved();
 
     bool HasAttacked();
+
+    bool isAlly() { return ally_; };
 };
 
 bool operator==(const Unit& a, const Unit& b);
-
-
-class Ally: public Unit {
-
-public:
-    Ally(const string &name, Stat stats);
-
-    string ToString();
-
-    string Description();
-};
-
-bool operator==(const Ally &a, const Ally &b);
-
-
-class Enemy: public Unit {
-
-public:
-    Enemy(const string &name, Stat stats);
-
-    string ToString();
-
-    string Description();
-};
-
-bool operator==(const Enemy &a, const Enemy &b);
 
 #endif
