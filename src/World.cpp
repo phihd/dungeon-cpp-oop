@@ -8,7 +8,7 @@ Game::Game(Player player) {}
 std::vector<Battlefield> Game::CreateWorld()
 {
 	std::vector<Battlefield> world;
-	for (unsigned int i = 0; i < designs.size(); i++) {
+	for (unsigned int i = 6; i < designs.size(); i++) {
 		//Design a new room
 		std::vector<std::vector<string>> lv_designs = designs[i];
 		std::vector<Enemy*> lv_enemies = enemies[i];
@@ -60,23 +60,30 @@ std::vector<Battlefield> Game::CreateWorld()
 		srand(time(0));
 		seed = rand();
 		rng.seed(seed);
-		if ((i == 3 || i == 7 || i == 9)) {
+		if ((i == 3 || i == 6 || i == 9)) {
 			if (i == 3)
 				new_room.SetEnemySpawn(boss_spawns[0]);
-			else if (i == 7)
+			else if (i == 6)
 				new_room.SetEnemySpawn(boss_spawns[1]);
 			else if (i == 9)
 				new_room.SetEnemySpawn(boss_spawns[2]);
 			new_room.EnemyArrive(lv_enemies);
-			new_room.SpawnEnemy();
 		}
 		else {
 			std::shuffle(std::begin(lv_enemies), std::end(lv_enemies), rng);
 			lv_enemies.resize(6);
 			new_room.EnemyArrive(lv_enemies);
-			new_room.SpawnEnemy();
 		}
-
+		std::cout << "Room: " << i+1 << std::endl;
+		for (unsigned int k = 0; k < lv_enemies.size(); k++) {
+			std::cout << lv_enemies[k]->Description() << std::endl;
+			std::cout << "----------------------------" << std::endl;
+		}
+		std::cout << "\nSpawn:" << new_room.SpawnEnemy() << std::endl;
+		std::cout << std::endl;
+		for (unsigned int k = 0; k < new_room.ToString().size(); k++)
+			std::cout << new_room.ToString()[k] << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------"<< std::endl;
 		world.push_back(new_room);
 	}
 	return world;

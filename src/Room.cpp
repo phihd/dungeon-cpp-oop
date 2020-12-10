@@ -310,6 +310,7 @@ bool Battlefield::SpawnEnemy() {
 		}
 	}
 	else {
+		std::cout << "#Spawn Coord < #Enemy " << std::endl;
 		if (enemy_spawn_.size() < enemies_.size()) {
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
@@ -352,6 +353,7 @@ bool Battlefield::SpawnEnemy() {
 			}
 		}
 		else {
+			std::cout << "#Spawn Coord >= #Enemy " << std::endl;
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
 				Enemy* enemy = enemies_[i];
@@ -376,13 +378,9 @@ Coord Battlefield::TreasureCoord() {
 	return Coord(-1, -1);
 }
 
-bool Battlefield::OpenTreasure() {
-	if (treasures_->empty())
-		return false;
-	else {
-		treasures_->clear();
-		return true;
-	}
+bool Battlefield::NearTreasure(Unit* unit) {
+	std::vector<Coord> area = this->BFS(this->TreasureCoord(), 1);
+	return std::find(area.begin(), area.end(), unit->GetLocation()) != area.end();
 }
 
 std::vector<Enemy*> Battlefield::Enemies() {
