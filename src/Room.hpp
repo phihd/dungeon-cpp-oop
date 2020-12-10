@@ -29,7 +29,7 @@ private:
 /*Playable Area*/
 class Battlefield : public Grid, public Room {
 public:
-	Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies, std::vector<Item>* treasures);
+	Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies, std::vector<Item>* treasures);
 
 	//Add wall to a specific coordinate. This function helps design each room. Some sort of random algorithm 
 	//can be implemented along with this function to randomize the rooms.
@@ -72,9 +72,9 @@ public:
 	//Open treasure returns true if the action is successful.
 	bool NearTreasure(Unit* unit);
 	//Enemies returns list of alive enemy in the room
-	std::vector<Enemy*> Enemies();
+	std::vector<Unit*> Enemies();
 	//Allies returns list of alive ally in the room
-	std::vector<Ally*> Allies();
+	std::vector<Unit*> Allies();
 	//Treasure returns list of unopened treasure
 	std::vector<Item> RemainingTreasure();
 	//HasTreasure returns true if there is treasure remaining in the room and is unopened
@@ -88,9 +88,7 @@ public:
 	//Return outcome of a battle between to units. Returns true if 2 units are able to attack each other and if they have different type
 	bool Outcome(Unit* attacker, Unit* defender);
 	//Add Ally units to Room
-	bool AllyArrive(std::vector<Ally*> army);
-	//Add Enemy units to Room
-	bool EnemyArrive(std::vector<Enemy*> army);
+	bool UnitArrive(std::vector<Unit*> army);
 	//Return the Treasure Square of the Room
 	std::vector<Item> OpenTreasure(Unit* unit);
 
@@ -102,8 +100,8 @@ public:
 private:
 	std::vector<Coord> ally_spawn_ = {};
 	std::vector<Coord> enemy_spawn_ = {};
-	std::vector<Enemy*> enemies_;
-	std::vector<Ally*> allies_;
+	std::vector<Unit*> enemies_;
+	std::vector<Unit*> allies_;
 	std::vector<Item>* treasures_;
 	Treasure* treasure_square_ = NULL;
 };

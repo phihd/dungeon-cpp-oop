@@ -11,7 +11,7 @@ std::vector<Battlefield> Game::CreateWorld()
 	for (unsigned int i = 0; i < designs.size(); i++) {
 		//Design a new room
 		std::vector<std::vector<string>> lv_designs = designs[i];
-		std::vector<Enemy*> lv_enemies = enemies[i];
+		std::vector<Unit*> lv_enemies = enemies[i];
 		srand(time(0));
 		auto seed = rand();
 		auto rng = std::default_random_engine{};
@@ -67,12 +67,12 @@ std::vector<Battlefield> Game::CreateWorld()
 				new_room.SetEnemySpawn(boss_spawns[1]);
 			else if (i == 9)
 				new_room.SetEnemySpawn(boss_spawns[2]);
-			new_room.EnemyArrive(lv_enemies);
+			new_room.UnitArrive(lv_enemies);
 		}
 		else {
 			std::shuffle(std::begin(lv_enemies), std::end(lv_enemies), rng);
 			lv_enemies.resize(6);
-			new_room.EnemyArrive(lv_enemies);
+			new_room.UnitArrive(lv_enemies);
 		}
 		new_room.SpawnEnemy();
 		/**

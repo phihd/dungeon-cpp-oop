@@ -30,7 +30,7 @@ void Rest::Import(std::vector<Item> items)
 	}
 }
 
-Battlefield::Battlefield(int nrows, int ncols, std::vector<Enemy*> enemies, std::vector<Ally*> allies,
+Battlefield::Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,
 	std::vector<Item>* treasures) : Grid(nrows, ncols), Room(), enemies_(enemies), allies_(allies), treasures_(treasures)
 {
 	for (int x = 0; x < this->Rows(); x++) {
@@ -261,7 +261,7 @@ bool Battlefield::SpawnAlly() {
 	if (ally_spawn_.empty())
 		return false;
 	for (unsigned int i = 0; i < std::min(allies_.size(), ally_spawn_.size()); i++) {
-		Ally* ally = allies_[i];
+		Unit* ally = allies_[i];
 		Coord spawn = ally_spawn_[i];
 		if (ally->IsAlive()) {
 			bool temp = this->AddUnit(spawn, ally);
@@ -302,7 +302,7 @@ bool Battlefield::SpawnEnemy() {
 		//put unit
 		for (unsigned int i = 0; i < enemies_.size(); i++) {
 			Coord coord = available_coord[i];
-			Enemy* enemy = enemies_[i];
+			Unit* enemy = enemies_[i];
 			bool temp = this->AddUnit(coord, enemy);
 			if (!temp)
 				return false;
@@ -314,7 +314,7 @@ bool Battlefield::SpawnEnemy() {
 		if (enemy_spawn_.size() < enemies_.size()) {
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
-				Enemy* enemy = enemies_[i];
+				Unit* enemy = enemies_[i];
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
@@ -345,7 +345,7 @@ bool Battlefield::SpawnEnemy() {
 			//add remaining units to empty squares
 			for (unsigned int i = 0; i < enemies_.size() - enemy_spawn_.size(); i++) {
 				Coord coord = available_coord[i];
-				Enemy* enemy = enemies_[i + enemy_spawn_.size()];
+				Unit* enemy = enemies_[i + enemy_spawn_.size()];
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
@@ -356,7 +356,7 @@ bool Battlefield::SpawnEnemy() {
 			std::cout << "#Spawn Coord >= #Enemy " << std::endl;
 			for (unsigned int i = 0; i < enemy_spawn_.size(); i++) {
 				Coord coord = enemy_spawn_[i];
-				Enemy* enemy = enemies_[i];
+				Unit* enemy = enemies_[i];
 				bool temp = this->AddUnit(coord, enemy);
 				if (!temp)
 					return false;
@@ -382,11 +382,11 @@ bool Battlefield::NearTreasure(Unit* unit) {
 	return ((abs(this->TreasureCoord().x() - unit->GetLocation().x()) + abs(this->TreasureCoord().y() - unit->GetLocation().y())) == 1);
 }
 
-std::vector<Enemy*> Battlefield::Enemies() {
+std::vector<Unit*> Battlefield::Enemies() {
 	return enemies_;
 }
 
-std::vector<Ally*> Battlefield::Allies() {
+std::vector<Unit*> Battlefield::Allies() {
 	return allies_;
 }
 
@@ -407,7 +407,7 @@ bool Battlefield::HasTreasure() {
 }
 
 bool Battlefield::HasEnemies() {
-	auto iter = std::find_if(enemies_.begin(), enemies_.end(), [](Enemy* enemy) {
+	auto iter = std::find_if(enemies_.begin(), enemies_.end(), [](Unit* enemy) {
 		return enemy->IsAlive();
 		});
 	return iter != enemies_.end();
@@ -433,29 +433,24 @@ bool Battlefield::Outcome(Unit* attacker, Unit* defender)
 {
 	std::vector<Coord> area = this->BFS_Attack(attacker->GetLocation(), attacker->GetAttackRange());
 	bool inrange = (std::find(area.begin(), area.end(), defender->GetLocation()) != area.end());
-	if (attacker->ToString() == defender->ToString() || !inrange)
+	if (attacker->isAlly() == defender->isAlly() || !inrange)
 		return false;
 	else
 		return true;
 }
 
-bool Battlefield::AllyArrive(std::vector<Ally*> army)
+bool Battlefield::UnitArrive(std::vector<Unit*> army)
 {
-	if (army[0]->ToString() != "Ally")
-		return false;
-	else {
+	if (army[0]->isAlly()) {
 		allies_ = army;
 		return true;
 	}
-}
-
-bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
-{
-	if (army[0]->ToString() != "Enemy")
-		return false;
-	else {
+	else if (!army[0]->isAlly()) {
 		enemies_ = army;
 		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -525,7 +520,7 @@ std::vector<Coord> Battlefield::BFS_Attack(Coord coord, int range)
   std::vector<std::vector<int>> map = this->ToInt();
 
   bool is_ally;
-  if (this->Apply(coord)->Get()->ToString() == "Ally") is_ally = true;
+  if (this->Apply(coord)->Get()->isAlly()) is_ally = true;
   else is_ally = false;
 
   queue.push_back(coord);
