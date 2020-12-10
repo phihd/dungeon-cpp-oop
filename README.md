@@ -23,4 +23,25 @@ for testing tools.
 
 
 ### Dependencies
+- CMake 3.16.3+
 - SFML 2.5.1
+- Python 3.6+ (for google unit test framework)
+- Git
+
+### Running the program
+Step 1: Clone the project
+```shell
+git clone git@courses-git.comnet.aalto.fi:CPP-F2020/dungeon-2020-4.git
+```
+Step 2: Create Makefile and build it
+```shell
+cd dungeon-2020-4
+mkdir build
+cd build
+cmake .
+make dungeon
+```
+Step 3: Execute the program
+```shell
+./dungeon
+```

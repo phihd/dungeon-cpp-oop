@@ -4,11 +4,11 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
-#include <SFML\Graphics.hpp>
-#include <SFML\System.hpp>
-#include <SFML\Window.hpp>
-#include <SFML\Network.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/Audio.hpp>
 #include "Player.cpp"
 #include "Item.hpp"
 
@@ -41,7 +41,7 @@ sf::RectangleShape createButton(float xPos, float yPos, float xSize, float ySize
     sf::Vector2f buttonSize(xSize, ySize);
     sf::RectangleShape button(buttonSize);
     button.setPosition(buttonPos);
-    button.setFillColor(sf::Color::Color(255, 255, 255, opacity));
+    button.setFillColor(sf::Color(255, 255, 255, opacity));
     return button;
 }
 
