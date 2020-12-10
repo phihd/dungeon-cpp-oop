@@ -511,26 +511,26 @@ public:
 	//Items
 	
 	std::vector<Item> lv1_items = {
-		Item("Leather armor", "A light and reliable piece of armor", Stat(0, 0, 0, 50, 0, 0, 0), 100),
-		Item("Blunt dagger", "A blunt dagger. Can it cut through anything?", Stat(0, 0, 20, 0, 0, 0, 0), 50),
-		Item("Silk armor", "Very light but not a lot protection", Stat(0, 0, 0, 10, 0, 0, 0), 50),
-		Item("Damaged sword", "A damaged sword. Is it reliable?", Stat(0, 0, 40, 0, 0, 0, 0), 100),
-		Item("Heavy shield", "A lot of protection, but so heavy...", Stat(0, 0, 0, 90, 0, -2, 0), 250),
-		Item("Tree branch", "Not exactly a weapon, but it might do the job?", Stat(0, 0, 10, 0, 0, 0, 0), 50),
-		Item("Heavy sword", "Deals nice damge, but so heavy to carry around.", Stat(0, 0, 90, 0, 0, -1, 0), 250),
+		Item("Leather Armor", "A light and reliable piece of armor", Stat(0, 0, 0, 50, 0, 0, 0), 100),
+		Item("Blunt Dagger", "A blunt dagger. Can it cut through anything?", Stat(0, 0, 20, 0, 0, 0, 0), 50),
+		Item("Silk Armor", "Very light but not a lot protection", Stat(0, 0, 0, 10, 0, 0, 0), 50),
+		Item("Damaged Sword", "A damaged sword. Is it reliable?", Stat(0, 0, 40, 0, 0, 0, 0), 100),
+		Item("Heavy Shield", "A lot of protection, but so heavy...", Stat(0, 0, 0, 90, 0, -2, 0), 250),
+		Item("Tree Branch", "Not exactly a weapon, but it might do the job?", Stat(0, 0, 10, 0, 0, 0, 0), 50),
+		Item("Heavy Sword", "Deals nice damge, but so heavy to carry around.", Stat(0, 0, 90, 0, 0, -1, 0), 250),
 		Item("Wooden Bow", "A normal wooden bow", Stat(0, 0, 30, 0, 0, 0, 1), 100),
 		Item("Hermit's Ring", "People say this ring curse those who wear it", Stat(20, 0, 10, 20, 0, -2, 0), 150),
-		Item("Makeshift sword", "You can tell it's not crafted by a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100)
+		Item("Makeshift Sword", "You can tell it's not crafted by a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100)
 	};
 	std::vector<Item> lv2_items = {
 		Item("Assassin's Blade", "Swift and deadly", Stat(0, 0, 80, 0, 0, 0, 0), 300),
 		Item("Warhammer", "This can do some damage", Stat(0, 0, 90, 0, 0, 0, 0), 300),
-		Item("Chainmail armor", "Some nice armor", Stat(0, 0, 0, 70, 0, 0, 0), 300),
-		Item("Ring of protection", "Some says it can protect its wearer through many battle", Stat(50, 0, 0, 50, 0, 0, 0), 400),
+		Item("Chainmail Armor", "Some nice armor", Stat(0, 0, 0, 70, 0, 0, 0), 300),
+		Item("Ring of Protection", "Some says it can protect its wearer through many battle", Stat(50, 0, 0, 50, 0, 0, 0), 400),
 		Item("B.F Sword", "Big f sword. Deals nice damage but very heavy", Stat(0, 0, 120, 0, 0, -1, 0), 450),
 		Item("Trainee's Rapier", "An good rapier", Stat(0, 0, 60, 0, 0, 0, 0), 200),
 		Item("Crossbow", "A deadlier version of a bow", Stat(0, 0, 60, 0, 0, 0, 1), 250),
-		Item("Steel armor", "Some nice armor", Stat(0, 0, 0, 100, 0, 0, 0), 450),
+		Item("Steel Armor", "Some nice armor", Stat(0, 0, 0, 100, 0, 0, 0), 450),
 		Item("Shield", "Some shield for protection", Stat(0, 0, 0, 50, 0, 0, 0), 200),
 		Item("Heavy Glaive", "Doubles the damge with 2 blades but heavy", Stat(0, 0, 150, 0, 0, -1, 0), 500)
 	};
@@ -554,7 +554,7 @@ public:
 		Item("Laevatein", "Deadly and mischievous", Stat(0, 0, 500, 0, 0, 1, 2), 1500),
 		Item("Blessed Charm", "It blesses its wearer", Stat(200, 0, 300, 300, 0, 1, 1), 1800),
 		Item("Assassin's Cloak", "Move so fast no one can catch you", Stat(0, 0, 0, 200, 0, 3, 2), 1000),
-		Item("Armor of life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
+		Item("Armor of Life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
 	};
 	std::vector<Item> potions = {
 		Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20),
