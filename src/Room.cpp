@@ -378,13 +378,9 @@ Coord Battlefield::TreasureCoord() {
 	return Coord(-1, -1);
 }
 
-bool Battlefield::OpenTreasure() {
-	if (treasures_->empty())
-		return false;
-	else {
-		treasures_->clear();
-		return true;
-	}
+bool Battlefield::NearTreasure(Unit* unit) {
+	std::vector<Coord> area = this->BFS(this->TreasureCoord(), 1);
+	return std::find(area.begin(), area.end(), unit->GetLocation()) != area.end();
 }
 
 std::vector<Enemy*> Battlefield::Enemies() {

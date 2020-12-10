@@ -70,7 +70,7 @@ public:
 	//Return coordinate of the treasure chest
 	Coord TreasureCoord();
 	//Open treasure returns true if the action is successful.
-	bool OpenTreasure();
+	bool NearTreasure(Unit* unit);
 	//Enemies returns list of alive enemy in the room
 	std::vector<Enemy*> Enemies();
 	//Allies returns list of alive ally in the room
