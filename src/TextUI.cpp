@@ -1,6 +1,6 @@
 #pragma once
 #include "World.hpp"
-#include "World.cpp"	// This is for VSCode, remove if you use visual studio
+//#include "World.cpp"	// This is for VSCode, remove if you use visual studio
 #include <iostream>
 
 #include <string>
@@ -41,90 +41,16 @@ void PrintRoomInt(Battlefield room) {
 
 int main()
 {
-	// Create units
-	std::cout << "###########################################################################################################" << std::endl;
-	Unit* paladin = new Unit("Paladin", Stat(400, 400, 100, 75, 0, 6, 1));
-  	Unit* knight = new Unit("Knight", Stat(300, 300, 75, 75, 0, 5, 1));
-  	Unit* mage = new Unit("Mage", Stat(200, 200, 50, 25, 50, 4, 5));
-  	Unit* archer = new Unit("Archer", Stat(200, 200, 50, 50, 0, 4, 4));
-  	Unit* sniper = new Unit("Heavy Archer", Stat(200, 200, 100, 50, 0, 3, 5));
-  	Unit* valkyrie = new Unit("Valkyrie", Stat(300, 300, 100, 80, 0, 5, 1));
-  	Unit* assassin = new Unit("Assassin", Stat(300, 300, 175, 90, 0, 7, 1));
-  	Unit* wizard = new Unit("Grand Wizard", Stat(200, 200, 120, 50, 0, 3, 5));
-  	Unit* guardian = new Unit("Guardian", Stat(500, 500, 50, 200, 0, 4, 1));
-  	Unit* swordman = new Unit("Sword man", Stat(300, 300, 100, 60, 0, 6, 1));
+	Player player = Player("dm Phi");
+	Game game = Game(player);
+	Bot bot = game.bot;
+	std::vector<Battlefield> world = game.CreateWorld();
+	Battlefield room = world[2];
 
-	Unit* melee = new Unit("Melee", Stat(100, 100, 25, 50, 0, 1, 3), false);
-	Unit* melee1 = new Unit("Melee1", Stat(100, 100, 25, 50, 0, 1, 4), false);
-	Unit* range = new Unit("Range", Stat(100, 100, 40, 20, 0, 4, 2), false);
-	Unit* range1 = new Unit("Range1", Stat(100, 100, 40, 20, 0, 4, 3), false);
-	Unit* canon = new Unit("Canon", Stat(200, 200, 70, 70, 0, 5, 1), false);
+	for (unsigned int k = 0; k < room.ToString().size(); k++)
+		std::cout << room.ToString()[k] << std::endl;
+	std::cout << "----------------------------------------------------------------------------------------" << std::endl;
 
-	vector<Unit*> allies_u{ paladin, knight, mage, archer, sniper };
-	vector<Unit*> allies{ paladin, knight, mage, archer, sniper };
-	vector<Unit*> enemies_u{ melee, melee1, range, range1, canon };
-	vector<Unit*> enemies{ melee, melee1, range, range1, canon };
-
-	Player player = Player("Player 1");
-	player.Recruit(paladin);
-	Bot bot = Bot("Bot 1");
-	bot.Recruit(enemies_u);
-	/**************************************************************************************************************************************************************/
-	//Game game(player);
-	 
-	std::vector<Item>* treasure_list = new std::vector<Item>{ Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 
-		Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 1300) };
-	
-	Battlefield room(22, 14, enemies, allies, treasure_list);
-
-	player.Enter(&room);
-
-	player.AddItem(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), 1);
-	player.AddItem(Item("InfinityEdge", "bigger fucking sword", Stat(0, 0, 125, 0, 0, 0, 0), 3200), 1);
-
-	bot.Enter(&room);
-
-	std::vector<string> result = room.ToString();
-	for (unsigned int i = 0; i < result.size(); i++) {
-		std::cout << result[i] << std::endl;
-	}
-	std::cout << std::endl;
-
-	PrintRoomInt(room);
-
-	std::vector<string> design{".....###..1.###.....",
-							   "...###........###...",
-							   "...#.####...#...#...",
-							   "##.....##...##....##",
-							   "##..........########",
-							   "##....##....##....##",
-							   "##....##....###..###",
-							   "##....##..........##",
-							   "########....########",
-							   "......##....##......",
-							   "............##....##",
-							   "......##..........##" };
-
-	std::string temp = room.FromString(design);
-
-	room.SetAllySpawn(std::vector<Coord>{Coord(1, 12), Coord(1, 11), Coord(2, 12), Coord(2, 11), Coord(3, 11)});
-	
-	room.SpawnAlly();
-
-	room.SpawnEnemy();
-	
-	result = room.ToString();
-	for (unsigned int i = 0; i < result.size(); i++) {
-		std::cout << result[i] << std::endl;
-	}
-	std::cout << std::endl;
-
-	PrintRoomInt(room);
-	/**
-	std::vector<Coord> avai_coords = room.BFS(Coord(6, 11), 4);
-	for (unsigned int i = 0; i < avai_coords.size(); i++)
-		std::cout << avai_coords[i].ToString() << std::endl;
-		*/
 /**************************************************************************************************************************************************************/
 	// A turn-based match between player vs Bot
 	int turn = 0;
@@ -142,8 +68,6 @@ int main()
 	cout << "equip Malphite InfinityEdge" << endl;
 	cout << "consume Garen CorruptingPotion" << endl;
 	cout << Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300).FullDescription() << endl;
-	player.Equip(Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300), paladin);
-	cout << paladin->Description() << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer

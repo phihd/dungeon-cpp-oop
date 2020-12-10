@@ -512,50 +512,50 @@ public:
 	//Items
 	
 	std::vector<Item> lv1_items = {
-		Item("Leather Armor", "A light and reliable piece of armor", Stat(0, 0, 0, 50, 0, 0, 0), 100),
-		Item("Blunt Dagger", "A blunt dagger. Can it cut through anything?", Stat(0, 0, 20, 0, 0, 0, 0), 50),
-		Item("Silk Armor", "Very light but not a lot protection", Stat(0, 0, 0, 10, 0, 0, 0), 50),
-		Item("Damaged Sword", "A damaged sword. Is it reliable?", Stat(0, 0, 40, 0, 0, 0, 0), 100),
-		Item("Heavy Shield", "A lot of protection, but so heavy...", Stat(0, 0, 0, 90, 0, -2, 0), 250),
-		Item("Tree Branch", "Not exactly a weapon, but it might do the job?", Stat(0, 0, 10, 0, 0, 0, 0), 50),
-		Item("Heavy Sword", "Deals nice damge, but so heavy to carry around.", Stat(0, 0, 90, 0, 0, -1, 0), 250),
-		Item("Wooden Bow", "A normal wooden bow", Stat(0, 0, 30, 0, 0, 0, 1), 100),
-		Item("Hermit's Ring", "People say this ring curse those who wear it", Stat(20, 0, 10, 20, 0, -2, 0), 150),
-		Item("Makeshift Sword", "You can tell it's not crafted by a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100)
+	Item("Leather Armor", "A light and reliable piece\nof armor", Stat(0, 0, 0, 50, 0, 0, 0), 100),
+	Item("Blunt Dagger", "A blunt dagger.\nCan it cut through anything?", Stat(0, 0, 20, 0, 0, 0, 0), 50),
+	Item("Silk Armor", "Very light but not a lot\nprotection", Stat(0, 0, 0, 10, 0, 0, 0), 50),
+	Item("Damaged Sword", "A damaged sword. Is\nit reliable?", Stat(0, 0, 40, 0, 0, 0, 0), 100),
+	Item("Heavy Shield", "A lot of protection, but\nso heavy...", Stat(0, 0, 0, 90, 0, -2, 0), 250),
+	Item("Tree Branch", "Not exactly a weapon, but\nit might do the job?", Stat(0, 0, 10, 0, 0, 0, 0), 50),
+	Item("Heavy Sword", "Deals nice damge, but\nso heavy to carry around.", Stat(0, 0, 90, 0, 0, -1, 0), 250),
+	Item("Wooden Bow", "A normal wooden bow", Stat(0, 0, 30, 0, 0, 0, 1), 100),
+	Item("Hermit's Ring", "People say this ring curse\nthose who wear it", Stat(20, 0, 10, 20, 0, -2, 0), 150),
+	Item("Makeshift Sword", "You can tell it's not crafted\nby a blacksmith", Stat(0, 0, 35, 0, 0, 0, 0), 100)
 	};
 	std::vector<Item> lv2_items = {
-		Item("Assassin's Blade", "Swift and deadly", Stat(0, 0, 80, 0, 0, 0, 0), 300),
-		Item("Warhammer", "This can do some damage", Stat(0, 0, 90, 0, 0, 0, 0), 300),
-		Item("Chainmail Armor", "Some nice armor", Stat(0, 0, 0, 70, 0, 0, 0), 300),
-		Item("Ring of Protection", "Some says it can protect its wearer through many battle", Stat(50, 0, 0, 50, 0, 0, 0), 400),
-		Item("B.F Sword", "Big f sword. Deals nice damage but very heavy", Stat(0, 0, 120, 0, 0, -1, 0), 450),
-		Item("Trainee's Rapier", "An good rapier", Stat(0, 0, 60, 0, 0, 0, 0), 200),
-		Item("Crossbow", "A deadlier version of a bow", Stat(0, 0, 60, 0, 0, 0, 1), 250),
-		Item("Steel Armor", "Some nice armor", Stat(0, 0, 0, 100, 0, 0, 0), 450),
-		Item("Shield", "Some shield for protection", Stat(0, 0, 0, 50, 0, 0, 0), 200),
-		Item("Heavy Glaive", "Doubles the damge with 2 blades but heavy", Stat(0, 0, 150, 0, 0, -1, 0), 500)
+	Item("Assassin's Blade", "Swift and deadly", Stat(0, 0, 80, 0, 0, 0, 0), 300),
+	Item("Warhammer", "This can do some damage", Stat(0, 0, 90, 0, 0, 0, 0), 300),
+	Item("Chainmail Armor", "Some nice armor", Stat(0, 0, 0, 70, 0, 0, 0), 300),
+	Item("Ring of Protection", "Some says it can protect its\nwearer through many battle", Stat(50, 0, 0, 50, 0, 0, 0), 400),
+	Item("B.F Sword", "Big f sword. Deals nice\ndamage but very heavy", Stat(0, 0, 120, 0, 0, -1, 0), 450),
+	Item("Trainee's Rapier", "An good rapier", Stat(0, 0, 60, 0, 0, 0, 0), 200),
+	Item("Crossbow", "A deadlier version of a bow", Stat(0, 0, 60, 0, 0, 0, 1), 250),
+	Item("Steel Armor", "Some nice armor", Stat(0, 0, 0, 100, 0, 0, 0), 450),
+	Item("Shield", "Some shield for protection", Stat(0, 0, 0, 50, 0, 0, 0), 200),
+	Item("Heavy Glaive", "Doubles the damge with\n2 blades but heavy", Stat(0, 0, 150, 0, 0, -1, 0), 500)
 	};
 	std::vector<Item> lv3_items = {
-		Item("Master's Sword", "A fine sword wielded by a weapon master", Stat(0, 0, 200, 0, 0, 0, 0), 700),
-		Item("Master Assassin's Blade", "Swift, deadly and can attack from a far", Stat(0, 0, 180, 0, 0, 0, 2), 700),
-		Item("Vanguard's Armor", "High quality armor for skilled knights", Stat(0, 0, 0, 200, 0, 0, 0), 700),
-		Item("Shiny Armor", "You look good while not dying", Stat(0, 0, 0, 150, 0, 0, 0), 600),
-		Item("Shieldbow", "Some defense and some offense", Stat(0, 0, 0, 100, 50, 0, 0), 700),
-		Item("Serrated Dirk", "This can deal some ugly wound to your enemies", Stat(0, 0, 150, 0, 0, 0, 0), 600),
-		Item("Faerie Charm", "You get a guardian angel by your side", Stat(100, 0, 50, 100, 0, 0, 0), 700),
-		Item("Blood Thirster", "It protects, it attacks", Stat(70, 0, 175, 0, 0, 0, 0), 750),
-		Item("Vanguard's Shield", "High quality shield for skilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
-		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 100, 0, 0, 0, 1), 700)
+	Item("Master's Sword", "A fine sword wielded by\na weapon master", Stat(0, 0, 200, 0, 0, 0, 0), 700),
+	Item("Master Assassin's Blade", "Swift, deadly and can attack\nfrom a far", Stat(0, 0, 180, 0, 0, 0, 2), 700),
+	Item("Vanguard's Armor", "High quality armor for\nskilled knights", Stat(0, 0, 0, 200, 0, 0, 0), 700),
+	Item("Shiny Armor", "You look good while not dying", Stat(0, 0, 0, 150, 0, 0, 0), 600),
+	Item("Shieldbow", "Some defense and\nsome offense", Stat(0, 0, 0, 100, 50, 0, 0), 700),
+	Item("Serrated Dirk", "This can deal some ugly\nwound to your enemies", Stat(0, 0, 150, 0, 0, 0, 0), 600),
+	Item("Faerie Charm", "You get a guardian angel\nby your side", Stat(100, 0, 50, 100, 0, 0, 0), 700),
+	Item("Blood Thirster", "It protects, it attacks", Stat(70, 0, 175, 0, 0, 0, 0), 750),
+	Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
+	Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 100, 0, 0, 0, 1), 700)
 	};
 	std::vector<Item> lv4_items = {
-		Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
-		Item("Overgrowth Armor", "The wearer recieves great boost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
-		Item("Excalibur", "The sword for kings", Stat(0, 0, 500, 0, 25, 0, 0), 1500),
-		Item("Durandal", "The sword of a legendary paladin", Stat(0, 0, 450, 250, 0, 0, 0), 1500),
-		Item("Laevatein", "Deadly and mischievous", Stat(0, 0, 500, 0, 0, 1, 2), 1500),
-		Item("Blessed Charm", "It blesses its wearer", Stat(200, 0, 300, 300, 0, 1, 1), 1800),
-		Item("Assassin's Cloak", "Move so fast no one can catch you", Stat(0, 0, 0, 200, 0, 3, 2), 1000),
-		Item("Armor of Life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
+	Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
+	Item("Overgrowth Armor", "The wearer recieves great\nboost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
+	Item("Excalibur", "The sword for kings", Stat(0, 0, 500, 0, 25, 0, 0), 1500),
+	Item("Durandal", "The sword of a legendary paladin", Stat(0, 0, 450, 250, 0, 0, 0), 1500),
+	Item("Laevatein", "Deadly and mischievous", Stat(0, 0, 500, 0, 0, 1, 2), 1500),
+	Item("Blessed Charm", "It blesses its wearer", Stat(200, 0, 300, 300, 0, 1, 1), 1800),
+	Item("Assassin's Cloak", "Move so fast no one can\ncatch you", Stat(0, 0, 0, 200, 0, 3, 2), 1000),
+	Item("Armor of Life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
 	};
 	std::vector<Item> potions = {
 		Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20, true),

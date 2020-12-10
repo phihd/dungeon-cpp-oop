@@ -10,7 +10,7 @@
 		"files.exclude": {
 			".vscode": true,
 			"**/.vs": true,
-			".gitignore": true
+			".gitignore": false
 		},
 		"files.associations": {
 			"vector": "cpp",

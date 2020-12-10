@@ -32,6 +32,8 @@ public:
 
     int GetPrice() const;
 
+    bool IsConsumable();
+
     Item& operator=(const Item& b);
 
 };

@@ -69,6 +69,10 @@ Stat Item::GetStats() const {
     return stat_;
 }
 
+bool Item::IsConsumable() {
+    return consumable_;
+}
+
 Item& Item::operator=(const Item& b) {
     this->name_ = b.GetName();
     this->description_ = b.GetDescription();
