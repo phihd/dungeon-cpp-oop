@@ -536,7 +536,7 @@ public:
 	};
 	std::vector<Item> lv3_items = {
 		Item("Master's Sword", "A fine sword wielded by a weapon master", Stat(0, 0, 200, 0, 0, 0, 0), 700),
-		Item("Master Assassin's Hidden Blade", "Swift, deadly and can attack from a far", Stat(0, 0, 180, 0, 0, 0, 2), 700),
+		Item("Master Assassin's Blade", "Swift, deadly and can attack from a far", Stat(0, 0, 180, 0, 0, 0, 2), 700),
 		Item("Vanguard's Armor", "High quality armor for skilled knights", Stat(0, 0, 0, 200, 0, 0, 0), 700),
 		Item("Shiny Armor", "You look good while not dying", Stat(0, 0, 0, 150, 0, 0, 0), 600),
 		Item("Shieldbow", "Some defense and some offense", Stat(0, 0, 0, 100, 50, 0, 0), 700),
@@ -557,10 +557,10 @@ public:
 		Item("Armor of Life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
 	};
 	std::vector<Item> potions = {
-		Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20),
-		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50),
-		Item("Large Potion", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100),
-		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250) };
+		Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20, true),
+		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50, true),
+		Item("Large Potion", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100, true),
+		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true) };
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
 	
 	//Make game
