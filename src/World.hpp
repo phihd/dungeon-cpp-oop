@@ -3,7 +3,7 @@
 #define GAME_HEADER
 
 #include "Player.hpp"
-#include "Player.cpp"	// This is for VSCode, remove if you use visual studio
+//#include "Player.cpp"	// This is for VSCode, remove if you use visual studio
 
 #include <algorithm>
 #include <random>
@@ -379,7 +379,7 @@ public:
 		{Coord(9, 12), Coord(10, 12), Coord(8, 12), Coord(11, 12), Coord(12, 12)}
 	};
 	std::vector<std::vector<Coord>> boss_spawns = {
-		{Coord(10, 3), Coord(9, 6), Coord(12, 6), Coord(5, 9), Coord(15, 9)}, {Coord(10, 7), Coord(11, 2)}, {Coord(11, 5)} };
+		{Coord(10, 3), Coord(9, 6), Coord(12, 6), Coord(5, 9), Coord(15, 9)}, {Coord(10, 5), Coord(11, 5)}, {Coord(11, 5)} };
 
 	//Player
 	Bot bot = Bot("Bot 1");
@@ -400,76 +400,76 @@ public:
 	std::vector<std::vector<Enemy*>> enemies = {
 		{
 			//lv1
-		new Enemy("Scout", Stat(75, 75, 150, 50, 0, 5, 5)),
-		new Enemy("Scout", Stat(75, 75, 150, 50, 0, 5, 5)),
-		new Enemy("Scout", Stat(75, 75, 150, 50, 0, 5, 5)),
-		new Enemy("Scout", Stat(75, 75, 150, 50, 0, 5, 5)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("Thief", Stat(50, 50, 75, 25, 0, 7, 2)),
-		new Enemy("Thief", Stat(50, 50, 75, 25, 0, 7, 2)),
+		new Enemy("Scout 1", Stat(75, 75, 150, 50, 0, 5, 5)),
+		new Enemy("Scout 2", Stat(75, 75, 150, 50, 0, 5, 5)),
+		new Enemy("Scout 3", Stat(75, 75, 150, 50, 0, 5, 5)),
+		new Enemy("Scout 4", Stat(75, 75, 150, 50, 0, 5, 5)),
+		new Enemy("City Patrol 1", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 2", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 3", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 4", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("Thief 1", Stat(50, 50, 75, 25, 0, 7, 2)),
+		new Enemy("Thief 2", Stat(50, 50, 75, 25, 0, 7, 2)),
 		},
 		{
 			//lv2
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
-		new Enemy("City Patrol", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Guard 1", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Guard 2", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Guard 3", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Archer 1", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Archer 2", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Archer 3", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Patrol 1", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 2", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 3", Stat(100, 100, 100, 100, 0, 4, 1)),
+		new Enemy("City Patrol 4", Stat(100, 100, 100, 100, 0, 4, 1)),
 		},
 		{
 			//lv3
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Guard", Stat(150, 150, 100, 100, 0, 4, 1)),
-		new Enemy("City Chevalier", Stat(200, 200, 150, 100, 0, 6, 2)),
-		new Enemy("City Chevalier", Stat(200, 200, 150, 100, 0, 6, 2)),
-		new Enemy("City Chevalier", Stat(200, 200, 150, 100, 0, 6, 2)),
-		new Enemy("City Chevalier", Stat(200, 200, 150, 100, 0, 6, 2)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
-		new Enemy("City Archer", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Guard 1", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Guard 2", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Guard 3", Stat(150, 150, 100, 100, 0, 4, 1)),
+		new Enemy("City Chevalier 1", Stat(200, 200, 150, 100, 0, 6, 2)),
+		new Enemy("City Chevalier 2", Stat(200, 200, 150, 100, 0, 6, 2)),
+		new Enemy("City Chevalier 3", Stat(200, 200, 150, 100, 0, 6, 2)),
+		new Enemy("City Chevalier 4", Stat(200, 200, 150, 100, 0, 6, 2)),
+		new Enemy("City Archer 1", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Archer 2", Stat(100, 100, 200, 100, 0, 6, 2)),
+		new Enemy("City Archer 3", Stat(100, 100, 200, 100, 0, 6, 2)),
 		},
 		{
 			//boss1
 		new Enemy("The Gate Keeper", Stat(500, 500, 300, 200, 0, 4, 1)),
-		new Enemy("Gate Keeper's Minion", Stat(250, 250, 200, 150, 0, 4, 1)),
-		new Enemy("Gate Keeper's Minion", Stat(250, 250, 200, 150, 0, 4, 1)),
-		new Enemy("Gate Keeper's Minion", Stat(250, 250, 200, 150, 0, 4, 1)),
-		new Enemy("Gate Keeper's Minion", Stat(250, 250, 200, 150, 0, 4, 1)),
+		new Enemy("Gate Keeper's Minion 1", Stat(250, 250, 200, 150, 0, 4, 1)),
+		new Enemy("Gate Keeper's Minion 2", Stat(250, 250, 200, 150, 0, 4, 1)),
+		new Enemy("Gate Keeper's Minion 3", Stat(250, 250, 200, 150, 0, 4, 1)),
+		new Enemy("Gate Keeper's Minion 4", Stat(250, 250, 200, 150, 0, 4, 1)),
 		},
 		{
 			//lv5
-		new Enemy("Outer Knight", Stat(250, 250, 150, 150, 0, 4, 1)),
-		new Enemy("Outer Knight", Stat(250, 250, 150, 150, 0, 4, 1)),
-		new Enemy("Outer Knight", Stat(250, 250, 150, 150, 0, 4, 1)),
-		new Enemy("Outer Knight", Stat(250, 250, 150, 150, 0, 4, 1)),
-		new Enemy("Outer Archer", Stat(200, 200, 200, 100, 0, 5, 5)),
-		new Enemy("Outer Archer", Stat(200, 200, 200, 100, 0, 5, 5)),
-		new Enemy("Outer Archer", Stat(200, 200, 200, 100, 0, 5, 5)),
-		new Enemy("Outer Archer", Stat(200, 200, 200, 100, 0, 5, 5)),
+		new Enemy("Outer Knight 1", Stat(250, 250, 150, 150, 0, 4, 1)),
+		new Enemy("Outer Knight 2", Stat(250, 250, 150, 150, 0, 4, 1)),
+		new Enemy("Outer Knight 3", Stat(250, 250, 150, 150, 0, 4, 1)),
+		new Enemy("Outer Knight 4", Stat(250, 250, 150, 150, 0, 4, 1)),
+		new Enemy("Outer Archer 1", Stat(200, 200, 200, 100, 0, 5, 5)),
+		new Enemy("Outer Archer 2", Stat(200, 200, 200, 100, 0, 5, 5)),
+		new Enemy("Outer Archer 3", Stat(200, 200, 200, 100, 0, 5, 5)),
+		new Enemy("Outer Archer 4", Stat(200, 200, 200, 100, 0, 5, 5)),
 		new Enemy("Outer Guardian", Stat(400, 400, 100, 250, 0, 4, 1)),
 		new Enemy("Outer Paladin", Stat(350, 350, 200, 200, 0, 5, 1)),
 		},
 		{
 			//lv6
-		new Enemy("Knight Sentinel", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Knight Sentinel", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Knight Sentinel", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Knight Sentinel", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Knight Sentinel", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Archer Sentinel", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Archer Sentinel", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Archer Sentinel", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Archer Sentinel", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Archer Sentinel", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Knight Sentinel 1", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Knight Sentinel 2", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Knight Sentinel 3", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Knight Sentinel 4", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Knight Sentinel 5", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Archer Sentinel 1", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Archer Sentinel 2", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Archer Sentinel 3", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Archer Sentinel 4", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Archer Sentinel 5", Stat(200, 200, 150, 150, 10, 5, 1)),
 		},
 		{
 			//boss2
@@ -478,33 +478,33 @@ public:
 		},
 		{
 			//lv8
-		new Enemy("Royal Guard", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Royal Guard", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Royal Guard", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Royal Guard", Stat(300, 300, 150, 150, 0, 4, 1)),
-		new Enemy("Royal Archer", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Royal Archer", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Royal Archer", Stat(200, 200, 150, 150, 10, 5, 1)),
-		new Enemy("Royal Archer", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Royal Guard 1", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Royal Guard 2", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Royal Guard 3", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Royal Guard 4", Stat(300, 300, 150, 150, 0, 4, 1)),
+		new Enemy("Royal Archer 1", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Royal Archer 2", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Royal Archer 3", Stat(200, 200, 150, 150, 10, 5, 1)),
+		new Enemy("Royal Archer 4", Stat(200, 200, 150, 150, 10, 5, 1)),
 		new Enemy("Royal Paladin", Stat(500, 500, 200, 150, 0, 6, 2)),
 		new Enemy("Royal Mage", Stat(200, 200, 250, 150, 0, 6, 6))
 		},
 		{
 			//lv9
-		new Enemy("Elite Royal Guard", Stat(400, 400, 200, 200, 0, 4, 1)),
-		new Enemy("Elite Royal Guard", Stat(400, 400, 200, 200, 0, 4, 1)),
-		new Enemy("Elite Royal Guard", Stat(400, 400, 200, 200, 0, 4, 1)),
-		new Enemy("Elite Royal Guard", Stat(400, 400, 200, 200, 0, 4, 1)),
-		new Enemy("Elite Royal Archer", Stat(200, 200, 250, 150, 10, 5, 1)),
-		new Enemy("Elite Royal Archer", Stat(200, 200, 250, 150, 10, 5, 1)),
-		new Enemy("Elite Royal Archer", Stat(200, 200, 250, 150, 10, 5, 1)),
-		new Enemy("Elite Royal Archer", Stat(200, 200, 250, 150, 10, 5, 1)),
+		new Enemy("Elite Royal Guard 1", Stat(400, 400, 200, 200, 0, 4, 1)),
+		new Enemy("Elite Royal Guard 2", Stat(400, 400, 200, 200, 0, 4, 1)),
+		new Enemy("Elite Royal Guard 3", Stat(400, 400, 200, 200, 0, 4, 1)),
+		new Enemy("Elite Royal Guard 4", Stat(400, 400, 200, 200, 0, 4, 1)),
+		new Enemy("Elite Royal Archer 1", Stat(200, 200, 250, 150, 10, 5, 1)),
+		new Enemy("Elite Royal Archer 2", Stat(200, 200, 250, 150, 10, 5, 1)),
+		new Enemy("Elite Royal Archer 3", Stat(200, 200, 250, 150, 10, 5, 1)),
+		new Enemy("Elite Royal Archer 4", Stat(200, 200, 250, 150, 10, 5, 1)),
 		new Enemy("Elite Royal Paladin", Stat(500, 500, 300, 150, 0, 6, 2)),
 		new Enemy("Elite Royal Mage", Stat(200, 200, 350, 150, 0, 6, 6))
 		},
 		{
 			//final boss
-		new Enemy("The King", Stat(2000, 2000, 300, 300, 25, 1, 1)),
+		new Enemy("The King", Stat(2000, 2000, 800, 600, 25, 1, 1)),
 		}
 	};
 
@@ -557,9 +557,9 @@ public:
 		Item("Armor of life", "Protection comes in many form", Stat(800, 0, 0, 0, 0, 0, 0), 1000)
 	};
 	std::vector<Item> potions = {
-		Item("Small potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20),
-		Item("Medium potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50),
-		Item("Large Heal", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100),
+		Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20),
+		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50),
+		Item("Large Potion", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100),
 		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250) };
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
 	
