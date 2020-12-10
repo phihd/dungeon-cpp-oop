@@ -81,6 +81,8 @@ string Player::Inventory() {
 }
 
 string Player::Equip(Item item, Unit* unit) {
+    if (find(army_.begin(), army_.end(), unit) == army_.end())
+        return unit->GetName() + " is not in the army.";
     for (auto p: inventory_) {
         Item item_iter = p.first;
         if (item_iter == item) {
@@ -173,6 +175,11 @@ string Player::Sell(Item item, int quantity, map<Item, int> &stock) {
 string Player::AddItem(Item item, int quantity) {
     inventory_[item] += quantity;
     return "Added " + to_string(quantity) + " " + item.GetName() + " to the inventory.";
+}
+
+string Player::AddItems(vector<Item*> items) {
+    for (int i = 0; i < items.size(); i++)
+        AddItem(*items[i], 1);
 }
 
 string Player::RemoveItem(Item item, int quantity) {
@@ -276,6 +283,19 @@ void Player::Enter(Battlefield *battlefield) {
 
 void Player::Exit(Battlefield *battlefield) {
     battlefield_ = NULL;
+}
+
+string Player::OpenTreasure(Unit *unit, Treasure treasure) {
+    if (find(army_.begin(), army_.end(), unit) == army_.end())
+        return unit->GetName() + " is not in the army.";
+    if (battlefield_->NearTreasure(unit))  {
+        vector<Item*> loots = unit->OpenTreasure(treasure);
+        if (loots.empty())
+            return "This treasure has been opened.";
+        AddItems(loots);
+        return "Opened treasure.";
+    }
+    return unit->GetName() + " can not reach the treasure.";
 }
 
 
