@@ -379,8 +379,7 @@ Coord Battlefield::TreasureCoord() {
 }
 
 bool Battlefield::NearTreasure(Unit* unit) {
-	std::vector<Coord> area = this->BFS(this->TreasureCoord(), 1);
-	return std::find(area.begin(), area.end(), unit->GetLocation()) != area.end();
+	return ((abs(this->TreasureCoord().x() - unit->GetLocation().x()) + abs(this->TreasureCoord().y() - unit->GetLocation().y())) == 1);
 }
 
 std::vector<Enemy*> Battlefield::Enemies() {
@@ -459,6 +458,7 @@ bool Battlefield::EnemyArrive(std::vector<Enemy*> army)
 		return true;
 	}
 }
+
 
 string Battlefield::type()
 {
