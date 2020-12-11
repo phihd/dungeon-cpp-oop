@@ -47,9 +47,6 @@ int main()
 	std::vector<Battlefield> world = game.CreateWorld();
 	Battlefield room = world[2];
 
-	for (unsigned int k = 0; k < room.ToString().size(); k++)
-		std::cout << room.ToString()[k] << std::endl;
-	std::cout << "----------------------------------------------------------------------------------------" << std::endl;
 
 /**************************************************************************************************************************************************************/
 	// A turn-based match between player vs Bot

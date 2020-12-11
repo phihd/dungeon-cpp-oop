@@ -60,6 +60,7 @@ int main()
     player.AddItem(Item("f", "a", universalStatus, 2), 10);
     player.AddItem(Item("g", "a", universalStatus, 2), 1200);
     player.AddItem(Item("h", "a", universalStatus, 2), 2);
+    map<Item, int> temp_inventory;
 
     int windowX = 1200;
     int windowY = 720;
@@ -138,9 +139,14 @@ int main()
             title.setPosition(80, 150);
             window.draw(title);
             float text_location_y = 210;
+            // This list is mutable, depends on the functionalities.
+            // Buy      => Inventory map from store  map<Item, int>
+            // Sell     => Inventory map from player map<Item, int>
+            // Upgrade  => Unit from player ???????????
+            map<Item, int> inventoryList = player.GetInventory();
             vector<sf::RectangleShape> actionButtonList;
             vector<Item> keyList;
-            for (auto itemset : player.GetInventory())
+            for (auto itemset : inventoryList)
             {
                 sf::Text name, description, price, quantity;
                 keyList.push_back(itemset.first);
@@ -186,8 +192,12 @@ int main()
                             if (buttonClicked(b, mouse_pos))
                             {
                                 int buttonNum = (int)(b.getPosition().y - 210) / 60;
-                                Item selectedObject = keyList[buttonNum];
-                                cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+                                if (selectedCase == "Sell")
+                                {
+                                    Item selectedObject = keyList[buttonNum];
+                                    cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+                                    player.Sell(selectedObject, 1, map<Item, int>{});
+                                }
 
                                 // FIXME: Do correct operation accordingly
                             }
@@ -234,7 +244,7 @@ int main()
         {
             sf::Text storyText;
             storyText.setFont(font);
-            storyText.setString(story.substr(0, text_shine / 6));
+            storyText.setString(story.substr(0, text_shine / 4));
 
             sf::FloatRect storyRect = storyText.getLocalBounds();
             storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
