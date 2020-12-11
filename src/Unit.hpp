@@ -68,6 +68,8 @@ public:
 
     void FullHeal();
 
+    void ClearInventory() { inventory_.clear(); }
+
 };
 
 bool operator==(const Unit& a, const Unit& b);

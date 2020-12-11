@@ -129,7 +129,7 @@ public:
 
     virtual int getArmyMaxSize() {return army_max_size_;}
 
-    void ClearInventory() {inventory_.clear();}
+    void ClearInventory();
 };
 
 class Bot: public Player {

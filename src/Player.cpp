@@ -327,6 +327,12 @@ void Player::SetBattlefield(Battlefield *battlefield) {
     battlefield_ = battlefield;
 }
 
+void Player::ClearInventory() {
+    inventory_.clear();
+    for (int i = 0; i < army_.size(); i++)
+        army_[i]->ClearInventory();
+}
+
 
 Bot::Bot(const string &name): Player(name) {}
 
