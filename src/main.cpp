@@ -28,6 +28,28 @@ bool inRange(int num, int small, int big)
 {
 	return num > small && num < big;
 }
+//#########################################################################
+vector<sf::Texture> textureCollection;
+bool buttonClicked(sf::RectangleShape button, sf::Vector2i mousePosition)
+{
+	return button.getPosition().x <= mousePosition.x && mousePosition.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePosition.y && mousePosition.y <= button.getPosition().y + button.getSize().y;
+}
+
+sf::RectangleShape createButton(float xPos, float yPos, float xSize, float ySize, string texturePath, int opacity = 255, bool centered = false)
+{
+	sf::Vector2f buttonSize(xSize, ySize);
+	sf::RectangleShape button(buttonSize);
+	sf::Texture t;
+	t.loadFromFile(texturePath);
+	button.setFillColor(sf::Color(255, 255, 255, opacity));
+	button.setTexture(&textureCollection.emplace_back(t));
+	if (centered)
+		button.setPosition(xPos - xSize / 2.0f, yPos - ySize / 2.0f);
+	else
+		button.setPosition(xPos, yPos);
+	return button;
+}
+//##########################################################################
 
 int main()
 {
@@ -80,10 +102,10 @@ int main()
 	for (auto item : inventory)
 		player_inventory.push_back(item.first);
 	vector<vector<int>> map = room.ToInt();
-    string projectPath = filesystem::current_path().generic_string();
-    projectPath = projectPath.substr(0, projectPath.find("dungeon-2020-4") + 14);
-    string resourcePath = projectPath + "/resource";
-    cout << projectPath << endl;
+	string projectPath = filesystem::current_path().generic_string();
+	projectPath = projectPath.substr(0, projectPath.find("dungeon-2020-4") + 14);
+	string resourcePath = projectPath + "/resource";
+	cout << projectPath << endl;
 	player.startNewTurn();
 
 	/////////////////////////////////////////////////////// UI ///////////////////////////////////////////////////////////
@@ -156,6 +178,7 @@ int main()
 	sf::Text terminal;
 	terminal.setFont(font);
 	terminal.setCharacterSize(20);
+
 	terminal.setPosition(20.f, grid_size * map_size.y + 20.f);
 	terminal.setLineSpacing(1.5f);
 	terminal.setString("");
@@ -235,574 +258,644 @@ int main()
 	end_turn_button.setPosition(grid_size * (map_size.x - 1), grid_size * map_size.y + 20.f);
 	end_turn_button.setTexture(&texture_end_turn);
 
+	unsigned int buttonX = 400;
+	unsigned int buttonY = 200;
+	int windowX = 1680;
+	int windowY = 960;
+	int text_shine = 0;
+	// Initial stage of the program
+	int stage = BATTLE_ROOM_STAGE;
+	ifstream ifs(resourcePath + "/story.txt");
+	string story((istreambuf_iterator<char>(ifs)),
+				 (istreambuf_iterator<char>()));
+	string selectedCase = "Buy";
+	sf::Event event;
+
 	//Create the window
-	sf::RenderWindow window(sf::VideoMode(1680, 960), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(windowX, windowY), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
 	window.setFramerateLimit(500);
 
 	//////////////////////////////////////////////// RUNNING //////////////////////////////////////////////////////
 
 	while (window.isOpen())
 	{
-		//Update mouse positions
-		mouse_pos = sf::Mouse::getPosition(window);
-		mouse_pos_grid.x = mouse_pos.x / static_cast<unsigned>(grid_size);
-		mouse_pos_grid.y = mouse_pos.y / static_cast<unsigned>(grid_size);
-
-		//Update the selector
-		tile_mouse.setPosition(mouse_pos_grid.x * grid_size, mouse_pos_grid.y * grid_size);
-
-		//Text GUI
-		stringstream ss1;
-		stringstream ss2;
-		stringstream ss3;
-		stringstream ss_term;
-
-		ss1 << "Room: " << current_level + 1 << "       |       Gold: " << player.GetGold() << "\n";
-		if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
-			ss1 << "Grid: " << mouse_pos_grid.y << " " << mouse_pos_grid.x << "\n\n";
-		else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
+		window.clear();
+		textureCollection.clear();
+		if (stage == BATTLE_ROOM_STAGE)
 		{
-			if (!is_show_items)
-				ss1 << "Show Inventory\n\n";
-			else
-				ss1 << "Hide Inventory\n\n";
-		}
-		else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
-			ss1 << "End my turn\n\n";
+			//Update mouse positions
+			mouse_pos = sf::Mouse::getPosition(window);
+			mouse_pos_grid.x = mouse_pos.x / static_cast<unsigned>(grid_size);
+			mouse_pos_grid.y = mouse_pos.y / static_cast<unsigned>(grid_size);
 
-		//Events
-		sf::Event evnt;
-		while (window.pollEvent(evnt))
-		{
-			switch (evnt.type)
+			//Update the selector
+			tile_mouse.setPosition(mouse_pos_grid.x * grid_size, mouse_pos_grid.y * grid_size);
+
+			//Text GUI
+			stringstream ss1;
+			stringstream ss2;
+			stringstream ss3;
+			stringstream ss_term;
+
+			ss1 << "Room: " << current_level + 1 << "       |       Gold: " << player.GetGold() << "\n";
+			if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
+				ss1 << "Grid: " << mouse_pos_grid.y << " " << mouse_pos_grid.x << "\n\n";
+			else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
 			{
-			case sf::Event::Closed:
-				window.close();
-				break;
+				if (!is_show_items)
+					ss1 << "Show Inventory\n\n";
+				else
+					ss1 << "Hide Inventory\n\n";
+			}
+			else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
+				ss1 << "End my turn\n\n";
 
-			case sf::Event::KeyPressed:
-				if (evnt.key.code == sf::Keyboard::Escape)
+			//Events
+			sf::Event evnt;
+			while (window.pollEvent(evnt))
+			{
+				switch (evnt.type)
+				{
+				case sf::Event::Closed:
 					window.close();
-				break;
+					break;
 
-			case sf::Event::MouseButtonPressed:
-				if (evnt.key.code == sf::Mouse::Left)
-					//If the click is in the grid
-					if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y) && inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6) && !is_term_print)
-					{
-						//Remeber the click
-						x_ally = mouse_pos_grid.x;
-						y_ally = mouse_pos_grid.y;
-						is_ally_chosen = true;
+				case sf::Event::KeyPressed:
+					if (evnt.key.code == sf::Keyboard::Escape)
+						window.close();
+					break;
 
-						//Add the range
-						movable_grids = room.BFS(Coord(x_ally, y_ally), allies[map[y_ally][x_ally] - 1]->GetMoveRange());
-						attack_grids = room.BFS_Attack(Coord(x_ally, y_ally), allies[map[y_ally][x_ally] - 1]->GetAttackRange());
-						for (Coord i : movable_grids)
-							tile_map[i.x()][i.y()].setFillColor(blue_light);
-						for (Coord i : attack_grids)
+				case sf::Event::MouseButtonPressed:
+					if (evnt.key.code == sf::Mouse::Left)
+						//If the click is in the grid
+						if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y) && inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6) && !is_term_print)
 						{
-							tile_map[i.x()][i.y()].setFillColor(sf::Color::White);
-							tile_map[i.x()][i.y()].setTexture(&texture_attackable);
-						}
-					}
-					//If user click start new turn button
-					else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
-					{
-						//End player turn and bot move random
-						if (!room.IsClear())
-						{
-							bot.startNewTurn();
-							for (unsigned int i = 0; i < bot.GetArmy().size(); i++)
+							//Remeber the click
+							x_ally = mouse_pos_grid.x;
+							y_ally = mouse_pos_grid.y;
+							is_ally_chosen = true;
+
+							//Add the range
+							movable_grids = room.BFS(Coord(x_ally, y_ally), allies[map[y_ally][x_ally] - 1]->GetMoveRange());
+							attack_grids = room.BFS_Attack(Coord(x_ally, y_ally), allies[map[y_ally][x_ally] - 1]->GetAttackRange());
+							for (Coord i : movable_grids)
+								tile_map[i.x()][i.y()].setFillColor(blue_light);
+							for (Coord i : attack_grids)
 							{
-								Unit *enemy = bot.GetArmy()[i];
-								auto possible_new_locations = room.BFS(enemy->GetLocation(), enemy->GetMoveRange());
-
-								if (!possible_new_locations.empty())
+								tile_map[i.x()][i.y()].setFillColor(sf::Color::White);
+								tile_map[i.x()][i.y()].setTexture(&texture_attackable);
+							}
+						}
+						//If user click start new turn button
+						else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
+						{
+							//End player turn and bot move random
+							if (!room.IsClear())
+							{
+								bot.startNewTurn();
+								for (unsigned int i = 0; i < bot.GetArmy().size(); i++)
 								{
-									auto new_location = possible_new_locations[rand() % possible_new_locations.size()];
-									bot.Move(enemy, new_location);
+									Unit *enemy = bot.GetArmy()[i];
+									auto possible_new_locations = room.BFS(enemy->GetLocation(), enemy->GetMoveRange());
+
+									if (!possible_new_locations.empty())
+									{
+										auto new_location = possible_new_locations[rand() % possible_new_locations.size()];
+										bot.Move(enemy, new_location);
+									}
+
+									auto possible_ally_locations = room.BFS_Attack(enemy->GetLocation(), enemy->GetAttackRange());
+									if (!possible_ally_locations.empty())
+									{
+										auto new_ally = room.Apply(possible_ally_locations[rand() % possible_ally_locations.size()])->Get();
+										bot.Attack(enemy, new_ally);
+										player.RefreshArmy();
+									}
 								}
 
-								auto possible_ally_locations = room.BFS_Attack(enemy->GetLocation(), enemy->GetAttackRange());
-								if (!possible_ally_locations.empty())
+								//End bot turn and player turn to move
+								if (room.IsLost())
 								{
-									auto new_ally = room.Apply(possible_ally_locations[rand() % possible_ally_locations.size()])->Get();
-									bot.Attack(enemy, new_ally);
-									player.RefreshArmy();
+									player.Exit();
+									bot.Exit();
+
+									world = game.CreateWorld();
+									current_level = 0;
+									room = world[current_level];
+
+									allies = game.allies;
+									enemies = room.Enemies();
+
+									bot.Enter(&room);
+									allies.resize(5);
+									player.Recruit(allies);
+									player.Enter(&room);
+									room.SpawnAlly();
+
+									inventory = player.GetInventory();
+									for (auto item : inventory)
+										player_inventory.push_back(item.first);
+									map = room.ToInt();
+								}
+
+								player.startNewTurn();
+
+								//Update room
+								map = room.ToInt();
+								for (int x = 0; x < map_size.x; x++)
+								{
+									for (int y = 0; y < map_size.y; y++)
+									{
+										tile_map[x][y].setTexture(NULL);
+										if (map[y][x] < 0)
+											tile_map[x][y].setFillColor(red);
+										else if (map[y][x] == 0)
+											tile_map[x][y].setFillColor(green);
+										else if (inRange(map[y][x], 0, 6))
+											tile_map[x][y].setFillColor(blue);
+										else if (map[y][x] == 6)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_rock);
+										}
+										else if (map[y][x] == 7)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_treasure_close);
+										}
+										else if (map[y][x] == 8)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_treasure_open);
+										}
+									}
 								}
 							}
-
-							//End bot turn and player turn to move
-							if (room.IsLost())
+							else
 							{
 								player.Exit();
 								bot.Exit();
 
-								world = game.CreateWorld();
-								current_level = 0;
-								room = world[current_level];
+								if (current_level < 10)
+								{
+									current_level++;
+									room = world[current_level]; //Move to next room
 
-								allies = game.allies;
-								enemies = room.Enemies();
+									bot.Enter(&room);
+									player.Enter(&room);
+									room.SpawnAlly();
 
-								bot.Enter(&room);
-								allies.resize(5);
-								player.Recruit(allies);
-								player.Enter(&room);
-								room.SpawnAlly();
+									allies = player.GetArmy();
+									enemies = room.Enemies();
+								}
+								else
+								{
+									world = game.CreateWorld();
+									current_level = 0;
+									room = world[current_level];
+
+									allies = game.allies;
+									enemies = room.Enemies();
+
+									bot.Enter(&room);
+									allies.resize(5);
+									player.Recruit(allies);
+									player.Enter(&room);
+									room.SpawnAlly();
+								}
+
+								player.startNewTurn();
 
 								inventory = player.GetInventory();
 								for (auto item : inventory)
 									player_inventory.push_back(item.first);
+
+								//Update room GUI
 								map = room.ToInt();
-							}
-
-							player.startNewTurn();
-
-							//Update room
-							map = room.ToInt();
-							for (int x = 0; x < map_size.x; x++)
-							{
-								for (int y = 0; y < map_size.y; y++)
+								for (int x = 0; x < map_size.x; x++)
 								{
-									tile_map[x][y].setTexture(NULL);
-									if (map[y][x] < 0)
-										tile_map[x][y].setFillColor(red);
-									else if (map[y][x] == 0)
-										tile_map[x][y].setFillColor(green);
-									else if (inRange(map[y][x], 0, 6))
-										tile_map[x][y].setFillColor(blue);
-									else if (map[y][x] == 6)
+									for (int y = 0; y < map_size.y; y++)
 									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_rock);
-									}
-									else if (map[y][x] == 7)
-									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_treasure_close);
-									}
-									else if (map[y][x] == 8)
-									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_treasure_open);
+										tile_map[x][y].setTexture(NULL);
+										if (map[y][x] < 0)
+											tile_map[x][y].setFillColor(red);
+										else if (map[y][x] == 0)
+											tile_map[x][y].setFillColor(green);
+										else if (inRange(map[y][x], 0, 6))
+											tile_map[x][y].setFillColor(blue);
+										else if (map[y][x] == 6)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_rock);
+										}
+										else if (map[y][x] == 7)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_treasure_close);
+										}
+										else if (map[y][x] == 8)
+										{
+											tile_map[x][y].setFillColor(sf::Color::White);
+											tile_map[x][y].setTexture(&texture_treasure_open);
+										}
 									}
 								}
 							}
 						}
-						else
+						//If user click show inventory
+						else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
 						{
-							player.Exit();
-							bot.Exit();
-
-							if (current_level < 10)
-							{
-								current_level++;
-								room = world[current_level]; //Move to next room
-
-								bot.Enter(&room);
-								player.Enter(&room);
-								room.SpawnAlly();
-
-								allies = player.GetArmy();
-								enemies = room.Enemies();
-							}
+							//Change UI of items button
+							is_show_items = !is_show_items;
+							if (is_show_items)
+								items_button.setOutlineColor(sf::Color::Yellow);
 							else
+								items_button.setOutlineColor(sf::Color::Transparent);
+
+							//Update to the items GUI map
+							int count = 0;
+							for (auto i : inventory)
 							{
-								world = game.CreateWorld();
-								current_level = 0;
-								room = world[current_level];
-
-								allies = game.allies;
-								enemies = room.Enemies();
-
-								bot.Enter(&room);
-								allies.resize(5);
-								player.Recruit(allies);
-								player.Enter(&room);
-								room.SpawnAlly();
-							}
-
-							player.startNewTurn();
-
-							inventory = player.GetInventory();
-							for (auto item : inventory)
-								player_inventory.push_back(item.first);
-
-							//Update room GUI
-							map = room.ToInt();
-							for (int x = 0; x < map_size.x; x++)
-							{
-								for (int y = 0; y < map_size.y; y++)
-								{
-									tile_map[x][y].setTexture(NULL);
-									if (map[y][x] < 0)
-										tile_map[x][y].setFillColor(red);
-									else if (map[y][x] == 0)
-										tile_map[x][y].setFillColor(green);
-									else if (inRange(map[y][x], 0, 6))
-										tile_map[x][y].setFillColor(blue);
-									else if (map[y][x] == 6)
-									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_rock);
-									}
-									else if (map[y][x] == 7)
-									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_treasure_close);
-									}
-									else if (map[y][x] == 8)
-									{
-										tile_map[x][y].setFillColor(sf::Color::White);
-										tile_map[x][y].setTexture(&texture_treasure_open);
-									}
-								}
+								auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+								inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+								inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+								count++;
+								if (count > 20)
+									break;
 							}
 						}
-					}
-					//If user click show inventory
-					else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
-					{
-						//Change UI of items button
-						is_show_items = !is_show_items;
-						if (is_show_items)
-							items_button.setOutlineColor(sf::Color::Yellow);
-						else
-							items_button.setOutlineColor(sf::Color::Transparent);
-
-						//Update to the items GUI map
-						int count = 0;
-						for (auto i : inventory)
+						//If user click on an item
+						else if (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items && inRange(mouse_pos_grid.x - map_size.x - 1 + (mouse_pos_grid.y - 2) * 3, -1, player_inventory.size()))
 						{
-							auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
-							inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
-							inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
-							count++;
-							if (count > 20)
-								break;
+							//Remeber the click
+							x_item = mouse_pos_grid.x;
+							y_item = mouse_pos_grid.y;
+							is_item_chosen = true;
 						}
-					}
-					//If user click on an item
-					else if (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items && inRange(mouse_pos_grid.x - map_size.x - 1 + (mouse_pos_grid.y - 2) * 3, -1, player_inventory.size()))
-					{
-						//Remeber the click
-						x_item = mouse_pos_grid.x;
-						y_item = mouse_pos_grid.y;
-						is_item_chosen = true;
-					}
-				break;
+					break;
 
-			case sf::Event::MouseButtonReleased:
-				if (evnt.key.code == sf::Mouse::Left)
-					//If enemy is chosen to attack or a cell to move
-					if (is_ally_chosen && !is_term_print)
-					{
-						if (x_ally != -1 && y_ally != -1)
+				case sf::Event::MouseButtonReleased:
+					if (evnt.key.code == sf::Mouse::Left)
+						//If enemy is chosen to attack or a cell to move
+						if (is_ally_chosen && !is_term_print)
 						{
-							for (Coord i : movable_grids)
-								tile_map[i.x()][i.y()].setFillColor(green);
-							for (Coord i : attack_grids)
+							if (x_ally != -1 && y_ally != -1)
 							{
-								tile_map[i.x()][i.y()].setFillColor(red);
-								tile_map[i.x()][i.y()].setTexture(NULL);
+								for (Coord i : movable_grids)
+									tile_map[i.x()][i.y()].setFillColor(green);
+								for (Coord i : attack_grids)
+								{
+									tile_map[i.x()][i.y()].setFillColor(red);
+									tile_map[i.x()][i.y()].setTexture(NULL);
+								}
+
+								if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
+								{
+									//If player move to a moveable cell
+									if (find(movable_grids.begin(), movable_grids.end(), Coord(int(mouse_pos_grid.x), int(mouse_pos_grid.y))) != movable_grids.end())
+									{
+										ss_term << player.Move(allies[map[y_ally][x_ally] - 1], Coord(mouse_pos_grid.x, mouse_pos_grid.y)) << endl;
+										need_print = true;
+										map = room.ToInt();
+										for (int x = 0; x < map_size.x; x++)
+										{
+											for (int y = 0; y < map_size.y; y++)
+											{
+												tile_map[x][y].setTexture(NULL);
+												if (map[y][x] < 0)
+													tile_map[x][y].setFillColor(red);
+												else if (map[y][x] == 0)
+													tile_map[x][y].setFillColor(green);
+												else if (inRange(map[y][x], 0, 6))
+													tile_map[x][y].setFillColor(blue);
+												else if (map[y][x] == 6)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_rock);
+												}
+												else if (map[y][x] == 7)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_close);
+												}
+												else if (map[y][x] == 8)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_open);
+												}
+											}
+										}
+									}
+									//If player wants to attack an enemy
+									else if (map[mouse_pos_grid.y][mouse_pos_grid.x] < 0)
+									{
+										ss_term << player.Attack(allies[map[y_ally][x_ally] - 1], enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]) << endl;
+										bot.RefreshArmy();
+										need_print = true;
+
+										map = room.ToInt();
+										for (int x = 0; x < map_size.x; x++)
+										{
+											for (int y = 0; y < map_size.y; y++)
+											{
+												tile_map[x][y].setTexture(NULL);
+												if (map[y][x] < 0)
+													tile_map[x][y].setFillColor(red);
+												else if (map[y][x] == 0)
+													tile_map[x][y].setFillColor(green);
+												else if (inRange(map[y][x], 0, 6))
+													tile_map[x][y].setFillColor(blue);
+												else if (map[y][x] == 6)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_rock);
+												}
+												else if (map[y][x] == 7)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_close);
+												}
+												else if (map[y][x] == 8)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_open);
+												}
+											}
+										}
+									}
+									//If player wants to open treasure
+									else if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 6, 9))
+									{
+										//Open treasure
+										ss_term << player.OpenTreasure(allies[map[y_ally][x_ally] - 1], *(room.Apply(Coord(mouse_pos_grid.x, mouse_pos_grid.y))));
+
+										//Update map
+										map = room.ToInt();
+										for (int x = 0; x < map_size.x; x++)
+										{
+											for (int y = 0; y < map_size.y; y++)
+											{
+												tile_map[x][y].setTexture(NULL);
+												if (map[y][x] < 0)
+													tile_map[x][y].setFillColor(red);
+												else if (map[y][x] == 0)
+													tile_map[x][y].setFillColor(green);
+												else if (inRange(map[y][x], 0, 6))
+													tile_map[x][y].setFillColor(blue);
+												else if (map[y][x] == 6)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_rock);
+												}
+												else if (map[y][x] == 7)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_close);
+												}
+												else if (map[y][x] == 8)
+												{
+													tile_map[x][y].setFillColor(sf::Color::White);
+													tile_map[x][y].setTexture(&texture_treasure_open);
+												}
+											}
+										}
+
+										//Update the inventory
+										inventory = player.GetInventory();
+										player_inventory.clear();
+										for (auto item : inventory)
+											player_inventory.push_back(item.first);
+
+										for (int x = 0; x < inventory_size.x; x++)
+											for (int y = 0; y < inventory_size.y; y++)
+											{
+												inventory_map[x][y].setTexture(NULL);
+												inventory_map[x][y].setFillColor(orange_dark);
+											}
+										int count = 0;
+										for (auto i : inventory)
+										{
+											auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+											inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+											inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+											count++;
+											if (count > 20)
+												break;
+										}
+										need_print = true;
+									}
+									//If player moves to other places
+									else if (mouse_pos_grid.x != x_ally || mouse_pos_grid.y != y_ally)
+									{
+										ss_term << "Unit cannot move there!\n\n";
+										need_print = true;
+									}
+								}
+
+								is_ally_chosen = false;
+								x_ally = -1;
+								y_ally = -1;
 							}
-
-							if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
-							{
-								//If player move to a moveable cell
-								if (find(movable_grids.begin(), movable_grids.end(), Coord(int(mouse_pos_grid.x), int(mouse_pos_grid.y))) != movable_grids.end())
-								{
-									ss_term << player.Move(allies[map[y_ally][x_ally] - 1], Coord(mouse_pos_grid.x, mouse_pos_grid.y)) << endl;
-									need_print = true;
-									map = room.ToInt();
-									for (int x = 0; x < map_size.x; x++)
-									{
-										for (int y = 0; y < map_size.y; y++)
-										{
-											tile_map[x][y].setTexture(NULL);
-											if (map[y][x] < 0)
-												tile_map[x][y].setFillColor(red);
-											else if (map[y][x] == 0)
-												tile_map[x][y].setFillColor(green);
-											else if (inRange(map[y][x], 0, 6))
-												tile_map[x][y].setFillColor(blue);
-											else if (map[y][x] == 6)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_rock);
-											}
-											else if (map[y][x] == 7)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_close);
-											}
-											else if (map[y][x] == 8)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_open);
-											}
-										}
-									}
-								}
-								//If player wants to attack an enemy
-								else if (map[mouse_pos_grid.y][mouse_pos_grid.x] < 0)
-								{
-									ss_term << player.Attack(allies[map[y_ally][x_ally] - 1], enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]) << endl;
-									bot.RefreshArmy();
-									need_print = true;
-
-									map = room.ToInt();
-									for (int x = 0; x < map_size.x; x++)
-									{
-										for (int y = 0; y < map_size.y; y++)
-										{
-											tile_map[x][y].setTexture(NULL);
-											if (map[y][x] < 0)
-												tile_map[x][y].setFillColor(red);
-											else if (map[y][x] == 0)
-												tile_map[x][y].setFillColor(green);
-											else if (inRange(map[y][x], 0, 6))
-												tile_map[x][y].setFillColor(blue);
-											else if (map[y][x] == 6)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_rock);
-											}
-											else if (map[y][x] == 7)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_close);
-											}
-											else if (map[y][x] == 8)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_open);
-											}
-										}
-									}
-								}
-								//If player wants to open treasure
-								else if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 6, 9))
-								{
-									//Open treasure
-									ss_term << player.OpenTreasure(allies[map[y_ally][x_ally] - 1], *(room.Apply(Coord(mouse_pos_grid.x, mouse_pos_grid.y))));
-
-									//Update map
-									map = room.ToInt();
-									for (int x = 0; x < map_size.x; x++)
-									{
-										for (int y = 0; y < map_size.y; y++)
-										{
-											tile_map[x][y].setTexture(NULL);
-											if (map[y][x] < 0)
-												tile_map[x][y].setFillColor(red);
-											else if (map[y][x] == 0)
-												tile_map[x][y].setFillColor(green);
-											else if (inRange(map[y][x], 0, 6))
-												tile_map[x][y].setFillColor(blue);
-											else if (map[y][x] == 6)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_rock);
-											}
-											else if (map[y][x] == 7)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_close);
-											}
-											else if (map[y][x] == 8)
-											{
-												tile_map[x][y].setFillColor(sf::Color::White);
-												tile_map[x][y].setTexture(&texture_treasure_open);
-											}
-										}
-									}
-
-									//Update the inventory
-									inventory = player.GetInventory();
-									player_inventory.clear();
-									for (auto item : inventory)
-										player_inventory.push_back(item.first);
-
-									for (int x = 0; x < inventory_size.x; x++)
-										for (int y = 0; y < inventory_size.y; y++)
-										{
-											inventory_map[x][y].setTexture(NULL);
-											inventory_map[x][y].setFillColor(orange_dark);
-										}
-									int count = 0;
-									for (auto i : inventory)
-									{
-										auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
-										inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
-										inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
-										count++;
-										if (count > 20)
-											break;
-									}
-									need_print = true;
-								}
-								//If player moves to other places
-								else if (mouse_pos_grid.x != x_ally || mouse_pos_grid.y != y_ally)
-								{
-									ss_term << "Unit cannot move there!\n\n";
-									need_print = true;
-								}
-							}
-
-							is_ally_chosen = false;
-							x_ally = -1;
-							y_ally = -1;
 						}
-					}
-					//If player wants to equip/consume an item
-					else if (is_item_chosen && !is_term_print)
-					{
-						if (x_item != -1 && y_item != -1)
+						//If player wants to equip/consume an item
+						else if (is_item_chosen && !is_term_print)
 						{
-							if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
+							if (x_item != -1 && y_item != -1)
 							{
-								//If ally is chosen
-								if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6))
+								if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
 								{
-									int index = x_item - int(map_size.x) - 1 + (y_item - 2) * 3;
-									if (player_inventory[index].IsConsumable())
-										ss_term << player.Consume(player_inventory[index], allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]);
+									//If ally is chosen
+									if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6))
+									{
+										int index = x_item - int(map_size.x) - 1 + (y_item - 2) * 3;
+										if (player_inventory[index].IsConsumable())
+											ss_term << player.Consume(player_inventory[index], allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]);
+										else
+											ss_term << player.Equip(player_inventory[index], allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]);
+										need_print = true;
+
+										//Update the inventory
+										inventory = player.GetInventory();
+										player_inventory.clear();
+										for (auto item : inventory)
+											player_inventory.push_back(item.first);
+
+										for (int x = 0; x < inventory_size.x; x++)
+											for (int y = 0; y < inventory_size.y; y++)
+											{
+												inventory_map[x][y].setTexture(NULL);
+												inventory_map[x][y].setFillColor(orange_dark);
+											}
+										int count = 0;
+										for (auto i : inventory)
+										{
+											auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+											inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+											inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+											count++;
+											if (count > 20)
+												break;
+										}
+									}
 									else
-										ss_term << player.Equip(player_inventory[index], allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]);
-									need_print = true;
-
-									//Update the inventory
-									inventory = player.GetInventory();
-									player_inventory.clear();
-									for (auto item : inventory)
-										player_inventory.push_back(item.first);
-
-									for (int x = 0; x < inventory_size.x; x++)
-										for (int y = 0; y < inventory_size.y; y++)
-										{
-											inventory_map[x][y].setTexture(NULL);
-											inventory_map[x][y].setFillColor(orange_dark);
-										}
-									int count = 0;
-									for (auto i : inventory)
 									{
-										auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
-										inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
-										inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
-										count++;
-										if (count > 20)
-											break;
+										ss_term << "Items can be equipped to an ally only!\n\n";
+										need_print = true;
 									}
 								}
-								else
-								{
-									ss_term << "Items can be equipped to an ally only!\n\n";
-									need_print = true;
-								}
 							}
+							is_item_chosen = false;
+							x_item = -1;
+							y_item = -1;
 						}
-						is_item_chosen = false;
-						x_item = -1;
-						y_item = -1;
-					}
-				break;
+					break;
 
-			default:
-				break;
+				default:
+					break;
+				}
 			}
-		}
 
-		//Handle mouse in the grid, or on the buttons or not
-		if ((inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y)) || (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items))
-		{
-			if (is_ally_chosen || is_item_chosen)
-				tile_mouse.setFillColor(yellow);
+			//Handle mouse in the grid, or on the buttons or not
+			if ((inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y)) || (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items))
+			{
+				if (is_ally_chosen || is_item_chosen)
+					tile_mouse.setFillColor(yellow);
+				else
+					tile_mouse.setFillColor(sf::Color::Transparent);
+				tile_mouse.setOutlineColor(sf::Color::Yellow);
+			}
+			else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
+			{
+				tile_mouse.setPosition(grid_size * (map_size.x - 3), grid_size * map_size.y + 20.f);
+				tile_mouse.setOutlineColor(sf::Color::Yellow);
+			}
+			else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
+			{
+				tile_mouse.setPosition(grid_size * (map_size.x - 1), grid_size * map_size.y + 20.f);
+				tile_mouse.setOutlineColor(sf::Color::Yellow);
+			}
 			else
+			{
 				tile_mouse.setFillColor(sf::Color::Transparent);
-			tile_mouse.setOutlineColor(sf::Color::Yellow);
-		}
-		else if (inRange(mouse_pos.x, int(items_button.getPosition().x), int(items_button.getPosition().x) + int(items_button.getSize().x)) && inRange(mouse_pos.y, int(items_button.getPosition().y), int(items_button.getPosition().y) + int(items_button.getSize().y)))
-		{
-			tile_mouse.setPosition(grid_size * (map_size.x - 3), grid_size * map_size.y + 20.f);
-			tile_mouse.setOutlineColor(sf::Color::Yellow);
-		}
-		else if (inRange(mouse_pos.x, int(end_turn_button.getPosition().x), int(end_turn_button.getPosition().x) + int(end_turn_button.getSize().x)) && inRange(mouse_pos.y, int(end_turn_button.getPosition().y), int(end_turn_button.getPosition().y) + int(end_turn_button.getSize().y)))
-		{
-			tile_mouse.setPosition(grid_size * (map_size.x - 1), grid_size * map_size.y + 20.f);
-			tile_mouse.setOutlineColor(sf::Color::Yellow);
-		}
-		else
-		{
-			tile_mouse.setFillColor(sf::Color::Transparent);
-			tile_mouse.setOutlineColor(sf::Color::Transparent);
-		}
+				tile_mouse.setOutlineColor(sf::Color::Transparent);
+			}
 
-		//Text GUI like terminal
-		if (is_term_print && !need_print)
-		{
-			sf::sleep(sf::seconds(1.5f));
-			is_term_print = false;
+			//Text GUI like terminal
+			if (is_term_print && !need_print)
+			{
+				sf::sleep(sf::seconds(1.5f));
+				is_term_print = false;
+			}
+			if (ss_term.str().length() > 0 && need_print)
+			{
+				is_term_print = true;
+				need_print = false;
+			}
+
+			//Text GUI for unit information
+			if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
+			{
+				if (is_ally_chosen)
+					ss2 << allies[map[y_ally][x_ally] - 1]->Description() << endl
+						<< endl;
+
+				if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6) && (x_ally != mouse_pos_grid.x || y_ally != mouse_pos_grid.y) && !is_ally_chosen)
+					ss2 << allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]->Description();
+				if (map[mouse_pos_grid.y][mouse_pos_grid.x] < 0)
+					ss2 << enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]->Description();
+				else if (map[mouse_pos_grid.y][mouse_pos_grid.x] == 7)
+					ss2 << "Move near treasure\nto open it\n";
+				else if (map[mouse_pos_grid.y][mouse_pos_grid.x] == 8)
+					ss2 << "Treasure opened\n";
+			}
+
+			//Text GUI for item information
+			if (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items && inRange(mouse_pos_grid.x - map_size.x - 1 + (mouse_pos_grid.y - 2) * 3, -1, player_inventory.size()))
+			{
+				ss3 << player_inventory[mouse_pos_grid.x - int(map_size.x) - 1 + (mouse_pos_grid.y - 2) * 3].FullDescription();
+				ss3 << "\nQuantity: " << inventory.find(player_inventory[mouse_pos_grid.x - int(map_size.x) - 1 + (mouse_pos_grid.y - 2) * 3])->second;
+			}
+
+			//Prepare the text to print
+			info1.setString(ss1.str());
+			info2.setString(ss2.str());
+			info3.setString(ss3.str());
+			terminal.setString(ss_term.str());
+
+			///////////////// Clear and draw /////////////////
+			window.clear();
+
+			for (int x = 0; x < map_size.x; x++)
+				for (int y = 0; y < map_size.y; y++)
+					window.draw(tile_map[x][y]);
+			if (is_show_items)
+				for (int x = 0; x < inventory_size.x; x++)
+					for (int y = 0; y < inventory_size.y; y++)
+						window.draw(inventory_map[x][y]);
+			window.draw(info1);
+			if (!is_show_items)
+				window.draw(info2);
+			else
+				window.draw(info3);
+			window.draw(terminal);
+			window.draw(end_turn_button);
+			window.draw(items_button);
+			window.draw(tile_mouse);
 		}
-		if (ss_term.str().length() > 0 && need_print)
-		{
-			is_term_print = true;
-			need_print = false;
-		}
+		else if (stage == START_SCREEN_STAGE)
+        {
+            sf::Text dungeonTitle, clickToStart;
 
-		//Text GUI for unit information
-		if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
-		{
-			if (is_ally_chosen)
-				ss2 << allies[map[y_ally][x_ally] - 1]->Description() << endl
-					<< endl;
+            dungeonTitle.setFont(font);
+            dungeonTitle.setString("Dungeon Crawler!!!");
+            dungeonTitle.setCharacterSize(72);
+            dungeonTitle.setStyle(sf::Text::Bold);
 
-			if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6) && (x_ally != mouse_pos_grid.x || y_ally != mouse_pos_grid.y) && !is_ally_chosen)
-				ss2 << allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]->Description();
-			if (map[mouse_pos_grid.y][mouse_pos_grid.x] < 0)
-				ss2 << enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]->Description();
-			else if (map[mouse_pos_grid.y][mouse_pos_grid.x] == 7)
-				ss2 << "Move near treasure\nto open it\n";
-			else if (map[mouse_pos_grid.y][mouse_pos_grid.x] == 8)
-				ss2 << "Treasure opened\n";
-		}
+            sf::FloatRect titleRect = dungeonTitle.getLocalBounds();
+            dungeonTitle.setOrigin(titleRect.left + titleRect.width / 2.0f,
+                                   titleRect.top + titleRect.height / 2.0f);
+            dungeonTitle.setPosition(windowX / 2.0f, windowY * 0.2f);
 
-		//Text GUI for item information
-		if (inRange(mouse_pos_grid.x, map_size.x, map_size.x + inventory_size.x + 1) && inRange(mouse_pos_grid.y, 1, 2 + inventory_size.y) && is_show_items && inRange(mouse_pos_grid.x - map_size.x - 1 + (mouse_pos_grid.y - 2) * 3, -1, player_inventory.size()))
-		{
-			ss3 << player_inventory[mouse_pos_grid.x - int(map_size.x) - 1 + (mouse_pos_grid.y - 2) * 3].FullDescription();
-			ss3 << "\nQuantity: " << inventory.find(player_inventory[mouse_pos_grid.x - int(map_size.x) - 1 + (mouse_pos_grid.y - 2) * 3])->second;
-		}
+            clickToStart.setFont(font);
+            clickToStart.setString("Click anywhere to start");
+            sf::FloatRect ctsRect = clickToStart.getLocalBounds();
+            clickToStart.setOrigin(ctsRect.left + ctsRect.width / 2.0f,
+                                   ctsRect.top + ctsRect.height / 2.0f);
+            clickToStart.setPosition(windowX / 2.0f, windowY * 0.8f);
 
-		//Prepare the text to print
-		info1.setString(ss1.str());
-		info2.setString(ss2.str());
-		info3.setString(ss3.str());
-		terminal.setString(ss_term.str());
+            window.draw(dungeonTitle);
+            if (text_shine % 800 > 400)
+                window.draw(clickToStart);
 
-		///////////////// Clear and draw /////////////////
-		window.clear();
+            if (window.pollEvent(event))
+                if (event.type == sf::Event::Closed)
+                    window.close();
+                else if (event.type == sf::Event::MouseButtonReleased)
+                {
+                    text_shine = 0;
+                    stage = STORY_STAGE;
+                }
+        }
+        else if (stage == STORY_STAGE)
+        {
+            sf::Text storyText;
+            storyText.setFont(font);
+            storyText.setString(story.substr(0, text_shine / 4));
 
-		for (int x = 0; x < map_size.x; x++)
-			for (int y = 0; y < map_size.y; y++)
-				window.draw(tile_map[x][y]);
-		if (is_show_items)
-			for (int x = 0; x < inventory_size.x; x++)
-				for (int y = 0; y < inventory_size.y; y++)
-					window.draw(inventory_map[x][y]);
-		window.draw(info1);
-		if (!is_show_items)
-			window.draw(info2);
-		else
-			window.draw(info3);
-		window.draw(terminal);
-		window.draw(end_turn_button);
-		window.draw(items_button);
-		window.draw(tile_mouse);
-
+            sf::FloatRect storyRect = storyText.getLocalBounds();
+            storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
+                                storyRect.top);
+            storyText.setPosition(windowX / 2.0f, windowY * 0.1f);
+            window.draw(storyText);
+            if (size(story) == size(storyText.getString().toAnsiString()))
+                stage = STORE_FUNCTIONALITY_SELECTION_STAGE; // Here should be something else
+            if (window.pollEvent(event) && event.type == sf::Event::Closed)
+                window.close();
+        }
+        else
+            window.close();
 		window.display();
+		text_shine++;
 	}
 
 	return 0;
