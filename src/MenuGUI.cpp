@@ -191,8 +191,12 @@ int main()
                             if (buttonClicked(b, mouse_pos))
                             {
                                 int buttonNum = (int)(b.getPosition().y - 210) / 60;
-                                Item selectedObject = keyList[buttonNum];
-                                cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+                                if (selectedCase == "Sell")
+                                {
+                                    Item selectedObject = keyList[buttonNum];
+                                    cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+                                    player.Sell(selectedObject, 1, map<Item, int>{});
+                                }
 
                                 // FIXME: Do correct operation accordingly
                             }

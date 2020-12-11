@@ -156,7 +156,7 @@ string Player::Sell(Item item, int quantity, map<Item, int> &stock) {
             Item item_iter = p.first;
             if (item_iter == item) {
                 int num = p.second;
-                if (num <= quantity) {
+                if (num >= quantity) {
                     gold_ += item_iter.GetPrice() * quantity;
                     RemoveItem(item_iter, quantity);
                     // Add items to stock
