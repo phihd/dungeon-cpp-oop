@@ -22,7 +22,7 @@ private:
     vector<Unit*> army_ = {};
     const int army_max_size_ = 5;
     map<Item, int> inventory_;
-    int gold_ = 0;
+    int gold_ = 400;
     Battlefield* battlefield_ = NULL; 
 
 public:
