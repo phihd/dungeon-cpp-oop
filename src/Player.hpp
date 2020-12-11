@@ -126,6 +126,8 @@ public:
     string OpenTreasure(Unit *unit, Square treasure);
 
     void SetBattlefield(Battlefield *Battlefield);
+
+    int getArmyMaxSize() {return army_max_size_;}
 };
 
 class Bot: public Player {

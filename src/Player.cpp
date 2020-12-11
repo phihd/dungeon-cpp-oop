@@ -208,7 +208,7 @@ string Player::Recruit(Unit* unit) {
 }
 
 string Player::Recruit(vector<Unit*> units) {
-    if (army_.empty() && units.size() == army_max_size_) {
+    if (army_.empty() && units.size() <= getArmyMaxSize()) {
         army_ = units;
         return "Recruit successful";
     }
