@@ -227,6 +227,10 @@ string Player::Release(Unit* ally) {
     return "Unit not in army";
 }
 
+void Player::ReleaseAll() {
+    army_.clear();
+}
+
 string Player::Move(Unit* ally, Coord new_coord) {
     for (unsigned int i = 0; i < army_.size(); i++) {
         Unit* current = army_[i];
@@ -279,11 +283,11 @@ vector<Unit*> Player::GetArmy() {
 }
 
 void Player::Enter(Battlefield *battlefield) {
-    battlefield_ = battlefield;
+    SetBattlefield(battlefield);
     battlefield_->UnitArrive(army_);
 }
 
-void Player::Exit(Battlefield *battlefield) {
+void Player::Exit() {
     battlefield_ = NULL;
 }
 
@@ -303,5 +307,20 @@ string Player::OpenTreasure(Unit *unit, Square treasure) {
     return "This treasure has been opened.";
 }
 
+void Player::SetBattlefield(Battlefield *battlefield) {
+    battlefield_ = battlefield;
+}
+
 
 Bot::Bot(const string &name): Player(name) {}
+
+void Bot::Enter(Battlefield *battlefield) {
+    SetBattlefield(battlefield);
+    Recruit(battlefield->Enemies());
+}
+
+void Bot::Exit() {
+    Player::Exit();
+    Player::ReleaseAll();
+}
+
