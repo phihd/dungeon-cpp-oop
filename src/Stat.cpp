@@ -14,6 +14,8 @@ Stat& Stat::operator+=(const Stat &b) {
     this->def_ += b.def_;
     this->HP_ += b.HP_;
     this->maxHP_ += b.maxHP_;
+    this->attackRange_ += b.attackRange_;
+    this->moveRange_ += b.attackRange_;
     if (b.maxHP_ > 0)
         this->HP_ += b.maxHP_;
 
@@ -29,6 +31,8 @@ Stat& Stat::operator-=(const Stat &b) {
     this->def_ -= b.def_;
     this->HP_ -= b.HP_;
     this->maxHP_  -= b.maxHP_;
+    if (b.maxHP_ > 0)
+        this->HP_ += b.maxHP_;
 
     this->HP_ = max(this->HP_, 0);
     this->HP_ = min(this->maxHP_, this->HP_);
