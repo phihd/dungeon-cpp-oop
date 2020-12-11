@@ -425,7 +425,7 @@ bool Battlefield::IsLost()
 			break;
 		}
 	}
-	return false;
+	return lost;
 }
 
 bool Battlefield::Outcome(Unit* attacker, Unit* defender)
