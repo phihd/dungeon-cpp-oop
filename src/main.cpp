@@ -66,7 +66,6 @@ int main()
 								"Vanguard's Shield", "Heavy Crossbow", "Sentinel's Armor", "Overgrowth Armor",
 								"Excalibur", "Durandal", "Laevatein", "Blessed Charm", "Assassin's Cloak",
 								"Armor of Life", "Small Potion", "Medium Potion", "Large Potion", "Health Flask"};
-
 	Player player = Player("Player 1");
 	Game game = Game(player);
 	Bot bot = game.bot;
@@ -84,7 +83,7 @@ int main()
 	player.Enter(&room);
 	room.SpawnAlly();
 
-	vector<Item> potions = {
+	std::vector<Item> potions = {
 		//Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
 		Item("Overgrowth Armor", "The wearer recieves great boost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
 		Item("Excalibur", "The sword for kings", Stat(0, 0, 3500, 0, 25, 10, 0), 1500),
@@ -92,8 +91,9 @@ int main()
 		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50, true),
 		//Item("Large Potion", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100, true),
 		//Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true),
-		//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
+		//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500) };
 		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 1200, 0, 0, 0, 20), 700)};
+
 	map<Item, int> storeStock;
 	storeStock.insert({Item("Sword", "A normal object", Stat(30, 0, 0, 50, 0, 0, 0), 20), 12});
 	storeStock.insert({Item("Playing cards", "Useful when you get bored", Stat(0, 2, 0, 0, 0, 0, 0), 2), 1});
@@ -272,7 +272,7 @@ int main()
 	// A magical number used through out the program to make text/button effects
 	int effect_number = 0;
 	// Initial stage of the program
-	int stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
+	int stage = START_SCREEN_STAGE;
 	ifstream ifs(resourcePath + "/story.txt");
 	string story((istreambuf_iterator<char>(ifs)),
 				 (istreambuf_iterator<char>()));

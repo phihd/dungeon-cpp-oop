@@ -27,32 +27,32 @@ std::vector<Battlefield> Game::CreateWorld()
 		std::vector<string> design = lv_designs[0];
 		std::vector<Item>* treasure_list = new std::vector<Item>{};
 		if (i == 0 || i == 1 || i == 2) {
-			// seed = rand();
-			// rng.seed(seed);
+			seed = rand();
+			rng.seed(seed + i);
 			std::vector<Item> temp_items = items[0];
 			std::shuffle(std::begin(temp_items), std::end(temp_items), rng);
 			for (unsigned int j = 0; j < 5; j++)
 				treasure_list->push_back(temp_items[j]);
 		}
 		else if (i == 3 || i == 4) {
-			// seed = rand();
-			// rng.seed(seed);
+			seed = rand();
+			rng.seed(seed + i);
 			std::vector<Item> temp_items = items[1];
 			std::shuffle(std::begin(temp_items), std::end(temp_items), rng);
 			for (unsigned int j = 0; j < 5; j++)
 				treasure_list->push_back(temp_items[j]);
 		}
 		else if (i == 6 || i == 7) {
-			// seed = rand();
-			// rng.seed(seed);
+			seed = rand();
+			rng.seed(seed + i);
 			std::vector<Item> temp_items = items[2];
 			std::shuffle(std::begin(temp_items), std::end(temp_items), rng);
 			for (unsigned int j = 0; j < 5; j++)
 				treasure_list->push_back(temp_items[j]);
 		}
 		else if (i == 8) {
-			// seed = rand();
-			// rng.seed(seed);
+			seed = rand();
+			rng.seed(seed + i);
 			std::vector<Item> temp_items = items[3];
 			std::shuffle(std::begin(temp_items), std::end(temp_items), rng);
 			for (unsigned int j = 0; j < 5; j++)

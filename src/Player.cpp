@@ -192,14 +192,24 @@ string Player::RemoveItem(Item item, int quantity) {
 }
 
 string Player::Attack(Unit* unit, Unit* opponent) {
+    string commentary = "";
     if (unit->HasAttacked())
         return "Unit already attacked in this turn.";
     if (!battlefield_->Outcome(unit, opponent))
         return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
     if (!opponent->IsAlive()) {
-        gold_ += 100;
-        return unit->GetName() + " just executed " + opponent->GetName() + ", gain 100 gold.";
+        gold_ += 150;
+        commentary += unit->GetName() + " just executed " + opponent->GetName() + ", gain 150 gold.";
+    }
+    // opponent fight back
+    if (battlefield_->Outcome(opponent, unit)) {    // If unit in range of opponent
+        opponent->Attack(unit);
+        if (!unit->IsAlive())
+            commentary += "\n" + opponent->GetName() + " just executed " + opponent->GetName();
+        else
+            commentary += "\n" + opponent->GetName() + " just attacked " + opponent->GetName();
+        return commentary;        
     }
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
