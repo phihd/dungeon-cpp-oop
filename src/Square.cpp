@@ -110,9 +110,9 @@ bool Treasure::IsOpened() { return treasure_ == NULL; }
 
 std::vector<Item> Treasure::Open() {
 	std::vector<Item> result = {};
-	if (!this->IsOpened()) {
+	if (treasure_ != NULL) {
 		for (unsigned int i = 0; i < treasure_->size(); i++) {
-			Item item = treasure_->operator[](i);
+			Item item = treasure_->at(i);
 			result.push_back(item);
 		}
 		treasure_ = NULL;
