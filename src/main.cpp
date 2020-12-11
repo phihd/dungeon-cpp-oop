@@ -5,7 +5,7 @@
 #include <filesystem>
 #include "World.hpp"
 #include "World.cpp"
-#include "Grid.cpp"
+
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
