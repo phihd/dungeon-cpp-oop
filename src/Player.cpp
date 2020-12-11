@@ -200,18 +200,19 @@ string Player::Attack(Unit* unit, Unit* opponent) {
     unit->Attack(opponent);
     if (!opponent->IsAlive()) {
         gold_ += 150;
-        commentary += unit->GetName() + " just executed " + opponent->GetName() + ", gain 150 gold.";
+        return unit->GetName() + " just executed " + opponent->GetName() + ", gain 150 gold.";
     }
-    // opponent fight back
+    commentary += unit->GetName() + " just attacked " + opponent->GetName();
+    // If opponent is still alive -> opponent fight back
     if (battlefield_->Outcome(opponent, unit)) {    // If unit in range of opponent
-        opponent->Attack(unit);
+        opponent->Attack(unit);     // Opponent still fight back ignoring opponent.HasAttacked()
         if (!unit->IsAlive())
-            commentary += "\n" + opponent->GetName() + " just executed " + opponent->GetName();
+            commentary += "\n" + opponent->GetName() + " just counter-executed " + opponent->GetName();
         else
-            commentary += "\n" + opponent->GetName() + " just attacked " + opponent->GetName();
+            commentary += "\n" + opponent->GetName() + " just counter-attacked " + opponent->GetName();
         return commentary;        
     }
-    return unit->GetName() + " just attacked " + opponent->GetName();
+    return commentary;
 }
 
 string Player::Recruit(Unit* unit) {
