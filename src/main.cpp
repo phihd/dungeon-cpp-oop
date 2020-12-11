@@ -442,7 +442,7 @@ int main()
 								{
 									current_level++;
 									room = world[current_level]; //Move to next room
-									if (current_level == 2 || current_level == 5 || current_level == 7)
+									if (current_level == 3 || current_level == 5 || current_level == 7)
 									{
 										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
 										for (auto i : allies) i->FullHeal();
