@@ -197,6 +197,8 @@ string Player::Attack(Unit* unit, Unit* opponent) {
     if (!battlefield_->Outcome(unit, opponent))
         return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
+    if (!opponent->IsAlive())
+        gold_ += 50;
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 
@@ -228,6 +230,7 @@ string Player::Release(Unit* ally) {
 }
 
 void Player::ReleaseAll() {
+    cout << "army size = " << army_.size() << endl;
     army_.clear();
 }
 
