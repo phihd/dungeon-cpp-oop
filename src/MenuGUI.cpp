@@ -60,6 +60,7 @@ int main()
     player.AddItem(Item("f", "a", universalStatus, 2), 10);
     player.AddItem(Item("g", "a", universalStatus, 2), 1200);
     player.AddItem(Item("h", "a", universalStatus, 2), 2);
+    map<Item, int> temp_inventory;
 
     int windowX = 1200;
     int windowY = 720;
