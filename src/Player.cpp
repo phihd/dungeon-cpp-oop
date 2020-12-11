@@ -156,6 +156,7 @@ string Player::Upgrade(Unit *unit, int price) {
     auto s = unit->GetStats();
     unit->AdjustStats(Stat(0, (int)(0.25 * s.GetHP()), (int)(0.25 * s.GetAtk()), (int)(0.25 * s.GetDef()), (int)(0.25 * s.GetCrit()), 0, 0));
     gold_ -= price;
+    return "Upgraded sucessfully.";
 }
 
 string Player::Sell(Item item, int quantity, map<Item, int> &stock) {

@@ -99,15 +99,7 @@ int main()
 		player.AddItem(i, 5);
 
 	map<Item, int> storeStock;
-	/*
-	storeStock.insert({Item("Sword", "A normal object", Stat(30, 0, 0, 50, 0, 0, 0), 20), 12});
-	storeStock.insert({Item("Playing cards", "Useful when you get bored", Stat(0, 2, 0, 0, 0, 0, 0), 2), 1});
-	storeStock.insert({Item("Small Potion", "This gives some healing", Stat(0, 10, 0, 0, 0, 0, 0), 20), 10});
-	storeStock.insert({Item("Stone", "Normal stone", Stat(3, 0, 0, 5, 0, 0, 0), 200), 1});
-	storeStock.insert({Item("Diamond", "Shiny-shiny diamond", Stat(100, 0, 0, 50, 0, 0, 0), 2000), 1});*/
 	storeStock = rests[0].Stock();
-	//std::cout << "HERE " << rests[0].Stock().size() << std::endl;
-	//for (auto i : storeStock) std::cout << i.first.GetDescription() << " " << i.second << std::endl;
 
 	map<Item, int> inventory = player.GetInventory();
 	vector<Item> player_inventory;
@@ -117,7 +109,6 @@ int main()
 	string projectPath = filesystem::current_path().generic_string();
 	projectPath = projectPath.substr(0, projectPath.find("dungeon-2020-4") + 14);
 	string resourcePath = projectPath + "/resource";
-	cout << projectPath << endl;
 	player.startNewTurn();
 
 	/////////////////////////////////////////////////////// UI ///////////////////////////////////////////////////////////
@@ -386,6 +377,7 @@ int main()
 										auto new_ally = room.Apply(possible_ally_locations[rand() % possible_ally_locations.size()])->Get();
 										bot.Attack(enemy, new_ally);
 										player.RefreshArmy();
+										bot.RefreshArmy();
 									}
 								}
 
@@ -496,15 +488,35 @@ int main()
 									player.Recruit(allies);
 									player.Enter(&room);
 									room.SpawnAlly();
+									player.ResetGold();
 
 									player.ClearInventory();
 								}
 
 								player.startNewTurn();
 
+								//Update inventory
 								inventory = player.GetInventory();
+								player_inventory.clear();
 								for (auto item : inventory)
 									player_inventory.push_back(item.first);
+
+								for (int x = 0; x < inventory_size.x; x++)
+									for (int y = 0; y < inventory_size.y; y++)
+									{
+										inventory_map[x][y].setTexture(NULL);
+										inventory_map[x][y].setFillColor(orange_dark);
+									}
+								int count = 0;
+								for (auto i : inventory)
+								{
+									auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+									inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+									inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+									count++;
+									if (count > 20)
+										break;
+								}
 
 								//Update room GUI
 								map = room.ToInt();
@@ -627,6 +639,7 @@ int main()
 									{
 										ss_term << player.Attack(allies[map[y_ally][x_ally] - 1], enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]) << endl;
 										bot.RefreshArmy();
+										player.RefreshArmy();
 										need_print = true;
 
 										map = room.ToInt();
@@ -819,7 +832,7 @@ int main()
 			//Text GUI like terminal
 			if (is_term_print && !need_print)
 			{
-				sf::sleep(sf::seconds(1.0f));
+				sf::sleep(sf::seconds(1.25f));
 				is_term_print = false;
 			}
 			if (ss_term.str().length() > 0 && need_print)
@@ -1080,7 +1093,6 @@ int main()
 								if (selectedCase == "Sell")
 								{
 									Item selectedObject = keyList[buttonNum];
-									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
 									player.Sell(selectedObject, 1, storeStock);
 
 									//Update inventory
@@ -1109,7 +1121,6 @@ int main()
 								else if (selectedCase == "Buy")
 								{
 									Item selectedObject = keyList[buttonNum];
-									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
 									player.Buy(selectedObject, 1, storeStock);
 
 									//Update inventory
@@ -1137,9 +1148,10 @@ int main()
 								}
 								else if (selectedCase == "Upgrade")
 								{
-									Unit *selectedObject = army[buttonNum];
-									auto s = selectedObject->GetStats();
-									selectedObject->AdjustStats(Stat(0, (int)(0.25 * s.GetHP()), (int)(0.25 * s.GetAtk()), (int)(0.25 * s.GetDef()), (int)(0.25 * s.GetCrit()), 0, 0));
+									//Unit *selectedObject = army[buttonNum];
+									player.Upgrade(army[buttonNum], 2000);
+									//auto s = selectedObject->GetStats();
+									//selectedObject->AdjustStats(Stat(0, (int)(0.25 * s.GetHP()), (int)(0.25 * s.GetAtk()), (int)(0.25 * s.GetDef()), (int)(0.25 * s.GetCrit()), 0, 0));
 								}
 
 								// FIXME: Do correct operation accordingly
