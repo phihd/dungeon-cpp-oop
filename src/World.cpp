@@ -7,6 +7,13 @@ Game::Game(Player player) {}
 
 std::vector<Battlefield> Game::CreateWorld()
 {
+	for (unsigned int i = 0; i < allies.size(); i++) {
+		allies[i]->FullHeal();
+	}
+	for (unsigned int i = 0; i < enemies.size(); i++) {
+		for (unsigned int j = 0; j < enemies[i].size(); j++)
+			enemies[i][j]->FullHeal();
+	}
 	std::vector<Battlefield> world;
 	for (unsigned int i = 0; i < designs.size(); i++) {
 		//Design a new room
@@ -75,7 +82,7 @@ std::vector<Battlefield> Game::CreateWorld()
 			new_room.UnitArrive(lv_enemies);
 		}
 		new_room.SpawnEnemy();
-		
+		/**
 		std::cout << "Room: " << i+1 << std::endl;
 		for (unsigned int k = 0; k < lv_enemies.size(); k++) {
 			std::cout << lv_enemies[k]->Description() << std::endl;
@@ -85,7 +92,7 @@ std::vector<Battlefield> Game::CreateWorld()
 		for (unsigned int k = 0; k < new_room.ToString().size(); k++)
 			std::cout << new_room.ToString()[k] << std::endl;
 		std::cout << "----------------------------------------------------------------------------------------"<< std::endl;
-		
+		*/
 		world.push_back(new_room);
 	}
 	return world;
