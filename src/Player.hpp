@@ -132,15 +132,14 @@ public:
 
 class Bot: public Player {
 
-private:
-    const int army_max_size_ = 100;
-
 public:
     Bot(const string &name);
 
     void Enter(Battlefield *battlefield);
 
     void Exit();
+
+    int getArmyMaxSize() {return 1000;}
 };
 
 #endif
