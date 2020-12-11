@@ -3,15 +3,25 @@
 #include <vector>
 #include <algorithm>
 #include <filesystem>
+#include <cstdlib>
+#include <fstream>
+#include <string>
+#include <cmath>
+
 #include "World.hpp"
 #include "World.cpp"
-
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
+
+#define START_SCREEN_STAGE 0
+#define STORY_STAGE 1
+#define STORE_FUNCTIONALITY_SELECTION_STAGE 2
+#define STORE_TRADE_STAGE 3
+#define BATTLE_ROOM_STAGE 4
 
 using namespace std;
 bool inRange(int num, int small, int big)
@@ -98,7 +108,7 @@ int main()
 	texture_rock.loadFromFile(resourcePath + "/rock.png");
 	texture_end_turn.loadFromFile(resourcePath + "/end_turn.png");
 	texture_items_button_texture.loadFromFile(resourcePath + "/inventory.png");
-	for (int i = 0; i < 42; i++)
+	for (unsigned int i = 0; i < 42; i++)
 		texture_all_items[i].loadFromFile(resourcePath + "/" + item_name[i] + ".png");
 
 	//Set variables
@@ -125,7 +135,6 @@ int main()
 	sf::Text info1;
 	info1.setFont(font);
 	info1.setCharacterSize(20);
-	info1.setFillColor(sf::Color::White);
 	info1.setPosition(grid_size * map_size.x + 20.f, 20.f);
 	info1.setLineSpacing(1.5f);
 	info1.setString("");
@@ -133,7 +142,6 @@ int main()
 	sf::Text info2;
 	info2.setFont(font);
 	info2.setCharacterSize(20);
-	info2.setFillColor(sf::Color::White);
 	info2.setPosition(grid_size * map_size.x + 20.f, 100.f);
 	info2.setLineSpacing(1.5f);
 	info2.setString("");
@@ -141,7 +149,6 @@ int main()
 	sf::Text info3;
 	info3.setFont(font);
 	info3.setCharacterSize(20);
-	info3.setFillColor(sf::Color::White);
 	info3.setPosition(grid_size * map_size.x + 20.f, grid_size * 9 + 30.f);
 	info3.setLineSpacing(1.5f);
 	info3.setString("");
@@ -149,7 +156,6 @@ int main()
 	sf::Text terminal;
 	terminal.setFont(font);
 	terminal.setCharacterSize(20);
-	terminal.setFillColor(sf::Color::White);
 	terminal.setPosition(20.f, grid_size * map_size.y + 20.f);
 	terminal.setLineSpacing(1.5f);
 	terminal.setString("");
