@@ -2,7 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-
+#include <filesystem>
 #include "World.hpp"
 #include "World.cpp"
 #include "Grid.cpp"
@@ -13,27 +13,26 @@
 #include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
 
+using namespace std;
 bool inRange(int num, int small, int big)
 {
-	if (num > small && num < big)
-		return true;
-	return false;
+	return num > small && num < big;
 }
 
 int main()
 {
 	////////////////////////////////////////////// CLASSES /////////////////////////////////////////////////////
 
-	std::vector<std::string> item_name = {"Leather Armor", "Blunt Dagger", "Silk Armor", "Damaged Sword",
-										  "Heavy Shield", "Tree Branch", "Heavy Sword", "Wooden Bow",
-										  "Hermit's Ring", "Makeshift Sword", "Assassin's Blade",
-										  "Warhammer", "Chainmail Armor", "Ring of Protection", "B.F Sword",
-										  "Trainee's Rapier", "Crossbow", "Steel Armor", "Shield", "Heavy Glaive",
-										  "Master's Sword", "Master Assassin's Blade", "Vanguard's Armor",
-										  "Shiny Armor", "Shieldbow", "Serrated Dirk", "Faerie Charm", "Blood Thirster",
-										  "Vanguard's Shield", "Heavy Crossbow", "Sentinel's Armor", "Overgrowth Armor",
-										  "Excalibur", "Durandal", "Laevatein", "Blessed Charm", "Assassin's Cloak",
-										  "Armor of Life", "Small Potion", "Medium Potion", "Large Potion", "Health Flask"};
+	vector<string> item_name = {"Leather Armor", "Blunt Dagger", "Silk Armor", "Damaged Sword",
+								"Heavy Shield", "Tree Branch", "Heavy Sword", "Wooden Bow",
+								"Hermit's Ring", "Makeshift Sword", "Assassin's Blade",
+								"Warhammer", "Chainmail Armor", "Ring of Protection", "B.F Sword",
+								"Trainee's Rapier", "Crossbow", "Steel Armor", "Shield", "Heavy Glaive",
+								"Master's Sword", "Master Assassin's Blade", "Vanguard's Armor",
+								"Shiny Armor", "Shieldbow", "Serrated Dirk", "Faerie Charm", "Blood Thirster",
+								"Vanguard's Shield", "Heavy Crossbow", "Sentinel's Armor", "Overgrowth Armor",
+								"Excalibur", "Durandal", "Laevatein", "Blessed Charm", "Assassin's Cloak",
+								"Armor of Life", "Small Potion", "Medium Potion", "Large Potion", "Health Flask"};
 
 	Player player = Player("Player 1");
 	Game game = Game(player);
@@ -52,7 +51,7 @@ int main()
 	player.Enter(&room);
 	room.SpawnAlly();
 
-	std::vector<Item> potions = {
+	vector<Item> potions = {
 		//Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
 		Item("Overgrowth Armor", "The wearer recieves great boost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
 		Item("Excalibur", "The sword for kings", Stat(0, 0, 3500, 0, 25, 10, 0), 1500),
@@ -60,18 +59,21 @@ int main()
 		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50, true),
 		//Item("Large Potion", "This heals you nicely", Stat(0, 200, 0, 0, 0, 0, 0), 100, true),
 		//Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true),
+		//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
 		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 1200, 0, 0, 0, 20), 700)};
-	//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500) };
 
 	for (auto i : potions)
 		player.AddItem(i, 2);
 
-	std::map<Item, int> inventory = player.GetInventory();
-	std::vector<Item> player_inventory;
+	map<Item, int> inventory = player.GetInventory();
+	vector<Item> player_inventory;
 	for (auto item : inventory)
 		player_inventory.push_back(item.first);
-	std::vector<std::vector<int>> map = room.ToInt();
-
+	vector<vector<int>> map = room.ToInt();
+    string projectPath = filesystem::current_path().generic_string();
+    projectPath = projectPath.substr(0, projectPath.find("dungeon-2020-4") + 14);
+    string resourcePath = projectPath + "/resource";
+    cout << projectPath << endl;
 	player.startNewTurn();
 
 	/////////////////////////////////////////////////////// UI ///////////////////////////////////////////////////////////
@@ -89,15 +91,15 @@ int main()
 
 	//Set texture
 	sf::Texture texture_attackable, texture_treasure_close, texture_treasure_open, texture_rock, texture_end_turn, texture_items_button_texture;
-	std::vector<sf::Texture> texture_all_items(42);
-	texture_attackable.loadFromFile("../../font/attack.png");
-	texture_treasure_close.loadFromFile("../../font/treasure_close.png");
-	texture_treasure_open.loadFromFile("../../font/treasure_open.png");
-	texture_rock.loadFromFile("../../font/rock.png");
-	texture_end_turn.loadFromFile("../../font/end_turn.png");
-	texture_items_button_texture.loadFromFile("../../font/inventory.png");
+	vector<sf::Texture> texture_all_items(42);
+	texture_attackable.loadFromFile(resourcePath + "/attack.png");
+	texture_treasure_close.loadFromFile(resourcePath + "/treasure_close.png");
+	texture_treasure_open.loadFromFile(resourcePath + "/treasure_open.png");
+	texture_rock.loadFromFile(resourcePath + "/rock.png");
+	texture_end_turn.loadFromFile(resourcePath + "/end_turn.png");
+	texture_items_button_texture.loadFromFile(resourcePath + "/inventory.png");
 	for (int i = 0; i < 42; i++)
-		texture_all_items[i].loadFromFile("../../font/" + item_name[i] + ".png");
+		texture_all_items[i].loadFromFile(resourcePath + "/" + item_name[i] + ".png");
 
 	//Set variables
 	float grid_size = 60.f;
@@ -110,8 +112,8 @@ int main()
 	int y_ally = -1;
 	int x_item = -1;
 	int y_item = -1;
-	std::vector<Coord> movable_grids;
-	std::vector<Coord> attack_grids;
+	vector<Coord> movable_grids;
+	vector<Coord> attack_grids;
 	sf::Vector2i mouse_pos;
 	sf::Vector2u mouse_pos_grid;
 	sf::Vector2i map_size(room.Rows(), room.Cols());
@@ -119,7 +121,7 @@ int main()
 
 	//Text GUI
 	sf::Font font;
-	font.loadFromFile("../../font/Roboto-Medium.ttf");
+	font.loadFromFile(resourcePath + "/Roboto-Medium.ttf");
 	sf::Text info1;
 	info1.setFont(font);
 	info1.setCharacterSize(20);
@@ -153,11 +155,11 @@ int main()
 	terminal.setString("");
 
 	//Map GUI
-	std::vector<std::vector<sf::RectangleShape>> tile_map;
-	std::vector<std::vector<sf::RectangleShape>> inventory_map;
+	vector<vector<sf::RectangleShape>> tile_map;
+	vector<vector<sf::RectangleShape>> inventory_map;
 
-	tile_map.resize(map_size.x, std::vector<sf::RectangleShape>());
-	inventory_map.resize(inventory_size.x, std::vector<sf::RectangleShape>());
+	tile_map.resize(map_size.x, vector<sf::RectangleShape>());
+	inventory_map.resize(inventory_size.x, vector<sf::RectangleShape>());
 
 	for (int x = 0; x < map_size.x; x++)
 	{
@@ -244,10 +246,10 @@ int main()
 		tile_mouse.setPosition(mouse_pos_grid.x * grid_size, mouse_pos_grid.y * grid_size);
 
 		//Text GUI
-		std::stringstream ss1;
-		std::stringstream ss2;
-		std::stringstream ss3;
-		std::stringstream ss_term;
+		stringstream ss1;
+		stringstream ss2;
+		stringstream ss3;
+		stringstream ss_term;
 
 		ss1 << "Room: " << current_level + 1 << "       |       Gold: " << player.GetGold() << "\n";
 		if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
@@ -504,9 +506,9 @@ int main()
 							if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
 							{
 								//If player move to a moveable cell
-								if (std::find(movable_grids.begin(), movable_grids.end(), Coord(int(mouse_pos_grid.x), int(mouse_pos_grid.y))) != movable_grids.end())
+								if (find(movable_grids.begin(), movable_grids.end(), Coord(int(mouse_pos_grid.x), int(mouse_pos_grid.y))) != movable_grids.end())
 								{
-									ss_term << player.Move(allies[map[y_ally][x_ally] - 1], Coord(mouse_pos_grid.x, mouse_pos_grid.y)) << std::endl;
+									ss_term << player.Move(allies[map[y_ally][x_ally] - 1], Coord(mouse_pos_grid.x, mouse_pos_grid.y)) << endl;
 									need_print = true;
 									map = room.ToInt();
 									for (int x = 0; x < map_size.x; x++)
@@ -541,7 +543,7 @@ int main()
 								//If player wants to attack an enemy
 								else if (map[mouse_pos_grid.y][mouse_pos_grid.x] < 0)
 								{
-									ss_term << player.Attack(allies[map[y_ally][x_ally] - 1], enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]) << std::endl;
+									ss_term << player.Attack(allies[map[y_ally][x_ally] - 1], enemies[abs(map[mouse_pos_grid.y][mouse_pos_grid.x]) - 1]) << endl;
 									bot.RefreshArmy();
 									need_print = true;
 
@@ -748,8 +750,8 @@ int main()
 		if (inRange(mouse_pos_grid.x, -1, map_size.x) && inRange(mouse_pos_grid.y, -1, map_size.y))
 		{
 			if (is_ally_chosen)
-				ss2 << allies[map[y_ally][x_ally] - 1]->Description() << std::endl
-					<< std::endl;
+				ss2 << allies[map[y_ally][x_ally] - 1]->Description() << endl
+					<< endl;
 
 			if (inRange(map[mouse_pos_grid.y][mouse_pos_grid.x], 0, 6) && (x_ally != mouse_pos_grid.x || y_ally != mouse_pos_grid.y) && !is_ally_chosen)
 				ss2 << allies[map[mouse_pos_grid.y][mouse_pos_grid.x] - 1]->Description();
