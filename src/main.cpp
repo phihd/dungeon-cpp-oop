@@ -71,6 +71,7 @@ int main()
 	Bot bot = game.bot;
 
 	vector<Battlefield> world = game.CreateWorld();
+	std::vector<Rest> rests = game.rests;
 	int current_level = 0;
 	Battlefield room = world[current_level];
 
@@ -94,15 +95,19 @@ int main()
 		//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500) };
 		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 1200, 0, 0, 0, 20), 700)};
 
+	for (auto i : potions)
+		player.AddItem(i, 5);
+
 	map<Item, int> storeStock;
+	/*
 	storeStock.insert({Item("Sword", "A normal object", Stat(30, 0, 0, 50, 0, 0, 0), 20), 12});
 	storeStock.insert({Item("Playing cards", "Useful when you get bored", Stat(0, 2, 0, 0, 0, 0, 0), 2), 1});
 	storeStock.insert({Item("Small Potion", "This gives some healing", Stat(0, 10, 0, 0, 0, 0, 0), 20), 10});
 	storeStock.insert({Item("Stone", "Normal stone", Stat(3, 0, 0, 5, 0, 0, 0), 200), 1});
-	storeStock.insert({Item("Diamond", "Shiny-shiny diamond", Stat(100, 0, 0, 50, 0, 0, 0), 2000), 1});
-
-	for (auto i : potions)
-		player.AddItem(i, 5);
+	storeStock.insert({Item("Diamond", "Shiny-shiny diamond", Stat(100, 0, 0, 50, 0, 0, 0), 2000), 1});*/
+	storeStock = rests[0].Stock();
+	//std::cout << "HERE " << rests[0].Stock().size() << std::endl;
+	//for (auto i : storeStock) std::cout << i.first.GetDescription() << " " << i.second << std::endl;
 
 	map<Item, int> inventory = player.GetInventory();
 	vector<Item> player_inventory;
@@ -456,6 +461,18 @@ int main()
 										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
 										for (auto i : allies)
 											i->FullHeal();
+										switch (current_level)
+										{
+											case 3:
+												storeStock = rests[0].Stock();
+												break;
+											case 5:
+												storeStock = rests[1].Stock();
+												break;
+											case 8:
+												storeStock = rests[2].Stock();
+												break;
+										}
 									}
 									bot.Enter(&room);
 									player.Enter(&room);
@@ -479,6 +496,8 @@ int main()
 									player.Recruit(allies);
 									player.Enter(&room);
 									room.SpawnAlly();
+
+									player.ClearInventory();
 								}
 
 								player.startNewTurn();
@@ -1024,7 +1043,7 @@ int main()
 					description.setPosition(400, text_location_y);
 
 					price.setFont(font);
-					price.setString("15");
+					price.setString("2000");
 					price.setPosition(1200, text_location_y);
 
 					quantity.setFont(font);
@@ -1063,12 +1082,58 @@ int main()
 									Item selectedObject = keyList[buttonNum];
 									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
 									player.Sell(selectedObject, 1, storeStock);
+
+									//Update inventory
+									inventory = player.GetInventory();
+									player_inventory.clear();
+									for (auto item : inventory)
+										player_inventory.push_back(item.first);
+
+									for (int x = 0; x < inventory_size.x; x++)
+										for (int y = 0; y < inventory_size.y; y++)
+										{
+											inventory_map[x][y].setTexture(NULL);
+											inventory_map[x][y].setFillColor(orange_dark);
+										}
+									int count = 0;
+									for (auto i : inventory)
+									{
+										auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+										inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+										inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+										count++;
+										if (count > 20)
+											break;
+									}
 								}
 								else if (selectedCase == "Buy")
 								{
 									Item selectedObject = keyList[buttonNum];
 									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
 									player.Buy(selectedObject, 1, storeStock);
+
+									//Update inventory
+									inventory = player.GetInventory();
+									player_inventory.clear();
+									for (auto item : inventory)
+										player_inventory.push_back(item.first);
+
+									for (int x = 0; x < inventory_size.x; x++)
+										for (int y = 0; y < inventory_size.y; y++)
+										{
+											inventory_map[x][y].setTexture(NULL);
+											inventory_map[x][y].setFillColor(orange_dark);
+										}
+									int count = 0;
+									for (auto i : inventory)
+									{
+										auto it = find(item_name.begin(), item_name.end(), i.first.GetName());
+										inventory_map[count % inventory_size.x][count / inventory_size.x].setFillColor(sf::Color::White);
+										inventory_map[count % inventory_size.x][count / inventory_size.x].setTexture(&texture_all_items[it - item_name.begin()]);
+										count++;
+										if (count > 20)
+											break;
+									}
 								}
 								else if (selectedCase == "Upgrade")
 								{

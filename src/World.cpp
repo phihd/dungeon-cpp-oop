@@ -18,16 +18,17 @@ std::vector<Battlefield> Game::CreateWorld()
 		else if (i == 2) {
 			for (unsigned int j = 0; j < current_items.size(); j++)
 				rest2.Import(current_items[j], 5);
-			rest1.Import(potions[1], 10);
+			rest2.Import(potions[1], 10);
 			rest2.Import(potions[2], 10);
 		}
 		else {
 			for (unsigned int j = 0; j < current_items.size(); j++)
 				rest3.Import(current_items[j], 5);
-			rest2.Import(potions[0], 10);
+			rest3.Import(potions[2], 10);
 			rest3.Import(potions[3], 10);
 		}
 	}
+	rests = {rest1, rest2, rest3};
 	for (unsigned int i = 0; i < allies.size(); i++) {
 		allies[i]->FullHeal();
 	}
