@@ -505,7 +505,7 @@ public:
 		},
 		{
 			//final boss
-		new Unit("The King", Stat(2000, 2000, 800, 600, 25, 1, 1), false),
+		new Unit("The King", Stat(2000, 2000, 1200, 600, 25, 1, 1), false),
 		}
 	};
 

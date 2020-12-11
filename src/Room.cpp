@@ -402,7 +402,7 @@ std::vector<Item> Battlefield::RemainingTreasure() {
 }
 
 bool Battlefield::HasTreasure() {
-	return treasures_ != NULL;
+	return treasures_ != NULL && !treasures_->empty();
 }
 
 bool Battlefield::HasEnemies() {
