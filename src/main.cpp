@@ -792,7 +792,7 @@ int main()
 			//Text GUI like terminal
 			if (is_term_print && !need_print)
 			{
-				sf::sleep(sf::seconds(0.75f));
+				sf::sleep(sf::seconds(1.0f));
 				is_term_print = false;
 			}
 			if (ss_term.str().length() > 0 && need_print)
