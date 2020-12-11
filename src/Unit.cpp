@@ -69,7 +69,7 @@ void Unit::Attack(Unit* opponent) {
     bool isCrit = (rand() % 100) < stats_.GetCrit();
     if (isCrit)
         dmg *= 2;
-    opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0, 0, 0));
+    opponent->AdjustStats(Stat(0, (int)(-dmg), 0, 0, 0, 0, 0));
     hasAttacked_ = true;
 }
 

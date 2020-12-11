@@ -138,9 +138,14 @@ int main()
             title.setPosition(80, 150);
             window.draw(title);
             float text_location_y = 210;
+            // This list is mutable, depends on the functionalities.
+            // Buy      => Inventory map from store  map<Item, int>
+            // Sell     => Inventory map from player map<Item, int>
+            // Upgrade  => Unit from player ???????????
+            map<Item, int> inventoryList = player.GetInventory();
             vector<sf::RectangleShape> actionButtonList;
             vector<Item> keyList;
-            for (auto itemset : player.GetInventory())
+            for (auto itemset : inventoryList)
             {
                 sf::Text name, description, price, quantity;
                 keyList.push_back(itemset.first);
