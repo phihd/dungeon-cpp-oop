@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <filesystem>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -12,6 +13,7 @@
 #include <SFML/Audio.hpp>
 #include "Player.cpp"
 #include "Item.hpp"
+#include "Grid.cpp"
 #define START_SCREEN_STAGE 0
 #define STORY_STAGE 1
 #define STORE_FUNCTIONALITY_SELECTION_STAGE 2
@@ -38,12 +40,16 @@ sf::RectangleShape createButton(float xPos, float yPos, float xSize, float ySize
         button.setPosition(xPos - xSize / 2.0f, yPos - ySize / 2.0f);
     else
         button.setPosition(xPos, yPos);
-
     return button;
 }
 
 int main()
 {
+
+    string projectPath = filesystem::current_path().generic_string();
+    projectPath = projectPath.substr(0, projectPath.find("dungeon-2020-4") + 14);
+    string resourcePath = projectPath + "/resource";
+    cout << projectPath << endl;
     Player player = Player("Player 1");
     Stat universalStatus = Stat(1, 1, 1, 1, 1, 1, 1);
     player.AddItem(Item("a", "a", universalStatus, 5), 12);
@@ -68,13 +74,13 @@ int main()
     int text_shine = 0;
     // Initial stage of the program
     int stage = START_SCREEN_STAGE;
-    ifstream ifs("../../resource/story.txt");
+    ifstream ifs(resourcePath + "/story.txt");
     string story((istreambuf_iterator<char>(ifs)),
                  (istreambuf_iterator<char>()));
     string selectedCase = "Buy";
 
     sf::Font font;
-    font.loadFromFile("../../resource/Roboto-Medium.ttf");
+    font.loadFromFile(resourcePath + "/Roboto-Medium.ttf");
     sf::Vector2i mouse_pos;
     sf::Event event;
 
@@ -85,10 +91,10 @@ int main()
         if (stage == STORE_FUNCTIONALITY_SELECTION_STAGE)
         {
             int opacity = (int)(50 * sin(text_shine / 20.0f) + 205);
-            sf::RectangleShape buyButton = createButton(windowX * 0.25f, windowY * 0.25f, (float)buttonX, (float)buttonY, "../../resource/Buy_option.png", opacity, true);
-            sf::RectangleShape sellButton = createButton(windowX * 0.75f, windowY * 0.25f, (float)buttonX, (float)buttonY, "../../resource/Sell_option.png", opacity, true);
-            sf::RectangleShape upgradeButton = createButton(windowX * 0.25f, windowY * 0.75f, (float)buttonX, (float)buttonY, "../../resource/Upgrade_option.png", opacity, true);
-            sf::RectangleShape quitButton = createButton(windowX * 0.75f, windowY * 0.75f, (float)buttonX, (float)buttonY, "../../resource/Quit_option.png", opacity, true);
+            sf::RectangleShape buyButton = createButton(windowX * 0.25f, windowY * 0.25f, (float)buttonX, (float)buttonY, resourcePath + "/Buy_option.png", opacity, true);
+            sf::RectangleShape sellButton = createButton(windowX * 0.75f, windowY * 0.25f, (float)buttonX, (float)buttonY, resourcePath + "/Sell_option.png", opacity, true);
+            sf::RectangleShape upgradeButton = createButton(windowX * 0.25f, windowY * 0.75f, (float)buttonX, (float)buttonY, resourcePath + "/Upgrade_option.png", opacity, true);
+            sf::RectangleShape quitButton = createButton(windowX * 0.75f, windowY * 0.75f, (float)buttonX, (float)buttonY, resourcePath + "/Quit_option.png", opacity, true);
             window.draw(buyButton);
             window.draw(sellButton);
             window.draw(upgradeButton);
@@ -124,7 +130,7 @@ int main()
         }
         else if (stage == STORE_TRADE_STAGE)
         {
-            sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100, "../../resource/stone_arrow.png");
+            sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100, resourcePath + "/stone_arrow.png");
             window.draw(backButtonRect);
 
             sf::Text title;
@@ -160,8 +166,8 @@ int main()
                 quantity.setString(to_string(itemset.second));
                 quantity.setPosition(780, text_location_y);
 
-                sf::RectangleShape actionButtonRect = createButton(940, text_location_y, 190, 60, "../../resource/" + selectedCase + ".png");
-                
+                sf::RectangleShape actionButtonRect = createButton(940, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
+
                 window.draw(name);
                 window.draw(description);
                 window.draw(price);
