@@ -185,7 +185,7 @@ string Player::AddItems(vector<Item*> items) {
 
 string Player::RemoveItem(Item item, int quantity) {
     if (quantity < inventory_[item])
-        inventory_[item] += quantity;
+        inventory_[item] -= quantity;
     else
         inventory_.erase(item);
     return "Remove " + to_string(quantity) + " " + item.GetName() + " from the inventory.";
