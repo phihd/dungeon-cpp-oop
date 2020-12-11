@@ -244,7 +244,7 @@ int main()
         {
             sf::Text storyText;
             storyText.setFont(font);
-            storyText.setString(story.substr(0, text_shine / 6));
+            storyText.setString(story.substr(0, text_shine / 4));
 
             sf::FloatRect storyRect = storyText.getLocalBounds();
             storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
