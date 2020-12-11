@@ -11,7 +11,7 @@
 #include "World.hpp"
 #include "World.cpp"
 #include "Item.hpp"
-
+#include "Stat.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -94,6 +94,12 @@ int main()
 		//Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true),
 		//Item("Vanguard's Shield", "High quality shield for\nskilled knights", Stat(0, 0, 0, 120, 0, 0, 0), 500),
 		Item("Heavy Crossbow", "Deadlier version of a crossbow", Stat(0, 0, 1200, 0, 0, 0, 20), 700)};
+	map<Item, int> storeStock;
+	storeStock.insert({Item("Sword", "A normal object", Stat(30, 0, 0, 50, 0, 0, 0), 20), 12});
+	storeStock.insert({Item("Playing cards", "Useful when you get bored", Stat(0, 2, 0, 0, 0, 0, 0), 2), 1});
+	storeStock.insert({Item("Small Potion", "This gives some healing", Stat(0, 10, 0, 0, 0, 0, 0), 20), 10});
+	storeStock.insert({Item("Stone", "Normal stone", Stat(3, 0, 0, 5, 0, 0, 0), 200), 1});
+	storeStock.insert({Item("Diamond", "Shiny-shiny diamond", Stat(100, 0, 0, 50, 0, 0, 0), 2000), 1});
 
 	for (auto i : potions)
 		player.AddItem(i, 2);
@@ -259,14 +265,14 @@ int main()
 	end_turn_button.setPosition(grid_size * (map_size.x - 1), grid_size * map_size.y + 20.f);
 	end_turn_button.setTexture(&texture_end_turn);
 
-	unsigned int buttonX = 400;
-	unsigned int buttonY = 200;
+	unsigned int buttonX = 600;
+	unsigned int buttonY = 300;
 	int windowX = 1680;
 	int windowY = 960;
 	// A magical number used through out the program to make text/button effects
 	int effect_number = 0;
 	// Initial stage of the program
-	int stage = START_SCREEN_STAGE;
+	int stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
 	ifstream ifs(resourcePath + "/story.txt");
 	string story((istreambuf_iterator<char>(ifs)),
 				 (istreambuf_iterator<char>()));
@@ -700,7 +706,7 @@ int main()
 								y_ally = -1;
 							}
 						}
-						//If player wants to equip/consume an item
+						// If player wants to equip/consume an item
 						else if (is_item_chosen && !is_term_print)
 						{
 							if (x_item != -1 && y_item != -1)
@@ -786,7 +792,7 @@ int main()
 			//Text GUI like terminal
 			if (is_term_print && !need_print)
 			{
-				sf::sleep(sf::seconds(1.5f));
+				sf::sleep(sf::seconds(0.75f));
 				is_term_print = false;
 			}
 			if (ss_term.str().length() > 0 && need_print)
@@ -940,7 +946,7 @@ int main()
 		{
 			sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100, resourcePath + "/stone_arrow.png");
 			window.draw(backButtonRect);
-			string columnNames = "Name       Description                              Price           Quantity     Action";
+			string columnNames = "Name                              Description                                                                               Price    Quantity        Action";
 			sf::Text title;
 			title.setFont(font);
 			title.setStyle(sf::Text::Bold);
@@ -952,38 +958,81 @@ int main()
 			// Buy      => Inventory map from store  map<Item, int>
 			// Sell     => Inventory map from player map<Item, int>
 			// Upgrade  => Unit from player ???????????
-			auto inventoryList = player.GetInventory();
 			vector<sf::RectangleShape> actionButtonList;
+			std::map<Item, int> inventoryList;
+			vector<Unit *> army = player.GetArmy();
 			vector<Item> keyList;
-			for (auto itemset : inventoryList)
+			if (selectedCase == "Sell" || selectedCase == "Buy")
 			{
-				sf::Text name, description, price, quantity;
-				keyList.push_back(itemset.first);
-				name.setFont(font);
-				name.setString(itemset.first.GetName());
-				name.setPosition(80, text_location_y);
 
-				description.setFont(font);
-				description.setString(itemset.first.GetDescription());
-				description.setPosition(220, text_location_y);
+				if (selectedCase == "Sell")
+					inventoryList = player.GetInventory();
+				else
+					inventoryList = storeStock;
 
-				price.setFont(font);
-				price.setString(to_string(itemset.first.GetPrice()));
-				price.setPosition(620, text_location_y);
+				for (auto itemset : inventoryList)
+				{
+					sf::Text name, description, price, quantity;
+					keyList.push_back(itemset.first);
+					name.setFont(font);
+					name.setString(itemset.first.GetName());
+					name.setPosition(80, text_location_y);
 
-				quantity.setFont(font);
-				quantity.setString(to_string(itemset.second));
-				quantity.setPosition(780, text_location_y);
+					description.setFont(font);
+					description.setString(itemset.first.GetDescription());
+					description.setPosition(400, text_location_y);
 
-				sf::RectangleShape actionButton = createButton(940, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
-				actionButtonList.push_back(actionButton);
-				window.draw(name);
-				window.draw(description);
-				window.draw(price);
-				window.draw(quantity);
-				window.draw(actionButton);
+					price.setFont(font);
+					price.setString(to_string(itemset.first.GetPrice()));
+					price.setPosition(1200, text_location_y);
 
-				text_location_y += 60;
+					quantity.setFont(font);
+					quantity.setString(to_string(itemset.second));
+					quantity.setPosition(1350, text_location_y);
+
+					sf::RectangleShape actionButton = createButton(1450, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
+					actionButtonList.push_back(actionButton);
+					window.draw(name);
+					window.draw(description);
+					window.draw(price);
+					window.draw(quantity);
+					window.draw(actionButton);
+
+					text_location_y += 60;
+				}
+			}
+			else
+			{
+				for (auto unit : army)
+				{
+					sf::Text name, description, price, quantity;
+					name.setFont(font);
+					name.setString(unit->GetName());
+					name.setPosition(80, text_location_y);
+					Stat s = unit->GetStats();
+					string d = "HP: " + to_string(s.GetHP()) + " ATK: " + to_string(s.GetAtk()) + " Def: " + to_string(s.GetDef()) + " Crit: " + to_string(s.GetCrit());
+					description.setFont(font);
+					description.setString(d);
+					description.setPosition(400, text_location_y);
+
+					price.setFont(font);
+					price.setString("15");
+					price.setPosition(1200, text_location_y);
+
+					quantity.setFont(font);
+					quantity.setString("N/A");
+					quantity.setPosition(1350, text_location_y);
+
+					sf::RectangleShape actionButton = createButton(1450, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
+					actionButtonList.push_back(actionButton);
+					window.draw(name);
+					window.draw(description);
+					window.draw(price);
+					window.draw(quantity);
+					window.draw(actionButton);
+
+					text_location_y += 60;
+				}
 			}
 			if (window.pollEvent(event))
 				if (event.type == sf::Event::Closed)
@@ -1004,9 +1053,20 @@ int main()
 								if (selectedCase == "Sell")
 								{
 									Item selectedObject = keyList[buttonNum];
-									// map<Item, int> temp;
 									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
-									// player.Sell(selectedObject, 1, temp);
+									player.Sell(selectedObject, 1, storeStock);
+								}
+								else if (selectedCase == "Buy")
+								{
+									Item selectedObject = keyList[buttonNum];
+									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+									player.Buy(selectedObject, 1, storeStock);
+								}
+								else if (selectedCase == "Upgrade")
+								{
+									Unit *selectedObject = army[buttonNum];
+									auto s = selectedObject->GetStats();
+									selectedObject->AdjustStats(Stat(0, (int)(0.25 * s.GetHP()), (int)(0.25 * s.GetAtk()), (int)(0.25 * s.GetDef()), (int)(0.25 * s.GetCrit()), 0, 0));
 								}
 
 								// FIXME: Do correct operation accordingly
