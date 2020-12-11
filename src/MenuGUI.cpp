@@ -141,11 +141,12 @@ int main()
             title.setPosition(80, 150);
             window.draw(title);
             float text_location_y = 210;
-            vector<sf::RectangleShape> actionButtons;
+            vector<sf::RectangleShape> actionButtonList;
+            vector<Item> keyList;
             for (auto itemset : player.GetInventory())
             {
                 sf::Text name, description, price, quantity;
-
+                keyList.push_back(itemset.first);
                 name.setFont(font);
                 name.setFillColor(sf::Color::White);
                 name.setString(itemset.first.GetName());
@@ -166,13 +167,13 @@ int main()
                 quantity.setString(to_string(itemset.second));
                 quantity.setPosition(780, text_location_y);
 
-                sf::RectangleShape actionButtonRect = createButton(940, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
-
+                sf::RectangleShape actionButton = createButton(940, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
+                actionButtonList.push_back(actionButton);
                 window.draw(name);
                 window.draw(description);
                 window.draw(price);
                 window.draw(quantity);
-                window.draw(actionButtonRect);
+                window.draw(actionButton);
 
                 text_location_y += 60;
             }
@@ -188,10 +189,13 @@ int main()
                         selectedCase = "";
                     }
                     else
-                        for (auto b : actionButtons)
+                        for (auto b : actionButtonList)
                             if (buttonClicked(b, mouse_pos))
                             {
-                                int itemNum = (int)(b.getPosition().y - 210) / 60;
+                                int buttonNum = (int)(b.getPosition().y - 210) / 60;
+                                Item selectedObject = keyList[buttonNum];
+                                cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+
                                 // FIXME: Do correct operation accordingly
                             }
                 }

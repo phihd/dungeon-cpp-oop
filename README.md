@@ -46,7 +46,6 @@ make dungeon
 Step 3: Execute the program
 ```shell
 ./dungeon
-
 ```
 
 ### Testing
