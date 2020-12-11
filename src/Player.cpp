@@ -230,7 +230,7 @@ string Player::Release(Unit* ally) {
 }
 
 void Player::ReleaseAll() {
-    cout << "army size = " << army_.size() << endl;
+    //cout << "army size = " << army_.size() << endl;
     army_.clear();
 }
 
