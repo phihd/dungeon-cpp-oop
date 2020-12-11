@@ -4,6 +4,8 @@ The Dungeon Crawler project is a Rogue-lite, turn-based gameplay. The Rogue-lite
 
 The project was implemented on top of [SFML](https://www.sfml-dev.org/index.php) framework.
 
+![Screenshot](./resource/screenshot.png)
+
 ### Project Structure
 
   * `plan/` -- Project plans.
