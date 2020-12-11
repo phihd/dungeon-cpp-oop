@@ -438,18 +438,23 @@ int main()
 								player.Exit();
 								bot.Exit();
 
-								if (current_level < 10)
+								if (current_level < 9)
 								{
 									current_level++;
 									room = world[current_level]; //Move to next room
 									if (current_level == 2 || current_level == 5 || current_level == 7)
+									{
 										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
+										for (auto i : allies) i->FullHeal();
+									}
+
 									bot.Enter(&room);
 									player.Enter(&room);
 									room.SpawnAlly();
 
 									allies = player.GetArmy();
 									enemies = room.Enemies();
+
 								}
 								else
 								{
@@ -462,6 +467,7 @@ int main()
 
 									bot.Enter(&room);
 									allies.resize(5);
+									player.ReleaseAll();
 									player.Recruit(allies);
 									player.Enter(&room);
 									room.SpawnAlly();
@@ -786,7 +792,7 @@ int main()
 			//Text GUI like terminal
 			if (is_term_print && !need_print)
 			{
-				sf::sleep(sf::seconds(1.5f));
+				sf::sleep(sf::seconds(0.75f));
 				is_term_print = false;
 			}
 			if (ss_term.str().length() > 0 && need_print)
@@ -883,7 +889,7 @@ int main()
 		{
 			sf::Text storyText;
 			storyText.setFont(font);
-			storyText.setLineSpacing(1.5f);
+			storyText.setLineSpacing(1.25f);
 			storyText.setString(story.substr(0, effect_number / 4));
 
 			sf::FloatRect storyRect = storyText.getLocalBounds();
