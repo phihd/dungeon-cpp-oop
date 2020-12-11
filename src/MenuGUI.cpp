@@ -61,16 +61,15 @@ int main()
     player.AddItem(Item("g", "a", universalStatus, 2), 1200);
     player.AddItem(Item("h", "a", universalStatus, 2), 2);
 
-    unsigned int windowX = 1200;
-    unsigned int windowY = 720;
+    int windowX = 1200;
+    int windowY = 720;
     unsigned int buttonX = 400;
     unsigned int buttonY = 200;
 
     //Create the window
-    sf::RenderWindow window(sf::VideoMode((int)windowX, (int)windowY), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(windowX, windowY), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(500);
-    float grid_size = 60.f;
-    bool direction = true;
+
     int text_shine = 0;
     // Initial stage of the program
     int stage = START_SCREEN_STAGE;
@@ -78,7 +77,6 @@ int main()
     string story((istreambuf_iterator<char>(ifs)),
                  (istreambuf_iterator<char>()));
     string selectedCase = "Buy";
-
     sf::Font font;
     font.loadFromFile(resourcePath + "/Roboto-Medium.ttf");
     sf::Vector2i mouse_pos;
@@ -132,12 +130,11 @@ int main()
         {
             sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100, resourcePath + "/stone_arrow.png");
             window.draw(backButtonRect);
-
+            string columnNames = "Name       Description                              Price           Quantity     Action";
             sf::Text title;
             title.setFont(font);
-            title.setFillColor(sf::Color::White);
             title.setStyle(sf::Text::Bold);
-            title.setString("Name       Description                              Price           Quantity     Action");
+            title.setString(columnNames);
             title.setPosition(80, 150);
             window.draw(title);
             float text_location_y = 210;
@@ -148,22 +145,18 @@ int main()
                 sf::Text name, description, price, quantity;
                 keyList.push_back(itemset.first);
                 name.setFont(font);
-                name.setFillColor(sf::Color::White);
                 name.setString(itemset.first.GetName());
                 name.setPosition(80, text_location_y);
 
                 description.setFont(font);
-                description.setFillColor(sf::Color::White);
                 description.setString(itemset.first.GetDescription());
                 description.setPosition(220, text_location_y);
 
                 price.setFont(font);
-                price.setFillColor(sf::Color::White);
                 price.setString(to_string(itemset.first.GetPrice()));
                 price.setPosition(620, text_location_y);
 
                 quantity.setFont(font);
-                quantity.setFillColor(sf::Color::White);
                 quantity.setString(to_string(itemset.second));
                 quantity.setPosition(780, text_location_y);
 
@@ -208,7 +201,6 @@ int main()
             sf::Text dungeonTitle, clickToStart;
 
             dungeonTitle.setFont(font);
-            dungeonTitle.setFillColor(sf::Color::White);
             dungeonTitle.setString("Dungeon Crawler!!!");
             dungeonTitle.setCharacterSize(72);
             dungeonTitle.setStyle(sf::Text::Bold);
@@ -219,7 +211,6 @@ int main()
             dungeonTitle.setPosition(windowX / 2.0f, windowY * 0.2f);
 
             clickToStart.setFont(font);
-            clickToStart.setFillColor(sf::Color::White);
             clickToStart.setString("Click anywhere to start");
             sf::FloatRect ctsRect = clickToStart.getLocalBounds();
             clickToStart.setOrigin(ctsRect.left + ctsRect.width / 2.0f,
@@ -243,7 +234,6 @@ int main()
         {
             sf::Text storyText;
             storyText.setFont(font);
-            storyText.setFillColor(sf::Color::White);
             storyText.setString(story.substr(0, text_shine / 6));
 
             sf::FloatRect storyRect = storyText.getLocalBounds();
