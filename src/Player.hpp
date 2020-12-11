@@ -128,6 +128,8 @@ public:
     void SetBattlefield(Battlefield *Battlefield);
 
     virtual int getArmyMaxSize() {return army_max_size_;}
+
+    void ClearInventory() {inventory_.clear();}
 };
 
 class Bot: public Player {
