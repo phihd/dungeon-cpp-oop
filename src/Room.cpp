@@ -10,9 +10,9 @@ string Room::type()
 	return "Room";
 }
 
-Rest::Rest(std::vector<Item>* stock) : Room(), stock_(stock) {}
+Rest::Rest(std::map<Item, int> stock) : Room(), stock_(stock) {}
 
-std::vector<Item>* Rest::Stock()
+std::map<Item, int> Rest::Stock()
 {
 	return stock_;
 }
@@ -22,12 +22,9 @@ string Rest::type()
 	return "Rest";
 }
 
-void Rest::Import(std::vector<Item> items)
+void Rest::Import(Item item, int quantity)
 {
-	for (unsigned int i = 0; i < items.size(); i++) {
-		Item item = items[i];
-		stock_->push_back(item);
-	}
+	stock_[item] = quantity;
 }
 
 Battlefield::Battlefield(int nrows, int ncols, std::vector<Unit*> enemies, std::vector<Unit*> allies,

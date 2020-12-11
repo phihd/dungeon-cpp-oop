@@ -371,7 +371,7 @@ public:
 		{Coord(1, 5), Coord(1, 6), Coord(1, 7), Coord(2, 5), Coord(2, 6)},
 		{Coord(1, 5), Coord(1, 6), Coord(1, 7), Coord(2, 5), Coord(2, 6)},
 		{Coord(7, 12), Coord(8, 12), Coord(9, 12), Coord(10, 12), Coord(11, 12)},
-		{Coord(1, 10), Coord(2, 10), Coord(3, 10), Coord(6, 11), Coord(6, 12)},
+		{Coord(1, 10), Coord(2, 10), Coord(1, 11), Coord(2, 11), Coord(1, 12)},
 		{Coord(3, 6), Coord(1, 6), Coord(1, 7), Coord(1, 5), Coord(1, 8)},
 		{Coord(9, 12), Coord(10, 12), Coord(8, 12), Coord(11, 12), Coord(12, 12)},
 		{Coord(9, 12), Coord(10, 12), Coord(8, 12), Coord(11, 12), Coord(12, 12)},
@@ -564,6 +564,14 @@ public:
 		Item("Health Flask", "This surely HEALS you", Stat(0, 10000, 0, 0, 0, 0, 0), 250, true) };
 	std::vector<std::vector<Item>> items = { lv1_items, lv2_items, lv3_items, lv4_items };
 	
+
+	std::map<Item, int> stock1;
+	std::map<Item, int> stock2;
+	std::map<Item, int> stock3;
+	Rest rest1 = Rest(stock1);
+	Rest rest2 = Rest(stock2);
+	Rest rest3 = Rest(stock3);
+	std::vector<Rest> rests = {rest1, rest2, rest3};
 	//Make game...
 	std::vector<Battlefield> CreateWorld();
 

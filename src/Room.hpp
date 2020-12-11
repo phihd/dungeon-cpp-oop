@@ -4,6 +4,7 @@
 
 #include "Grid.hpp"
 #include "Grid.cpp"		// This is for VSCode, remove if you use visual studio
+#include <map>
 
 class Room {
 public:
@@ -15,15 +16,16 @@ public:
 /*Rest stop between the rooms*/
 class Rest : public Room {
 public:
-	Rest(std::vector<Item>* stock);
+	Rest(std::map<Item, int> stock);
 
-	std::vector<Item>* Stock();
+	std::map<Item, int> Stock();
 
 	string type();
 	//import items to stock
-	void Import(std::vector<Item> items);
+	void Import(Item item, int quantity);
+
 private:
-	std::vector<Item>* stock_;
+	std::map<Item, int> stock_;
 };
 
 /*Playable Area*/
