@@ -10,6 +10,7 @@
 
 #include "World.hpp"
 #include "World.cpp"
+#include "Item.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -262,9 +263,10 @@ int main()
 	unsigned int buttonY = 200;
 	int windowX = 1680;
 	int windowY = 960;
-	int text_shine = 0;
+	// A magical number used through out the program to make text/button effects
+	int effect_number = 0;
 	// Initial stage of the program
-	int stage = BATTLE_ROOM_STAGE;
+	int stage = START_SCREEN_STAGE;
 	ifstream ifs(resourcePath + "/story.txt");
 	string story((istreambuf_iterator<char>(ifs)),
 				 (istreambuf_iterator<char>()));
@@ -440,7 +442,8 @@ int main()
 								{
 									current_level++;
 									room = world[current_level]; //Move to next room
-
+									if (current_level == 3 || current_level == 6 || current_level == 9)
+										stage = STORE_TRADE_STAGE;
 									bot.Enter(&room);
 									player.Enter(&room);
 									room.SpawnAlly();
@@ -843,59 +846,176 @@ int main()
 			window.draw(tile_mouse);
 		}
 		else if (stage == START_SCREEN_STAGE)
-        {
-            sf::Text dungeonTitle, clickToStart;
+		{
+			sf::Text dungeonTitle, clickToStart;
 
-            dungeonTitle.setFont(font);
-            dungeonTitle.setString("Dungeon Crawler!!!");
-            dungeonTitle.setCharacterSize(72);
-            dungeonTitle.setStyle(sf::Text::Bold);
+			dungeonTitle.setFont(font);
+			dungeonTitle.setString("Dungeon Crawler!!!");
+			dungeonTitle.setCharacterSize(72);
+			dungeonTitle.setStyle(sf::Text::Bold);
 
-            sf::FloatRect titleRect = dungeonTitle.getLocalBounds();
-            dungeonTitle.setOrigin(titleRect.left + titleRect.width / 2.0f,
-                                   titleRect.top + titleRect.height / 2.0f);
-            dungeonTitle.setPosition(windowX / 2.0f, windowY * 0.2f);
+			sf::FloatRect titleRect = dungeonTitle.getLocalBounds();
+			dungeonTitle.setOrigin(titleRect.left + titleRect.width / 2.0f,
+								   titleRect.top + titleRect.height / 2.0f);
+			dungeonTitle.setPosition(windowX / 2.0f, windowY * 0.2f);
 
-            clickToStart.setFont(font);
-            clickToStart.setString("Click anywhere to start");
-            sf::FloatRect ctsRect = clickToStart.getLocalBounds();
-            clickToStart.setOrigin(ctsRect.left + ctsRect.width / 2.0f,
-                                   ctsRect.top + ctsRect.height / 2.0f);
-            clickToStart.setPosition(windowX / 2.0f, windowY * 0.8f);
+			clickToStart.setFont(font);
+			clickToStart.setString("Click anywhere to start");
+			sf::FloatRect ctsRect = clickToStart.getLocalBounds();
+			clickToStart.setOrigin(ctsRect.left + ctsRect.width / 2.0f,
+								   ctsRect.top + ctsRect.height / 2.0f);
+			clickToStart.setPosition(windowX / 2.0f, windowY * 0.8f);
 
-            window.draw(dungeonTitle);
-            if (text_shine % 800 > 400)
-                window.draw(clickToStart);
+			window.draw(dungeonTitle);
+			if (effect_number % 200 > 100)
+				window.draw(clickToStart);
 
-            if (window.pollEvent(event))
-                if (event.type == sf::Event::Closed)
-                    window.close();
-                else if (event.type == sf::Event::MouseButtonReleased)
-                {
-                    text_shine = 0;
-                    stage = STORY_STAGE;
-                }
-        }
-        else if (stage == STORY_STAGE)
-        {
-            sf::Text storyText;
-            storyText.setFont(font);
-            storyText.setString(story.substr(0, text_shine / 4));
+			if (window.pollEvent(event))
+				if (event.type == sf::Event::Closed)
+					window.close();
+				else if (event.type == sf::Event::MouseButtonReleased)
+				{
+					effect_number = 0;
+					stage = STORY_STAGE;
+				}
+		}
+		else if (stage == STORY_STAGE)
+		{
+			sf::Text storyText;
+			storyText.setFont(font);
+			storyText.setString(story.substr(0, effect_number / 4));
 
-            sf::FloatRect storyRect = storyText.getLocalBounds();
-            storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
-                                storyRect.top);
-            storyText.setPosition(windowX / 2.0f, windowY * 0.1f);
-            window.draw(storyText);
-            if (size(story) == size(storyText.getString().toAnsiString()))
-                stage = STORE_FUNCTIONALITY_SELECTION_STAGE; // Here should be something else
-            if (window.pollEvent(event) && event.type == sf::Event::Closed)
-                window.close();
-        }
-        else
-            window.close();
+			sf::FloatRect storyRect = storyText.getLocalBounds();
+			storyText.setOrigin(storyRect.left + storyRect.width / 2.0f,
+								storyRect.top);
+			storyText.setPosition(windowX / 2.0f, windowY * 0.1f);
+			window.draw(storyText);
+			if (size(story) == size(storyText.getString().toAnsiString()))
+				stage = BATTLE_ROOM_STAGE; // Here should be something else
+			if (window.pollEvent(event) && event.type == sf::Event::Closed)
+				window.close();
+		}
+		else if (stage == STORE_FUNCTIONALITY_SELECTION_STAGE)
+		{
+			int opacity = (int)(50 * sin(effect_number / 20.0f) + 205);
+			sf::RectangleShape buyButton = createButton(windowX * 0.25f, windowY * 0.25f, (float)buttonX, (float)buttonY, resourcePath + "/Buy_option.png", opacity, true);
+			sf::RectangleShape sellButton = createButton(windowX * 0.75f, windowY * 0.25f, (float)buttonX, (float)buttonY, resourcePath + "/Sell_option.png", opacity, true);
+			sf::RectangleShape upgradeButton = createButton(windowX * 0.25f, windowY * 0.75f, (float)buttonX, (float)buttonY, resourcePath + "/Upgrade_option.png", opacity, true);
+			sf::RectangleShape quitButton = createButton(windowX * 0.75f, windowY * 0.75f, (float)buttonX, (float)buttonY, resourcePath + "/Quit_option.png", opacity, true);
+			window.draw(buyButton);
+			window.draw(sellButton);
+			window.draw(upgradeButton);
+			window.draw(quitButton);
+
+			if (window.pollEvent(event))
+				if (event.type == sf::Event::Closed)
+					window.close();
+				else if (event.type == sf::Event::MouseButtonReleased)
+				{
+					mouse_pos = sf::Mouse::getPosition(window);
+					if (buttonClicked(buyButton, mouse_pos))
+					{
+						stage = STORE_TRADE_STAGE;
+						selectedCase = "Buy";
+					}
+					else if (buttonClicked(sellButton, mouse_pos))
+					{
+						stage = STORE_TRADE_STAGE;
+						selectedCase = "Sell";
+					}
+					else if (buttonClicked(upgradeButton, mouse_pos))
+					{
+						stage = STORE_TRADE_STAGE;
+						selectedCase = "Upgrade";
+					}
+					else if (buttonClicked(quitButton, mouse_pos))
+					{
+						stage = BATTLE_ROOM_STAGE;
+						selectedCase = "";
+					}
+				}
+		}
+		else if (stage == STORE_TRADE_STAGE)
+		{
+			sf::RectangleShape backButtonRect = createButton(50, 30, 200, 100, resourcePath + "/stone_arrow.png");
+			window.draw(backButtonRect);
+			string columnNames = "Name       Description                              Price           Quantity     Action";
+			sf::Text title;
+			title.setFont(font);
+			title.setStyle(sf::Text::Bold);
+			title.setString(columnNames);
+			title.setPosition(80, 150);
+			window.draw(title);
+			float text_location_y = 210;
+			// This list is mutable, depends on the functionalities.
+			// Buy      => Inventory map from store  map<Item, int>
+			// Sell     => Inventory map from player map<Item, int>
+			// Upgrade  => Unit from player ???????????
+			auto inventoryList = player.GetInventory();
+			vector<sf::RectangleShape> actionButtonList;
+			vector<Item> keyList;
+			for (auto itemset : inventoryList)
+			{
+				sf::Text name, description, price, quantity;
+				keyList.push_back(itemset.first);
+				name.setFont(font);
+				name.setString(itemset.first.GetName());
+				name.setPosition(80, text_location_y);
+
+				description.setFont(font);
+				description.setString(itemset.first.GetDescription());
+				description.setPosition(220, text_location_y);
+
+				price.setFont(font);
+				price.setString(to_string(itemset.first.GetPrice()));
+				price.setPosition(620, text_location_y);
+
+				quantity.setFont(font);
+				quantity.setString(to_string(itemset.second));
+				quantity.setPosition(780, text_location_y);
+
+				sf::RectangleShape actionButton = createButton(940, text_location_y, 190, 60, resourcePath + "/" + selectedCase + ".png");
+				actionButtonList.push_back(actionButton);
+				window.draw(name);
+				window.draw(description);
+				window.draw(price);
+				window.draw(quantity);
+				window.draw(actionButton);
+
+				text_location_y += 60;
+			}
+			if (window.pollEvent(event))
+				if (event.type == sf::Event::Closed)
+					window.close();
+				else if (event.type == sf::Event::MouseButtonReleased)
+				{
+					mouse_pos = sf::Mouse::getPosition(window);
+					if (buttonClicked(backButtonRect, mouse_pos))
+					{
+						stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
+						selectedCase = "";
+					}
+					else
+						for (auto b : actionButtonList)
+							if (buttonClicked(b, mouse_pos))
+							{
+								int buttonNum = (int)(b.getPosition().y - 210) / 60;
+								if (selectedCase == "Sell")
+								{
+									Item selectedObject = keyList[buttonNum];
+									// map<Item, int> temp;
+									cout << "Player selected " << keyList[buttonNum].GetName() << endl;
+									// player.Sell(selectedObject, 1, temp);
+								}
+
+								// FIXME: Do correct operation accordingly
+							}
+				}
+		}
+		else
+			window.close();
 		window.display();
-		text_shine++;
+		effect_number++;
 	}
 
 	return 0;
