@@ -85,7 +85,7 @@ int main()
 
 	std::vector<Item> potions = {
 		//Item("Sentinel's Armor", "Only legendary heroes wear this", Stat(0, 0, 0, 500, 0, 0, 0), 1200),
-		Item("Overgrowth Armor", "The wearer recieves great boost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
+		Item("Overgrowth Armor", "The wearer recieves great\nboost of life", Stat(300, 0, 0, 500, 0, 0, 0), 1500),
 		Item("Excalibur", "The sword for kings", Stat(0, 0, 3500, 0, 25, 10, 0), 1500),
 		//Item("Small Potion", "Small potion with little healing", Stat(0, 20, 0, 0, 0, 0, 0), 20, true),
 		Item("Medium Potion", "This gives some nice healing", Stat(0, 75, 0, 0, 0, 0, 0), 50, true),
@@ -102,7 +102,7 @@ int main()
 	storeStock.insert({Item("Diamond", "Shiny-shiny diamond", Stat(100, 0, 0, 50, 0, 0, 0), 2000), 1});
 
 	for (auto i : potions)
-		player.AddItem(i, 2);
+		player.AddItem(i, 5);
 
 	map<Item, int> inventory = player.GetInventory();
 	vector<Item> player_inventory;
@@ -444,12 +444,15 @@ int main()
 								player.Exit();
 								bot.Exit();
 
-								if (current_level < 10)
+								if (current_level < 9)
 								{
 									current_level++;
 									room = world[current_level]; //Move to next room
-									if (current_level == 2 || current_level == 5 || current_level == 7)
+									if (current_level == 3 || current_level == 5 || current_level == 8)
+									{
 										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
+										for (auto i : allies) i->FullHeal();
+									}
 									bot.Enter(&room);
 									player.Enter(&room);
 									room.SpawnAlly();
@@ -468,6 +471,7 @@ int main()
 
 									bot.Enter(&room);
 									allies.resize(5);
+									player.ReleaseAll();
 									player.Recruit(allies);
 									player.Enter(&room);
 									room.SpawnAlly();
@@ -792,7 +796,7 @@ int main()
 			//Text GUI like terminal
 			if (is_term_print && !need_print)
 			{
-				sf::sleep(sf::seconds(0.75f));
+				sf::sleep(sf::seconds(1.0f));
 				is_term_print = false;
 			}
 			if (ss_term.str().length() > 0 && need_print)
@@ -889,7 +893,7 @@ int main()
 		{
 			sf::Text storyText;
 			storyText.setFont(font);
-			storyText.setLineSpacing(1.5f);
+			storyText.setLineSpacing(1.25f);
 			storyText.setString(story.substr(0, effect_number / 4));
 
 			sf::FloatRect storyRect = storyText.getLocalBounds();
