@@ -38,6 +38,8 @@ public:
     Stat& operator+=(const Stat& b);
 
     Stat& operator-=(const Stat& b);
+
+    void SetHP(int HP);
 };
 
 Stat operator+(const Stat &a, const Stat &b);

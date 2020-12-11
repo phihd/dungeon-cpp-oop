@@ -110,6 +110,10 @@ string Unit::Description() {
             "\nMove Range: " + MoveRange + + "\nAttack Range: " + AttackRange + Inventory;
 }
 
+void Unit::FullHeal() {
+    stats_.SetHP(stats_.GetMaxHP());
+}
+
 bool operator==(const Unit &a, const Unit &b) {
     return a.GetName() == b.GetName();
 }

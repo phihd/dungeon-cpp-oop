@@ -66,6 +66,10 @@ int Stat::GetAttackRange() const {
     return attackRange_;
 }
 
+void Stat::SetHP(int HP) {
+    HP_ = HP;
+}
+
 Stat operator+(const Stat &a, const Stat &b) {
     return Stat(a) += b;
 }

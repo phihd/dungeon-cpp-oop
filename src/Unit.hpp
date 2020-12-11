@@ -65,6 +65,9 @@ public:
     bool HasAttacked();
 
     bool isAlly() { return ally_; };
+
+    void FullHeal();
+
 };
 
 bool operator==(const Unit& a, const Unit& b);
