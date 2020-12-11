@@ -150,6 +150,14 @@ string Player::Buy(Item item, int quantity, map<Item, int> &stock) {
     
 }
 
+string Player::Upgrade(Unit *unit, int price) {
+    if (price > gold_)
+        return "You cannot afford upgrading " + unit->GetName();
+    auto s = unit->GetStats();
+    unit->AdjustStats(Stat(0, (int)(0.25 * s.GetHP()), (int)(0.25 * s.GetAtk()), (int)(0.25 * s.GetDef()), (int)(0.25 * s.GetCrit()), 0, 0));
+    gold_ -= price;
+}
+
 string Player::Sell(Item item, int quantity, map<Item, int> &stock) {
     if (Has(item)) {
         for (auto p: inventory_) {

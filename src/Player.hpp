@@ -75,6 +75,9 @@ public:
     /*Buy an item with a certain quantity*/
     string Buy(Item item, int quantity, map<Item, int> &stock);
 
+    /*Upgrade a unit with provided price*/
+    string Upgrade(Unit *unit, int price);
+
     /*Sell an item with a certain quantity*/
     string Sell(Item item, int quantity, map<Item, int> &stock);
 
@@ -130,6 +133,8 @@ public:
     virtual int getArmyMaxSize() {return army_max_size_;}
 
     void ClearInventory();
+
+    void ResetGold() {gold_ = 400;}
 };
 
 class Bot: public Player {
