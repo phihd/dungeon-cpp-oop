@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <random>
 
 using namespace std;
 
@@ -65,6 +66,9 @@ void Unit::Consume(Item item) {
 void Unit::Attack(Unit* opponent) {
     float alpha = (float)100 / (100 + opponent->GetStats().GetDef());
     float dmg = alpha * stats_.GetAtk();
+    bool isCrit = (rand() % 100) < stats_.GetCrit();
+    if (isCrit)
+        dmg *= 2;
     opponent->AdjustStats(Stat(0, -dmg, 0, 0, 0, 0, 0));
     hasAttacked_ = true;
 }
