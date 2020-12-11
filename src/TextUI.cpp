@@ -67,6 +67,7 @@ int main()
 	cout << "location Talon" << endl;
 	cout << "equip Malphite InfinityEdge" << endl;
 	cout << "consume Garen CorruptingPotion" << endl;
+	cout << Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300).FullDescription() << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer

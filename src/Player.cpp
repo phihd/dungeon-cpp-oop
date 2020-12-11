@@ -185,7 +185,7 @@ string Player::AddItems(vector<Item*> items) {
 
 string Player::RemoveItem(Item item, int quantity) {
     if (quantity < inventory_[item])
-        inventory_[item] += quantity;
+        inventory_[item] -= quantity;
     else
         inventory_.erase(item);
     return "Remove " + to_string(quantity) + " " + item.GetName() + " from the inventory.";
@@ -208,7 +208,7 @@ string Player::Recruit(Unit* unit) {
 }
 
 string Player::Recruit(vector<Unit*> units) {
-    if (army_.empty() && units.size() == army_max_size_) {
+    if (army_.empty() && units.size() <= getArmyMaxSize()) {
         army_ = units;
         return "Recruit successful";
     }
@@ -225,6 +225,10 @@ string Player::Release(Unit* ally) {
         }
     }
     return "Unit not in army";
+}
+
+void Player::ReleaseAll() {
+    army_.clear();
 }
 
 string Player::Move(Unit* ally, Coord new_coord) {
@@ -279,11 +283,11 @@ vector<Unit*> Player::GetArmy() {
 }
 
 void Player::Enter(Battlefield *battlefield) {
-    battlefield_ = battlefield;
+    SetBattlefield(battlefield);
     battlefield_->UnitArrive(army_);
 }
 
-void Player::Exit(Battlefield *battlefield) {
+void Player::Exit() {
     battlefield_ = NULL;
 }
 
@@ -303,5 +307,20 @@ string Player::OpenTreasure(Unit *unit, Square treasure) {
     return "This treasure has been opened.";
 }
 
+void Player::SetBattlefield(Battlefield *battlefield) {
+    battlefield_ = battlefield;
+}
+
 
 Bot::Bot(const string &name): Player(name) {}
+
+void Bot::Enter(Battlefield *battlefield) {
+    SetBattlefield(battlefield);
+    Recruit(battlefield->Enemies());
+}
+
+void Bot::Exit() {
+    Player::Exit();
+    Player::ReleaseAll();
+}
+

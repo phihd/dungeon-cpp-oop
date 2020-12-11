@@ -3,7 +3,7 @@
 #define GAME_HEADER
 
 #include "Player.hpp"
-//#include "Player.cpp"	// This is for VSCode, remove if you use visual studio
+#include "Player.cpp"	// This is for VSCode, remove if you use visual studio
 
 #include <algorithm>
 #include <random>

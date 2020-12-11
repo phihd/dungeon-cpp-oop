@@ -101,6 +101,9 @@ public:
     /*Release a unit from army*/
     string Release(Unit* ally);
 
+    /*Release the whole army*/
+    void ReleaseAll();
+
     /*Move a unit on the map*/
     string Move(Unit* ally, Coord new_coord);
 
@@ -117,16 +120,26 @@ public:
 
     void Enter(Battlefield *battlefield);
 
-    void Exit(Battlefield *battlefield);
+    void Exit();
 
     /*Open a treasure through provided coord*/
     string OpenTreasure(Unit *unit, Square treasure);
+
+    void SetBattlefield(Battlefield *Battlefield);
+
+    int getArmyMaxSize() {return army_max_size_;}
 };
 
 class Bot: public Player {
 
 public:
     Bot(const string &name);
+
+    void Enter(Battlefield *battlefield);
+
+    void Exit();
+
+    int getArmyMaxSize() {return 1000;}
 };
 
 #endif
