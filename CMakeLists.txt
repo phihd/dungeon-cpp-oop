@@ -17,8 +17,6 @@ add_executable(${PROJECT_NAME} ${SRC_DIR}/main.cpp)
 
 add_executable(TEXT_UI ${SRC_DIR}/TextUI.cpp)
 
-add_executable(MENUGUI ${SRC_DIR}/MenuGUI.cpp)
-
 # Make the project files available as a library
 #file(GLOB DUNGEON_FILES CONFIGURE_DEPENDS "${SRC_DIR}/*.hpp" "${SRC_DIR}/*.cpp")
 #add_library(DUNGEON_LIB ${DUNGEON_FILES})
@@ -36,7 +34,7 @@ add_executable(MENUGUI ${SRC_DIR}/MenuGUI.cpp)
 find_package(SFML 2.5.1 COMPONENTS system graphics audio network REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-system sfml-window)
-target_link_libraries(MENUGUI sfml-graphics sfml-audio sfml-system sfml-window)
+
 ######################################################################
 # Stage 3: Download and install GoogleTest
 ######################################################################
@@ -91,7 +89,6 @@ target_link_libraries(coordtest gtest_main DUNGEON_LIB_P sfml-graphics sfml-audi
 add_test(NAME coordtest COMMAND coordtest)
 
 # Add more tests here
-
 
 #add_executable(example ${TEST_DIR}/test2.cpp)
 #target_link_libraries(example gtest_main DUNGEON_LIB sfml-graphics sfml-audio sfml-system sfml-window)

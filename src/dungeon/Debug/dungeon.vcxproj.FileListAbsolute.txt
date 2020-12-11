@@ -1,2 +1,0 @@
-C:\Users\HP\Desktop\project\src\dungeon\Debug\dungeon.exe
-C:\Users\HP\Desktop\project\src\dungeon\Debug\dungeon.pdb

@@ -4,6 +4,8 @@ The Dungeon Crawler project is a Rogue-lite, turn-based gameplay. The Rogue-lite
 
 The project was implemented on top of [SFML](https://www.sfml-dev.org/index.php) framework.
 
+![Screenshot](./resource/screenshot.png)
+
 ### Project Structure
 
   * `plan/` -- Project plans.
@@ -23,40 +25,41 @@ The project was implemented on top of [SFML](https://www.sfml-dev.org/index.php)
 
 ### Dependencies
 - CMake 3.16.3+
+- make
 - SFML 2.5.1
 - Python 3.6+ (required by Google unit test framework)
 - Git
 
 ### Running the program
 Step 1: Clone the project from repo
-```shell
+```bash
 # Do not change the name of project folder!
 git clone git@courses-git.comnet.aalto.fi:CPP-F2020/dungeon-2020-4.git 
 ```
 Step 2: Create Makefile and build it
-```shell
+```bash
 cd dungeon-2020-4
 mkdir build
 cd build
 cmake .
 make dungeon
 ```
-Step 3: Execute the program
-```shell
+Step 3: Run the program
+```bash
 ./dungeon
 ```
 
 ### Testing
 `TextUI` is an Text-based user interface used for debugging purpose. 
 To run the program, run the code showing below in the root directory of project. 
- ```shell
+ ```bash
 cd build
 make TEXT_UI
 ./TEXT_UI
 ```
 There are also some unit tests available. For instance, unit test for `Coord` class 
 can be executed by running the following code in the root directory of project
- ```shell
+ ```bash
 cd build
 make coordtest
 ./coordtest
