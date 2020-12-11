@@ -197,8 +197,10 @@ string Player::Attack(Unit* unit, Unit* opponent) {
     if (!battlefield_->Outcome(unit, opponent))
         return opponent->GetName() + " is not in attack range of " + unit->GetName() + ".";
     unit->Attack(opponent);
-    if (!opponent->IsAlive())
-        gold_ += 50;
+    if (!opponent->IsAlive()) {
+        gold_ += 100;
+        return unit->GetName() + " just executed " + opponent->GetName() + ", gain 100 gold.";
+    }
     return unit->GetName() + " just attacked " + opponent->GetName();
 }
 

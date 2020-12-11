@@ -1,6 +1,6 @@
 #pragma once
 #include "World.hpp"
-//#include "World.cpp"	// This is for VSCode, remove if you use visual studio
+#include "World.cpp"	// This is for VSCode, remove if you use visual studio
 #include <iostream>
 
 #include <string>
@@ -65,6 +65,11 @@ int main()
 	cout << "equip Malphite InfinityEdge" << endl;
 	cout << "consume Garen CorruptingPotion" << endl;
 	cout << Item("B.FSword", "big fucking sword", Stat(0, 0, 50, 0, 0, 0, 0), 1300).FullDescription() << endl;
+	cout << "***********************\n";
+	bot.Enter(&room);
+	cout << bot.GetArmy().size() << endl;
+	bot.Exit();
+	cout << bot.GetArmy().size() << endl;
 
 	// Background		|	0
 	// Ally				|	1 -> 5		|	Paladin, Knight, Mage, Archer, Heavy Archer
