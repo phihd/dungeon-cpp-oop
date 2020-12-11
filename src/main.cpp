@@ -282,6 +282,9 @@ int main()
 	//Create the window
 	sf::RenderWindow window(sf::VideoMode(windowX, windowY), "Dungeons!", sf::Style::Titlebar | sf::Style::Close);
 	window.setFramerateLimit(500);
+	sf::Image programIcon;
+	programIcon.loadFromFile(resourcePath + "/Warhammer.png"); // File/Image/Pixel
+	window.setIcon(programIcon.getSize().x, programIcon.getSize().y, programIcon.getPixelsPtr());
 
 	//////////////////////////////////////////////// RUNNING //////////////////////////////////////////////////////
 
@@ -451,7 +454,8 @@ int main()
 									if (current_level == 3 || current_level == 5 || current_level == 8)
 									{
 										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
-										for (auto i : allies) i->FullHeal();
+										for (auto i : allies)
+											i->FullHeal();
 									}
 									bot.Enter(&room);
 									player.Enter(&room);
