@@ -442,8 +442,8 @@ int main()
 								{
 									current_level++;
 									room = world[current_level]; //Move to next room
-									if (current_level == 3 || current_level == 6 || current_level == 9)
-										stage = STORE_TRADE_STAGE;
+									if (current_level == 2 || current_level == 5 || current_level == 7)
+										stage = STORE_FUNCTIONALITY_SELECTION_STAGE;
 									bot.Enter(&room);
 									player.Enter(&room);
 									room.SpawnAlly();
@@ -883,6 +883,7 @@ int main()
 		{
 			sf::Text storyText;
 			storyText.setFont(font);
+			storyText.setLineSpacing(1.5f);
 			storyText.setString(story.substr(0, effect_number / 4));
 
 			sf::FloatRect storyRect = storyText.getLocalBounds();
