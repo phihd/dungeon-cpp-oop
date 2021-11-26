@@ -33,12 +33,11 @@ The project was implemented on top of [SFML](https://www.sfml-dev.org/index.php)
 ### Running the program
 Step 1: Clone the project from repo
 ```bash
-# Do not change the name of project folder!
-git clone git@courses-git.comnet.aalto.fi:CPP-F2020/dungeon-2020-4.git 
+git clone git@github.com:phihd/dungeon-cpp-oop.git
 ```
 Step 2: Create Makefile and build it
 ```bash
-cd dungeon-2020-4
+cd dungeon-cpp-oop
 mkdir build
 cd build
 cmake .
